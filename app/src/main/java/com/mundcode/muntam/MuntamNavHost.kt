@@ -2,10 +2,10 @@ package com.mundcode.muntam
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mundcode.muntam.presentation.ui.main.MainScreen
 
 @Composable
 fun MuntamNavHost(
@@ -18,6 +18,10 @@ fun MuntamNavHost(
         modifier = modifier,
         startDestination = startDestination.route
     ) {
-
+        composable(
+            route = Main.route
+        ) {
+            MainScreen()
+        }
     }
 }
