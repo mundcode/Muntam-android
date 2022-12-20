@@ -1,4 +1,4 @@
-package com.mundcode.muntam.ui.theme
+package com.mundcode.muntam.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
