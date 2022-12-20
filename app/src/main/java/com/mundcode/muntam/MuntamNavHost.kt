@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mundcode.muntam.presentation.ui.exams.ExamsScreen
 import com.mundcode.muntam.presentation.ui.main.MainScreen
+import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
 
 @Composable
 fun MuntamNavHost(
@@ -35,8 +36,15 @@ fun MuntamNavHost(
             route = Exams.routeWithArgs,
             arguments = Exams.arguments
         ) { navBackStackEntry ->
-            val subjectId = navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
+            val subjectId =
+                navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
             ExamsScreen(subjectId)
+        }
+
+        composable(
+            route = SubjectAdd.route
+        ) {
+            SubjectAddScreen()
         }
     }
 }

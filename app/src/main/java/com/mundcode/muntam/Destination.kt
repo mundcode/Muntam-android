@@ -55,7 +55,7 @@ object Settings : MuntamBottomDestination {
 }
 
 // 과목 : Subject
-object SubjectAddition : MutamDestination {
+object SubjectAdd : MutamDestination {
     override val route = "subject_addition"
 }
 

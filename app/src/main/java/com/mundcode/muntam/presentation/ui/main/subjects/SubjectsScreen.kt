@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.mundcode.muntam.Exams
+import com.mundcode.muntam.SubjectAdd
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.theme.*
@@ -38,7 +39,7 @@ fun SubjectsScreen(
                 title = "과목 선택",
                 icons = listOf(
                     Icons.Default.AddCircle to {
-//                        onNavOutEvent()
+                        onNavOutEvent(SubjectAdd.route)
                     }
                 )
             )
