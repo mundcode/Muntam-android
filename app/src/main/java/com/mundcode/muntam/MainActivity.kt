@@ -6,9 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -28,16 +26,10 @@ fun MuntamApp() {
     MuntamTheme {
         val navController = rememberNavController()
         val currentBackstack by navController.currentBackStackEntryAsState()
-        val currentDestination by remember {
-            derivedStateOf {
-                currentBackstack?.destination
-            }
-        }
 
         Scaffold { innerPadding ->
             MuntamNavHost(
                 navController = navController,
-                startDestination = Main,
                 modifier = Modifier.padding(innerPadding)
             )
         }

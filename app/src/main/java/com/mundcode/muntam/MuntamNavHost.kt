@@ -10,7 +10,7 @@ import com.mundcode.muntam.presentation.ui.main.MainScreen
 @Composable
 fun MuntamNavHost(
     navController: NavHostController,
-    startDestination: MutamDestination,
+    startDestination: MutamDestination = Main,
     modifier: Modifier
 ) {
     NavHost(
@@ -21,7 +21,13 @@ fun MuntamNavHost(
         composable(
             route = Main.route
         ) {
-            MainScreen()
+            MainScreen { route ->
+                navController.navigate(route) {
+                    popUpTo(Main.route) {
+                        saveState = true
+                    }
+                }
+            }
         }
     }
 }
