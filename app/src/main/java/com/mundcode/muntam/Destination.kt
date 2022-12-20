@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 interface Destination {
     val route: String
@@ -64,6 +66,13 @@ object SubjectSettings : MutamDestination {
 // 시험 : Exam
 object Exams : MutamDestination {
     override val route = "exams"
+    const val subjectIdArg = "subject_id"
+    val routeWithArgs = "${route}/{${subjectIdArg}}"
+    val arguments = listOf(
+        navArgument(subjectIdArg) { type = NavType.IntType }
+    )
+
+    fun getRouteWithArgs(subjectIdArg: Int) = "${route}/${subjectIdArg}"
 }
 
 object ExamRecord : MutamDestination {
