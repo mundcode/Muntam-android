@@ -41,6 +41,5 @@ fun MuntamApp() {
                 modifier = Modifier.padding(innerPadding)
             )
         }
-
     }
 }
