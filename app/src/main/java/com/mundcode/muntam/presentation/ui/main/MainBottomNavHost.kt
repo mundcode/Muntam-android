@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mundcode.muntam.*
+import com.mundcode.muntam.presentation.ui.main.subjects.SubjectsScreen
 
 @Composable
 fun MainBottomNavHost(
@@ -22,8 +23,11 @@ fun MainBottomNavHost(
         composable(
             route = Subjects.route
         ) {
-//            SubjectsScreen()
-            Dummy(screenName = "Subjects")
+            SubjectsScreen(
+                onNavOutEvent = { route ->
+                    onNavOutEvent(route)
+                }
+            )
         }
 
         composable(
