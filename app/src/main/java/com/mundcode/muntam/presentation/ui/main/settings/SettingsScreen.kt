@@ -1,4 +1,8 @@
 package com.mundcode.muntam.presentation.ui.main.settings
 
-class SettingsScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun SettingsScreen() {
+
 }

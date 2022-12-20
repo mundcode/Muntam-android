@@ -9,6 +9,9 @@ import com.mundcode.muntam.FavoriteQuestions
 import com.mundcode.muntam.MutamDestination
 import com.mundcode.muntam.Settings
 import com.mundcode.muntam.Subjects
+import com.mundcode.muntam.presentation.ui.main.favorites.FavoriteQuestionsScreen
+import com.mundcode.muntam.presentation.ui.main.settings.SettingsScreen
+import com.mundcode.muntam.presentation.ui.main.subjects.SubjectsScreen
 
 @Composable
 fun MainNavHost(
@@ -25,19 +28,19 @@ fun MainNavHost(
         composable(
             route = Subjects.route
         ) {
-
+            SubjectsScreen()
         }
 
         composable(
             route = FavoriteQuestions.route
         ) {
-
+            FavoriteQuestionsScreen()
         }
 
         composable(
             route = Settings.route
         ) {
-
+            SettingsScreen()
         }
     }
 }

@@ -1,4 +1,9 @@
 package com.mundcode.muntam.presentation.ui.main.subjects
 
-class SubjectsScreen {
+import androidx.compose.runtime.Composable
+import com.mundcode.muntam.Subjects
+
+@Composable
+fun SubjectsScreen() {
+
 }
