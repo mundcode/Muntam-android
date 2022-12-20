@@ -26,6 +26,7 @@ import com.mundcode.muntam.Exams
 import com.mundcode.muntam.SubjectAdd
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
+import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
 import com.mundcode.muntam.presentation.ui.theme.*
 
 @Composable
@@ -37,11 +38,17 @@ fun SubjectsScreen(
             MuntamToolbar(
                 showBack = false,
                 title = "과목 선택",
-                icons = listOf(
-                    Icons.Default.AddCircle to {
-                        onNavOutEvent(SubjectAdd.route)
-                    }
-                )
+                icons = listOf {
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(Circle)
+                            .clickable {
+                                onNavOutEvent(SubjectAdd.route)
+                            }
+                    )
+                }
             )
         }
     ) { paddingValue ->

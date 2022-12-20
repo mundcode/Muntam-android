@@ -21,7 +21,7 @@ fun MuntamToolbar(
     modifier: Modifier = Modifier,
     showBack: Boolean = true,
     title: String = "",
-    icons: List<Pair<ImageVector, () -> Unit>> = listOf()
+    icons: List<@Composable () -> Unit> = listOf()
 ) {
     Row(
         modifier = modifier
@@ -42,14 +42,8 @@ fun MuntamToolbar(
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(DefaultSpace8)) {
-            icons.forEach { pair ->
-                Icon(
-                    imageVector = pair.first,
-                    contentDescription = null,
-                    modifier = Modifier.clickable {
-                        pair.second()
-                    }
-                )
+            icons.forEach {
+                it()
             }
         }
     }

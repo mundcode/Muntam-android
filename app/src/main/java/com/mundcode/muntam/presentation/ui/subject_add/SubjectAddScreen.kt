@@ -5,5 +5,5 @@ import com.mundcode.muntam.Dummy
 
 @Composable
 fun SubjectAddScreen() {
-    Dummy(screenName = "SubjectAddScreen")
+    
 }
