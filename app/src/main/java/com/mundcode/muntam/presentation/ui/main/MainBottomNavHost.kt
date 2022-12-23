@@ -5,7 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mundcode.muntam.*
+import com.mundcode.muntam.FavoriteQuestions
+import com.mundcode.muntam.MuntamBottomDestination
+import com.mundcode.muntam.Settings
+import com.mundcode.muntam.Subjects
+import com.mundcode.muntam.presentation.ui.main.favorites.FavoriteQuestionsScreen
+import com.mundcode.muntam.presentation.ui.main.settings.SettingsScreen
 import com.mundcode.muntam.presentation.ui.main.subjects.SubjectsScreen
 
 @Composable
@@ -33,17 +38,13 @@ fun MainBottomNavHost(
         composable(
             route = FavoriteQuestions.route
         ) {
-//            FavoriteQuestionsScreen()
-            Dummy(screenName = "FavoriteQuestions")
-
+            FavoriteQuestionsScreen()
         }
 
         composable(
             route = Settings.route
         ) {
-//            SettingsScreen()
-            Dummy(screenName = "Settings")
-
+            SettingsScreen()
         }
     }
 }
