@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mundcode.muntam.presentation.ui.subject_setting.SubjectSettingsScreen
 import com.mundcode.muntam.presentation.ui.exams.ExamsScreen
 import com.mundcode.muntam.presentation.ui.main.MainScreen
 import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
@@ -45,6 +46,36 @@ fun MuntamNavHost(
             route = SubjectAdd.route
         ) {
             SubjectAddScreen()
+        }
+
+        composable(
+            route = SubjectSettings.route
+        ) {
+            SubjectSettingsScreen()
+        }
+
+        composable(
+            route = ExamRecord.route
+        ) {
+
+        }
+
+        composable(
+            route = Questions.route
+        ) {
+
+        }
+
+        composable(
+            route = QuestionDetails.route
+        ) {
+
+        }
+
+        composable(
+            route = QuestionSettings.route
+        ) {
+
         }
     }
 }
