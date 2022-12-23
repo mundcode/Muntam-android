@@ -54,7 +54,6 @@ object Settings : MuntamBottomDestination {
     override val display = "설정"
 }
 
-// 과목 : Subject
 object SubjectAdd : MutamDestination {
     override val route = "subject_addition"
 }
@@ -63,7 +62,6 @@ object SubjectSettings : MutamDestination {
     override val route = "subject_settings"
 }
 
-// 시험 : Exam
 object Exams : MutamDestination {
     override val route = "exams"
     const val subjectIdArg = "subject_id"
@@ -79,17 +77,11 @@ object ExamRecord : MutamDestination {
     override val route = "exam_record"
 }
 
-object ExamSettings : MutamDestination {
-    override val route = "exam_settings"
-}
-
-
-// 문제 : Question
 object Questions : MutamDestination {
     override val route = "questions"
 }
 
-object QuestionEditor : MutamDestination {
+object QuestionSettings : MutamDestination {
     override val route = "question_editor"
 }
 
