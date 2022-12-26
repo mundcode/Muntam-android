@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         }
 
 
-    fun requestNotificationPermission() {
+    private fun requestNotificationPermission() {
         if (
             ContextCompat.checkSelfPermission(
                 this,
