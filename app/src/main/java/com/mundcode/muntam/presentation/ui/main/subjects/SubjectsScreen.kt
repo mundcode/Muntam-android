@@ -22,6 +22,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.mundcode.muntam.Exams
 import com.mundcode.muntam.SubjectAdd
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
@@ -29,10 +33,13 @@ import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
 import com.mundcode.muntam.presentation.ui.theme.*
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit
 ) {
+
+    val notificationPermissionState = rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
     Scaffold(
         topBar = {
             MuntamToolbar(
@@ -45,7 +52,14 @@ fun SubjectsScreen(
                         modifier = Modifier
                             .clip(Circle)
                             .clickable {
-                                onNavOutEvent(SubjectAdd.route)
+                                if (notificationPermissionState.status.isGranted) {
+                                    if (notificationPermissionState.status.shouldShowRationale) {
+
+                                    } else {
+                                        notificationPermissionState.launchPermissionRequest()
+                                    }
+                                }
+                                //onNavOutEvent(SubjectAdd.route)
                             }
                     )
                 }
