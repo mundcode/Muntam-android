@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.ui.main.subjects
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,10 +28,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.mundcode.muntam.Exams
-import com.mundcode.muntam.SubjectAdd
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
 import com.mundcode.muntam.presentation.ui.theme.*
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -39,7 +38,10 @@ fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit
 ) {
 
-    val notificationPermissionState = rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+    val notificationPermissionState =
+        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS) { result ->
+            Log.d("SR-N", "notificationPermissionState result $result")
+        }
     Scaffold(
         topBar = {
             MuntamToolbar(
@@ -52,10 +54,20 @@ fun SubjectsScreen(
                         modifier = Modifier
                             .clip(Circle)
                             .clickable {
-                                if (notificationPermissionState.status.isGranted) {
+                                Log.d("SR-N", "clickable")
+
+                                if (!notificationPermissionState.status.isGranted) {
+                                    Log.d("SR-N", "isGranted")
+
                                     if (notificationPermissionState.status.shouldShowRationale) {
+                                        Log.d("SR-N", "shouldShowRationale")
 
                                     } else {
+                                        Log.d(
+                                            "SR-N",
+                                            "shouldShowRationale not -> launchPermissionRequest"
+                                        )
+
                                         notificationPermissionState.launchPermissionRequest()
                                     }
                                 }
