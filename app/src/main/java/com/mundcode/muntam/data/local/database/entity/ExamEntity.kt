@@ -6,5 +6,6 @@ data class ExamEntity(
     val subjectId: Int,
     val examId: Int,
     val name: String,
-    val date: Date
+    val isFavorite: Boolean,
+    val createdAt: Date
 )

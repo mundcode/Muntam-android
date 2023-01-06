@@ -6,4 +6,7 @@ data class QuestionEntity(
     val questionId: Int,
     val name: String,
     val correct: Boolean,
-}
+    val lapsedTime: Long,
+    val lapsedExamTime: Long,
+    val expiredTime: Long
+)
