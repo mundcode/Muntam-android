@@ -1,4 +1,4 @@
-package com.mundcode.muntam.data.local.database.entity
+package com.mundcode.data.local.database.entity
 
 data class QuestionEntity(
     val subjectId: Int,
