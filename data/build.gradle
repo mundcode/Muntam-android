@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -31,6 +32,12 @@ android {
 }
 
 dependencies {
+
+    implementation "androidx.room:room-runtime:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
+    // Kotlin은 kotlinc로 컴파일되기 때문에 기존에 Java로 작성된 Annotation Process로는 Kotlin의 Annotation이 제대로 처리되지 않습니다.
+    kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
