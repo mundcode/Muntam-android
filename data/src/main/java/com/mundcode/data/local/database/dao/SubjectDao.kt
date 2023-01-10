@@ -12,9 +12,18 @@ interface SubjectDao {
     @Query(
         value = """
             SELECT * FROM subjects
+            
         """
     )
     fun getSubjects(): Flow<List<SubjectEntity>>
+
+    @Query(
+        value = """
+            SELECT * FROM subjects
+            WHERE id = :id
+        """
+    )
+    fun getSubject(id: Int): Flow<SubjectEntity>
 
     @Update
     suspend fun updateSubjects(entities: List<SubjectEntity>)
