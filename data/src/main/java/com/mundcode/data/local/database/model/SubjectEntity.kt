@@ -1,7 +1,6 @@
 package com.mundcode.data.local.database.model
 
 import androidx.room.ColumnInfo
-import androidx.room.ColumnInfo.Collate
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
