@@ -34,6 +34,6 @@ interface SubjectDao {
             WHERE id in (:ids)
         """
     )
-    suspend fun deleteSubjects(ids: List<Int>)
 
+    suspend fun deleteSubjects(ids: List<Int>)
 }
