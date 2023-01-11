@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "subjects")
 data class SubjectEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val name: String,
     @ColumnInfo(name = "total_question_number")
     val totalQuestionNumber: Int,
@@ -15,4 +13,7 @@ data class SubjectEntity(
     val timeLimit: Long,
     @ColumnInfo(name = "created_at")
     val createdAt: Long
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}
