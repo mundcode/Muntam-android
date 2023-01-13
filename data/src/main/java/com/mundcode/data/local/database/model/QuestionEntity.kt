@@ -23,8 +23,6 @@ import androidx.room.PrimaryKey
     ]
 )
 data class QuestionEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     @ColumnInfo(name = "subject_id")
     val subjectId: Int,
     @ColumnInfo(name = "exam_id")
@@ -38,5 +36,12 @@ data class QuestionEntity(
     @ColumnInfo(name = "expired_time")
     val expiredTime: Long,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long
-)
+    val createdAt: Long,
+    @ColumnInfo(name = "modified_at")
+    val modifiedAt: Long?,
+    @ColumnInfo(name = "deleted_at")
+    val deletedAt: Long?
+) {
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
+}

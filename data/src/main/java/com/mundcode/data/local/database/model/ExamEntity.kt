@@ -17,8 +17,6 @@ import androidx.room.PrimaryKey
     ]
 )
 data class ExamEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     @ColumnInfo(name = "subject_id")
     val subjectId: Int,
     val name: String,
@@ -27,5 +25,12 @@ data class ExamEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Long,
     @ColumnInfo(name = "end_at")
-    val endAt: Long
-)
+    val endAt: Long?,
+    @ColumnInfo(name = "modified_at")
+    val modifiedAt: Long?,
+    @ColumnInfo(name = "deleted_at")
+    val deletedAt: Long?,
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

@@ -12,7 +12,11 @@ data class SubjectEntity(
     @ColumnInfo(name = "time_limit")
     val timeLimit: Long,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long
+    val createdAt: Long,
+    @ColumnInfo(name = "modified_at")
+    val modifiedAt: Long?,
+    @ColumnInfo(name = "deleted_at")
+    val deletedAt: Long?
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
