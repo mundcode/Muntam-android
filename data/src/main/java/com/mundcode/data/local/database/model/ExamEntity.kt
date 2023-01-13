@@ -30,6 +30,7 @@ data class ExamEntity(
     val modifiedAt: Long?,
     @ColumnInfo(name = "deleted_at")
     val deletedAt: Long?,
+    val state: String // todo enum 으로 대체
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

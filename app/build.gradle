@@ -50,7 +50,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":data"))
+    implementation(project(":data")) // todo 빼는 방법 알아보자
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
