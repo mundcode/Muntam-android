@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.datetime.Instant
 
 @Entity(
     tableName = "questions",
@@ -36,11 +37,11 @@ data class QuestionEntity(
     @ColumnInfo(name = "expired_time")
     val expiredTime: Long,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    val createdAt: Instant,
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Long?,
+    val modifiedAt: Instant?,
     @ColumnInfo(name = "deleted_at")
-    val deletedAt: Long?
+    val deletedAt: Instant?
 ) {
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
