@@ -3,6 +3,7 @@ package com.mundcode.data.local.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.mundcode.domain.model.Subject
 import kotlinx.datetime.Instant
 
 @Entity(tableName = "subjects")
@@ -22,3 +23,13 @@ data class SubjectEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }
+
+fun Subject.asExternalModel(): Subject = Subject(
+    id = id,
+    name = name,
+    totalQuestionNumber = totalQuestionNumber,
+    timeLimit = timeLimit,
+    createdAt = createdAt,
+    modifiedAt = modifiedAt,
+    deletedAt = deletedAt
+)

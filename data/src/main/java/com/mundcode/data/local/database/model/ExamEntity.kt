@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.ExamState
 import kotlinx.datetime.Instant
 
@@ -37,3 +38,15 @@ data class ExamEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }
+
+fun ExamEntity.asExternalModel(): Exam = Exam(
+    id = id,
+    subjectId = subjectId,
+    name = name,
+    isFavorite = isFavorite,
+    createdAt = createdAt,
+    endAt = endAt,
+    modifiedAt = modifiedAt,
+    deletedAt = deletedAt,
+    state = state
+)
