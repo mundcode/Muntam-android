@@ -8,14 +8,14 @@ import kotlinx.datetime.Instant
 abstract class ExamDao : BaseDao<ExamDao> {
     @Query(
         value = """
-            SELECT * FROM exams
+            SELECT * FROM exams WHERE deleted_at IS NULL
         """
     )
     abstract fun getExams(): Flow<List<ExamEntity>>
 
     @Query(
         value = """
-            UPDATE exams SET deleted_at=:deletedAt WHERE id in (:ids)
+            UPDATE exams SET deleted_at=:deletedAt WHERE id IN (:ids)
         """
     )
     abstract suspend fun deleteExams(ids: List<Int>, deletedAt: Instant)

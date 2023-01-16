@@ -1,5 +1,6 @@
 package com.mundcode.data.local.database
 
+import com.mundcode.data.local.database.dao.ExamDao
 import com.mundcode.data.local.database.dao.SubjectDao
 import dagger.Module
 import dagger.Provides
@@ -13,4 +14,9 @@ object DaosModule {
     fun providesSubjectsDao(
         database: MuntamDatabase
     ): SubjectDao = database.subjectDao()
+
+    @Provides
+    fun providesExamsDao(
+        database: MuntamDatabase
+    ): ExamDao = database.examDao()
 }
