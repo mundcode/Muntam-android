@@ -11,7 +11,7 @@ import kotlinx.datetime.Instant
 abstract class SubjectDao : BaseDao<SubjectEntity> {
     @Query(
         value = """
-            SELECT * FROM subjects
+            SELECT * FROM subjects WHERE deleted_at IS NULL
             
         """
     )
@@ -19,8 +19,8 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
 
     @Query(
         value = """
-            SELECT * FROM subjects
-            WHERE id = :id
+            SELECT * FROM subjects 
+            WHERE deleted_at IS NULL AND id = :id
         """
     )
     abstract fun getSubject(id: Int): Flow<SubjectEntity>
