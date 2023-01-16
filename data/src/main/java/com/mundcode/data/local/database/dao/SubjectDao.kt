@@ -1,21 +1,21 @@
 package com.mundcode.data.local.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Update
 import com.mundcode.data.local.database.model.SubjectEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 @Dao
-interface SubjectDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertSubjects(entities: List<SubjectEntity>)
-
+abstract class SubjectDao : BaseDao<SubjectEntity> {
     @Query(
         value = """
             SELECT * FROM subjects
             
         """
     )
-    fun getSubjects(): Flow<List<SubjectEntity>>
+    abstract fun getSubjects(): Flow<List<SubjectEntity>>
 
     @Query(
         value = """
@@ -23,17 +23,15 @@ interface SubjectDao {
             WHERE id = :id
         """
     )
-    fun getSubject(id: Int): Flow<SubjectEntity>
+    abstract fun getSubject(id: Int): Flow<SubjectEntity>
 
     @Update
-    suspend fun updateSubjects(entities: List<SubjectEntity>)
+    abstract suspend fun updateSubjects(entities: List<SubjectEntity>)
 
     @Query(
         value = """
-            DELETE FROM subjects
-            WHERE id in (:ids)
-        """
+            UPDATE subjects SET deleted_at=:deletedAt WHERE id in (:ids)
+            """
     )
-
-    suspend fun deleteSubjects(ids: List<Int>)
+    abstract suspend fun deleteSubjects(ids: List<Int>, deletedAt: Instant)
 }
