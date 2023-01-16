@@ -13,4 +13,3 @@ data class Exam(
     val deletedAt: Instant?,
     val state: ExamState
 )
-
