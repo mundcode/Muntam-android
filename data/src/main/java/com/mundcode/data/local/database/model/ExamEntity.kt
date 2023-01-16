@@ -30,9 +30,9 @@ data class ExamEntity(
     @ColumnInfo(name = "end_at")
     val endAt: Instant?,
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Instant?,
+    val modifiedAt: Instant? = null,
     @ColumnInfo(name = "deleted_at")
-    val deletedAt: Instant?,
+    val deletedAt: Instant? = null,
     val state: ExamState
 ) {
     @PrimaryKey(autoGenerate = true)

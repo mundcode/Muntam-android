@@ -39,9 +39,9 @@ data class QuestionEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Instant?,
+    val modifiedAt: Instant? = null,
     @ColumnInfo(name = "deleted_at")
-    val deletedAt: Instant?
+    val deletedAt: Instant? = null
 ) {
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
