@@ -24,8 +24,17 @@ data class SubjectEntity(
     var id: Int = 0
 }
 
-fun Subject.asExternalModel(): Subject = Subject(
+fun SubjectEntity.asExternalModel(): Subject = Subject(
     id = id,
+    name = name,
+    totalQuestionNumber = totalQuestionNumber,
+    timeLimit = timeLimit,
+    createdAt = createdAt,
+    modifiedAt = modifiedAt,
+    deletedAt = deletedAt
+)
+
+fun Subject.asEntity(): SubjectEntity = SubjectEntity(
     name = name,
     totalQuestionNumber = totalQuestionNumber,
     timeLimit = timeLimit,
