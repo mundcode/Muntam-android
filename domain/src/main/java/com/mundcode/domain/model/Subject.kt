@@ -8,6 +8,6 @@ data class Subject(
     val totalQuestionNumber: Int,
     val timeLimit: Long,
     val createdAt: Instant,
-    val modifiedAt: Instant?,
-    val deletedAt: Instant?
+    val modifiedAt: Instant? = null,
+    val deletedAt: Instant? = null
 )

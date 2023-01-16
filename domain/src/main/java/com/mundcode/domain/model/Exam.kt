@@ -8,8 +8,8 @@ data class Exam(
     val name: String,
     val isFavorite: Boolean,
     val createdAt: Instant,
-    val endAt: Instant?,
-    val modifiedAt: Instant?,
-    val deletedAt: Instant?,
+    val endAt: Instant? = null,
+    val modifiedAt: Instant? = null,
+    val deletedAt: Instant? = null,
     val state: ExamState
 )
