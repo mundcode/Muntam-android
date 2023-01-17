@@ -15,7 +15,8 @@ import kotlinx.datetime.Instant
             entity = SubjectEntity::class,
             parentColumns = ["id"],
             childColumns = ["subject_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -41,6 +42,17 @@ data class ExamEntity(
 
 fun ExamEntity.asExternalModel(): Exam = Exam(
     id = id,
+    subjectId = subjectId,
+    name = name,
+    isFavorite = isFavorite,
+    createdAt = createdAt,
+    endAt = endAt,
+    modifiedAt = modifiedAt,
+    deletedAt = deletedAt,
+    state = state
+)
+
+fun Exam.asEntity(): ExamEntity = ExamEntity(
     subjectId = subjectId,
     name = name,
     isFavorite = isFavorite,

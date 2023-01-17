@@ -1,6 +1,8 @@
 package com.mundcode.data.di
 
+import com.mundcode.data.repository.ExamRepositoryImpl
 import com.mundcode.data.repository.SubjectRepositoryImpl
+import com.mundcode.domain.repository.ExamRepository
 import com.mundcode.domain.repository.SubjectRepository
 import dagger.Binds
 import dagger.Module
@@ -14,4 +16,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindSubjectRepository(subjectRepositoryImpl: SubjectRepositoryImpl): SubjectRepository
+
+    @Binds
+    @Singleton
+    fun bindExamRepository(examRepository: ExamRepositoryImpl): ExamRepository
 }

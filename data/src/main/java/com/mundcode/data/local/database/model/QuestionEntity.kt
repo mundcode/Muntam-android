@@ -13,13 +13,15 @@ import kotlinx.datetime.Instant
             entity = SubjectEntity::class,
             parentColumns = ["id"],
             childColumns = ["subject_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = ExamEntity::class,
             parentColumns = ["id"],
             childColumns = ["exam_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -44,5 +46,5 @@ data class QuestionEntity(
     val deletedAt: Instant? = null
 ) {
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    var id: Int = 0
 }

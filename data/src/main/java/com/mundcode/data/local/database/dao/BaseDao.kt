@@ -4,5 +4,5 @@ import androidx.room.Insert
 
 interface BaseDao<T> {
     @Insert
-    suspend fun insert(vararg obj: List<T>)
+    suspend fun insert(obj: List<T>)
 }
