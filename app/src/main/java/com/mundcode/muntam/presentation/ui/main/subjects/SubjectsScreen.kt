@@ -8,10 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Star
@@ -23,19 +20,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.theme.*
+import com.mundcode.muntam.util.sharedActivityViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SubjectsScreen(
-    onNavOutEvent: (route: String) -> Unit
+    onNavOutEvent: (route: String) -> Unit,
+    viewModel: SubjectViewModel = sharedActivityViewModel()
 ) {
 
     val notificationPermissionState =
@@ -78,12 +77,43 @@ fun SubjectsScreen(
             )
         }
     ) { paddingValue ->
-        SubjectsContent(
-            modifier = Modifier.padding(paddingValue),
-            onClickSubject = {
-                onNavOutEvent(Exams.getRouteWithArgs(it.id))
+        Column(Modifier.padding(paddingValue)) {
+            Button(onClick = {
+                viewModel.setS()
+            }) {
+                Text(text = "setS")
             }
-        )
+
+            Button(onClick = {
+                viewModel.getS()
+            }) {
+                Text(text = "getS")
+            }
+
+            Button(onClick = {
+                viewModel.setE()
+            }) {
+                Text(text = "setE")
+            }
+
+            Button(onClick = {
+                viewModel.getE()
+            }) {
+                Text(text = "getE")
+            }
+
+            Button(onClick = {
+                viewModel.deleteSubject()
+            }) {
+                Text(text = "deleteSubject")
+            }
+        }
+//        SubjectsContent(
+//            modifier = Modifier.padding(paddingValue),
+//            onClickSubject = {
+//                onNavOutEvent(Exams.getRouteWithArgs(it.id))
+//            }
+//        )
     }
 }
 

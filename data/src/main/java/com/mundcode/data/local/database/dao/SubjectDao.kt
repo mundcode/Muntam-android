@@ -38,7 +38,7 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
 
     @Query(
         value = """
-            UPDATE exams SET deleted_at=:deletedAt WHERE id in (:id)
+            UPDATE exams SET deleted_at=:deletedAt WHERE subject_id in (:id)
         """
     )
     abstract suspend fun deleteExamsBySubjectId(id: Int, deletedAt: Instant)
