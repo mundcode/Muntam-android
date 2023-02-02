@@ -6,10 +6,10 @@ import com.mundcode.data.local.database.model.asEntity
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.repository.ExamRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
-import javax.inject.Inject
 
 class ExamRepositoryImpl @Inject constructor(
     private val examDao: ExamDao
