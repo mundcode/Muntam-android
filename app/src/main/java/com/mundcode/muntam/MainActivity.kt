@@ -35,7 +35,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
     private fun requestNotificationPermission() {
         if (
             ContextCompat.checkSelfPermission(
@@ -47,7 +46,8 @@ class MainActivity : ComponentActivity() {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                     // 왜 알림을 허용해야하는지 알려주기 권장
                 } else {
-                    requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    requestNotificationPermissionLauncher
+                        .launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
             } else {
                 // 안드로이드 12 이하는 알림에 런타임 퍼미션 없으니, 설정가서 켜보라고 권해볼 수 있겠다.

@@ -10,6 +10,4 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val subjectRepository: SubjectRepository,
     private val examRepository: ExamRepository
-) : ViewModel() {
-
-}
+) : ViewModel()

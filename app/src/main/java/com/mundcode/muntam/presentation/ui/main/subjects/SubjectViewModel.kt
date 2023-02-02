@@ -9,10 +9,10 @@ import com.mundcode.domain.repository.ExamRepository
 import com.mundcode.domain.repository.SubjectRepository
 import com.mundcode.muntam.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import javax.inject.Inject
 
 @HiltViewModel
 class SubjectViewModel @Inject constructor(

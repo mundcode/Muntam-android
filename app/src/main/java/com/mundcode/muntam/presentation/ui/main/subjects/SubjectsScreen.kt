@@ -3,12 +3,23 @@ package com.mundcode.muntam.presentation.ui.main.subjects
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Star
@@ -20,14 +31,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.theme.*
+import com.mundcode.muntam.presentation.ui.theme.Circle
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace12
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace16
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace32
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace4
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace8
 import com.mundcode.muntam.util.sharedActivityViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -36,11 +51,12 @@ fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
     viewModel: SubjectViewModel = sharedActivityViewModel()
 ) {
+    val notificationPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.POST_NOTIFICATIONS
+    ) { result ->
+        Log.d("SR-N", "notificationPermissionState result $result")
+    }
 
-    val notificationPermissionState =
-        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS) { result ->
-            Log.d("SR-N", "notificationPermissionState result $result")
-        }
     Scaffold(
         topBar = {
             MuntamToolbar(
@@ -60,7 +76,6 @@ fun SubjectsScreen(
 
                                     if (notificationPermissionState.status.shouldShowRationale) {
                                         Log.d("SR-N", "shouldShowRationale")
-
                                     } else {
                                         Log.d(
                                             "SR-N",
@@ -70,7 +85,7 @@ fun SubjectsScreen(
                                         notificationPermissionState.launchPermissionRequest()
                                     }
                                 }
-                                //onNavOutEvent(SubjectAdd.route)
+                                // onNavOutEvent(SubjectAdd.route)
                             }
                     )
                 }
@@ -162,7 +177,6 @@ fun SubjectsList(
     }
 }
 
-
 @Composable
 fun SubjectListItem(
     modifier: Modifier = Modifier,
@@ -178,7 +192,6 @@ fun SubjectListItem(
                 onClickSubject()
             }
             .padding(horizontal = DefaultSpace16, vertical = DefaultSpace12)
-
 
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -242,7 +255,6 @@ fun PreviewSubjectListItem() {
             pinned = false
         )
     ) {
-
     }
 }
 
@@ -259,11 +271,9 @@ fun PreviewSubjectsList() {
             )
         },
         onClickSubject = {
-
         }
     )
 }
-
 
 data class Subject(
     val id: Int = 0,

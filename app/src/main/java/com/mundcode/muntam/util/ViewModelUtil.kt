@@ -1,6 +1,5 @@
 package com.mundcode.muntam.util
 
-
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +18,5 @@ inline fun <reified VM : ViewModel> sharedActivityViewModel(
     factory
 )
 
-
 @Composable
 fun getActivity() = LocalContext.current as ComponentActivity
-

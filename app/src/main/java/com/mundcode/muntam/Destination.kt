@@ -65,12 +65,12 @@ object SubjectSettings : MutamDestination {
 object Exams : MutamDestination {
     override val route = "exams"
     const val subjectIdArg = "subject_id"
-    val routeWithArgs = "${route}/{${subjectIdArg}}"
+    val routeWithArgs = "$route/{$subjectIdArg}"
     val arguments = listOf(
         navArgument(subjectIdArg) { type = NavType.IntType }
     )
 
-    fun getRouteWithArgs(subjectIdArg: Int) = "${route}/${subjectIdArg}"
+    fun getRouteWithArgs(subjectIdArg: Int) = "$route/$subjectIdArg"
 }
 
 object ExamRecord : MutamDestination {
@@ -97,5 +97,3 @@ fun Dummy(
         Text(text = screenName, style = MaterialTheme.typography.h1, color = Color.Black)
     }
 }
-
-
