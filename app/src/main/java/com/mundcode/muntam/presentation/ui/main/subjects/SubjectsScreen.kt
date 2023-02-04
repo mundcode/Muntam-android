@@ -94,7 +94,6 @@ fun SubjectsScreen(
     ) { paddingValue ->
         Column(Modifier.padding(paddingValue)) {
             Button(onClick = {
-                viewModel.setS()
             }) {
                 Text(text = "setS")
             }
@@ -117,11 +116,6 @@ fun SubjectsScreen(
                 Text(text = "getE")
             }
 
-            Button(onClick = {
-                viewModel.deleteSubject()
-            }) {
-                Text(text = "deleteSubject")
-            }
         }
 //        SubjectsContent(
 //            modifier = Modifier.padding(paddingValue),
