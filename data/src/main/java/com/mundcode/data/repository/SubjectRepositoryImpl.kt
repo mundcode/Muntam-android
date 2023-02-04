@@ -16,8 +16,8 @@ class SubjectRepositoryImpl @Inject constructor(
     private val subjectDao: SubjectDao,
     private val examDao: ExamDao
 ) : SubjectRepository {
-    override suspend fun insertSubjects(entities: List<Subject>) {
-        subjectDao.insert(entities.map(Subject::asEntity))
+    override suspend fun insertSubject(subject: Subject) {
+        subjectDao.insert(listOf(subject.asEntity()))
     }
 
     override fun getSubjects(): Flow<List<Subject>> {
@@ -26,7 +26,11 @@ class SubjectRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteSubjectRepository(ids: List<Int>) {
-        subjectDao.deleteSubjectsAndExams(ids, Clock.System.now())
+    override suspend fun deleteSubjectRepository(id: Int) {
+        subjectDao.deleteSubjectsAndExams(listOf(id), Clock.System.now())
+    }
+
+    override suspend fun updateSubject(subject: Subject) {
+        // do nothing
     }
 }
