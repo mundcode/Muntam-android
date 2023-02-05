@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.ui.main.subjects
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.DeleteSubjectUseCase
 import com.mundcode.domain.usecase.GetSubjectsUseCase
@@ -8,11 +7,11 @@ import com.mundcode.domain.usecase.InsertSubjectUseCase
 import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SubjectViewModel @Inject constructor(
@@ -44,7 +43,6 @@ class SubjectViewModel @Inject constructor(
     }
 
     fun updateSubject(subjectState: SubjectState) = viewModelScope.launch {
-        Log.d("SR-N", "state model : $subjectState")
         updateSubjectUseCase(subjectState.copy(subjectTitle = "눌러짐").asExternalModel())
     }
 

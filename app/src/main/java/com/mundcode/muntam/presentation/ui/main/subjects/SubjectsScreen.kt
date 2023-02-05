@@ -34,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.mundcode.domain.model.Subject
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.theme.Circle
@@ -105,7 +104,6 @@ fun SubjectsScreen(
                     }
                 )
             }
-
         }
     }
 }

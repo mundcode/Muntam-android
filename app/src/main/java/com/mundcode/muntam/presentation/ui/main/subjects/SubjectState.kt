@@ -3,7 +3,6 @@ package com.mundcode.muntam.presentation.ui.main.subjects
 import androidx.compose.ui.graphics.Color
 import com.mundcode.domain.model.Subject
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 
 data class SubjectState(
     val id: Int = 0,
