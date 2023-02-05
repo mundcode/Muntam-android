@@ -50,7 +50,6 @@ fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
     viewModel: SubjectViewModel = sharedActivityViewModel()
 ) {
-
     val subjects by viewModel.subjects.collectAsState(listOf())
 
     Scaffold(

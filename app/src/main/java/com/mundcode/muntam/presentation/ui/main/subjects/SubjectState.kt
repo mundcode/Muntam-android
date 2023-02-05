@@ -23,5 +23,5 @@ fun SubjectState.asExternalModel(): Subject = Subject( // todo
     name = subjectTitle,
     totalQuestionNumber = 1,
     timeLimit = 100000L,
-    createdAt = Clock.System.now(),
+    createdAt = Clock.System.now()
 )

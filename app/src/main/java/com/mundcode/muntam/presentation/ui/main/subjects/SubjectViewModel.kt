@@ -34,7 +34,6 @@ class SubjectViewModel @Inject constructor(
     }
 
     fun insertSubject() = viewModelScope.launch {
-
         insertSubjectUseCase(
             SubjectState(
                 subjectTitle = "신참입니다."
