@@ -1,6 +1,5 @@
 package com.mundcode.data.repository
 
-import com.mundcode.data.local.database.dao.ExamDao
 import com.mundcode.data.local.database.dao.SubjectDao
 import com.mundcode.data.local.database.model.SubjectEntity
 import com.mundcode.data.local.database.model.asEntity
@@ -14,14 +13,13 @@ import kotlinx.datetime.Clock
 
 class SubjectRepositoryImpl @Inject constructor(
     private val subjectDao: SubjectDao,
-    private val examDao: ExamDao
 ) : SubjectRepository {
     override suspend fun insertSubject(subject: Subject) {
-        subjectDao.insert(listOf(subject.asEntity()))
+        subjectDao.insert(subject.asEntity())
     }
 
     override fun getSubjects(): Flow<List<Subject>> {
-        return subjectDao.getSubjects().map { list ->
+        return subjectDao.getSubjectsDistinctUntilChanged().map { list ->
             list.map(SubjectEntity::asExternalModel)
         }
     }
@@ -31,6 +29,6 @@ class SubjectRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateSubject(subject: Subject) {
-        // do nothing
+        subjectDao.updateSubject(subject.asEntity())
     }
 }

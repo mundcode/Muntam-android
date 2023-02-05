@@ -18,11 +18,10 @@ data class SubjectEntity(
     @ColumnInfo(name = "modified_at")
     val modifiedAt: Instant? = null,
     @ColumnInfo(name = "deleted_at")
-    val deletedAt: Instant? = null
-) {
+    val deletedAt: Instant? = null,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-}
+)
 
 fun SubjectEntity.asExternalModel(): Subject = Subject(
     id = id,
@@ -35,6 +34,7 @@ fun SubjectEntity.asExternalModel(): Subject = Subject(
 )
 
 fun Subject.asEntity(): SubjectEntity = SubjectEntity(
+    id = id, // 업데이트 시 필요
     name = name,
     totalQuestionNumber = totalQuestionNumber,
     timeLimit = timeLimit,

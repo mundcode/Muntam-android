@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.ui.main.subjects
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,16 +24,16 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.theme.Circle
@@ -51,11 +50,7 @@ fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
     viewModel: SubjectViewModel = sharedActivityViewModel()
 ) {
-    val notificationPermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.POST_NOTIFICATIONS
-    ) { result ->
-        Log.d("SR-N", "notificationPermissionState result $result")
-    }
+    val subjects by viewModel.subjects.collectAsState(listOf())
 
     Scaffold(
         topBar = {
@@ -68,79 +63,59 @@ fun SubjectsScreen(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(Circle)
-                            .clickable {
-                                Log.d("SR-N", "clickable")
-
-                                if (!notificationPermissionState.status.isGranted) {
-                                    Log.d("SR-N", "isGranted")
-
-                                    if (notificationPermissionState.status.shouldShowRationale) {
-                                        Log.d("SR-N", "shouldShowRationale")
-                                    } else {
-                                        Log.d(
-                                            "SR-N",
-                                            "shouldShowRationale not -> launchPermissionRequest"
-                                        )
-
-                                        notificationPermissionState.launchPermissionRequest()
-                                    }
-                                }
-                                // onNavOutEvent(SubjectAdd.route)
-                            }
                     )
                 }
             )
         }
     ) { paddingValue ->
-        Column(Modifier.padding(paddingValue)) {
-            Button(onClick = {
-            }) {
-                Text(text = "setS")
+        LazyColumn(
+            Modifier.padding(paddingValue),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            item {
+                Row {
+                    Button(onClick = {
+                        viewModel.insertSubject()
+                    }) {
+                        Text(text = "insertSubject")
+                    }
+
+                    Button(onClick = {
+                        viewModel.updateSubject(subjects.random())
+                    }) {
+                        Text(text = "updateSubject")
+                    }
+
+                    Button(onClick = {
+                        viewModel.deleteSubject(subjects.random())
+                    }) {
+                        Text(text = "deleteSubject")
+                    }
+                }
             }
 
-            Button(onClick = {
-                viewModel.getS()
-            }) {
-                Text(text = "getS")
+            items(subjects) { subject ->
+                SubjectListItem(
+                    Modifier.padding(horizontal = DefaultSpace8),
+                    subjectState = subject,
+                    onClickSubject = {
+                        viewModel.updateSubject(it)
+                    }
+                )
             }
-
-            Button(onClick = {
-                viewModel.setE()
-            }) {
-                Text(text = "setE")
-            }
-
-            Button(onClick = {
-                viewModel.getE()
-            }) {
-                Text(text = "getE")
-            }
-
         }
-//        SubjectsContent(
-//            modifier = Modifier.padding(paddingValue),
-//            onClickSubject = {
-//                onNavOutEvent(Exams.getRouteWithArgs(it.id))
-//            }
-//        )
     }
 }
 
 @Composable
 fun SubjectsContent(
     modifier: Modifier = Modifier,
-    onClickSubject: (Subject) -> Unit
+    subjectStates: List<SubjectState>,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     SubjectsList(
         modifier = modifier,
-        list = (1..30).map {
-            Subject(
-                id = it,
-                subjectTitle = "수학$it",
-                lastExamDate = "2022.12.$it",
-                pinned = it % 2 == 0
-            )
-        },
+        list = subjectStates,
         onClickSubject = { subject ->
             onClickSubject(subject)
         }
@@ -151,8 +126,8 @@ fun SubjectsContent(
 fun SubjectsList(
     state: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    list: List<Subject>,
-    onClickSubject: (Subject) -> Unit
+    list: List<SubjectState>,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -162,7 +137,7 @@ fun SubjectsList(
         items(list) { subject ->
             SubjectListItem(
                 modifier.padding(horizontal = DefaultSpace8),
-                subject = subject,
+                subjectState = subject,
                 onClickSubject = {
                     onClickSubject(subject)
                 }
@@ -174,16 +149,16 @@ fun SubjectsList(
 @Composable
 fun SubjectListItem(
     modifier: Modifier = Modifier,
-    subject: Subject,
-    onClickSubject: () -> Unit
+    subjectState: SubjectState,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     Box(
         modifier = modifier
             .wrapContentSize()
-            .background(color = subject.backgroundColor, shape = MaterialTheme.shapes.large)
+            .background(color = subjectState.backgroundColor, shape = MaterialTheme.shapes.large)
             .clip(shape = MaterialTheme.shapes.large)
             .clickable {
-                onClickSubject()
+                onClickSubject(subjectState)
             }
             .padding(horizontal = DefaultSpace16, vertical = DefaultSpace12)
 
@@ -195,7 +170,7 @@ fun SubjectListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = subject.subjectTitle,
+                    text = subjectState.id.toString(),
                     style = MaterialTheme.typography.h6,
                     color = Color.Black,
                     fontWeight = FontWeight.ExtraBold
@@ -204,7 +179,7 @@ fun SubjectListItem(
 
                 Icon(
                     imageVector =
-                    if (subject.pinned) {
+                    if (subjectState.pinned) {
                         Icons.Filled.Star
                     } else {
                         Icons.Outlined.Star
@@ -229,7 +204,7 @@ fun SubjectListItem(
                 MarginSpacer(dp = DefaultSpace4)
 
                 Text(
-                    text = subject.lastExamDate.ifEmpty { "없음" },
+                    text = subjectState.subjectTitle.ifEmpty { "없음" },
                     style = MaterialTheme.typography.body2,
                     color = Color.LightGray,
                     fontWeight = FontWeight.Bold
@@ -243,7 +218,7 @@ fun SubjectListItem(
 @Composable
 fun PreviewSubjectListItem() {
     SubjectListItem(
-        subject = Subject(
+        subjectState = SubjectState(
             subjectTitle = "수학",
             lastExamDate = "2022.12.10",
             pinned = false
@@ -257,7 +232,7 @@ fun PreviewSubjectListItem() {
 fun PreviewSubjectsList() {
     SubjectsList(
         list = (1..30).map {
-            Subject(
+            SubjectState(
                 id = it,
                 subjectTitle = "수학$it",
                 lastExamDate = "2022.12.$it",
@@ -268,11 +243,3 @@ fun PreviewSubjectsList() {
         }
     )
 }
-
-data class Subject(
-    val id: Int = 0,
-    val subjectTitle: String,
-    val backgroundColor: Color = Color.DarkGray,
-    val lastExamDate: String,
-    val pinned: Boolean
-)

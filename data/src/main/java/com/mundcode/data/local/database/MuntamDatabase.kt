@@ -8,7 +8,7 @@ import com.mundcode.data.local.database.dao.SubjectDao
 import com.mundcode.data.local.database.model.ExamEntity
 import com.mundcode.data.local.database.model.QuestionEntity
 import com.mundcode.data.local.database.model.SubjectEntity
-import com.mundcode.data.local.database.util.InstantConverter
+import com.mundcode.data.local.database.util.InstantConverters
 
 @Database(
     entities = [
@@ -18,7 +18,7 @@ import com.mundcode.data.local.database.util.InstantConverter
     ],
     version = 1
 )
-@TypeConverters(InstantConverter::class)
+@TypeConverters(InstantConverters::class)
 abstract class MuntamDatabase : RoomDatabase() {
     abstract fun subjectDao(): SubjectDao
     abstract fun examDao(): ExamDao

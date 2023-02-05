@@ -15,7 +15,7 @@ class ExamRepositoryImpl @Inject constructor(
     private val examDao: ExamDao
 ) : ExamRepository {
     override suspend fun insertExams(exmas: List<Exam>) {
-        examDao.insert(exmas.map(Exam::asEntity))
+        examDao.insertAll(exmas.map(Exam::asEntity))
     }
 
     override fun getExams(): Flow<List<Exam>> {

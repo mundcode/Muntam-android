@@ -6,6 +6,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.mundcode.data.local.database.model.SubjectEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.datetime.Instant
 
 @Dao
@@ -18,6 +19,8 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
     )
     abstract fun getSubjects(): Flow<List<SubjectEntity>>
 
+    fun getSubjectsDistinctUntilChanged() = getSubjects().distinctUntilChanged()
+
     @Query(
         value = """
             SELECT * FROM subjects 
@@ -28,6 +31,9 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
 
     @Update
     abstract suspend fun updateSubjects(entities: List<SubjectEntity>)
+
+    @Update
+    abstract suspend fun updateSubject(entity: SubjectEntity)
 
     @Query(
         value = """
