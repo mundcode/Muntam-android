@@ -2,47 +2,53 @@ package com.mundcode.muntam.presentation.ui.main.subjects
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.mundcode.domain.model.Exam
-import com.mundcode.domain.model.ExamState
-import com.mundcode.domain.repository.ExamRepository
-import com.mundcode.domain.repository.SubjectRepository
+import com.mundcode.domain.usecase.DeleteSubjectUseCase
+import com.mundcode.domain.usecase.GetSubjectsUseCase
+import com.mundcode.domain.usecase.InsertSubjectUseCase
+import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import javax.inject.Inject
 
 @HiltViewModel
 class SubjectViewModel @Inject constructor(
-    private val subjectRepository: SubjectRepository,
-    private val examRepository: ExamRepository
+    private val getSubjectsUseCase: GetSubjectsUseCase,
+    private val insertSubjectUseCase: InsertSubjectUseCase,
+    private val deleteSubjectUseCase: DeleteSubjectUseCase,
+    private val updateSubjectUseCase: UpdateSubjectUseCase
 ) : BaseViewModel() {
+    private val _subjects = MutableSharedFlow<List<SubjectState>>()
+    val subjects: SharedFlow<List<SubjectState>> = _subjects
 
-    fun getS() = viewModelScope.launch {
-        subjectRepository.getSubjects().collectLatest {
-            Log.d("SR-N", "getS : $it")
+    init {
+        getSubjects()
+    }
+
+    fun getSubjects() = viewModelScope.launch {
+        getSubjectsUseCase().collectLatest { list ->
+            _subjects.emit(list.map { it.asStateModel() })
         }
     }
 
-    fun setE() = viewModelScope.launch {
-        examRepository.insertExams(
-            (10..20).map {
-                Exam(
-                    subjectId = it,
-                    name = "$it",
-                    isFavorite = false,
-                    createdAt = Clock.System.now(),
-                    state = ExamState.RUNNING
-                )
-            }
+    fun insertSubject() = viewModelScope.launch {
+
+        insertSubjectUseCase(
+            SubjectState(
+                subjectTitle = "신참입니다."
+            ).asExternalModel()
         )
-        Log.d("SR-N", "setE 완료")
     }
 
-    fun getE() = viewModelScope.launch {
-        examRepository.getExams().collectLatest {
-            Log.d("SR-N", "getE : $it")
-        }
+    fun updateSubject(subjectState: SubjectState) = viewModelScope.launch {
+        Log.d("SR-N", "state model : $subjectState")
+        updateSubjectUseCase(subjectState.copy(subjectTitle = "눌러짐").asExternalModel())
+    }
+
+    fun deleteSubject(subjectState: SubjectState) = viewModelScope.launch {
+        deleteSubjectUseCase(subjectState.id)
     }
 }
