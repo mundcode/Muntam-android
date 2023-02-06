@@ -34,6 +34,6 @@ class SubjectRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteSubjectRepository(id: Int) {
-        subjectDao.deleteSubjectsAndExams(id, Clock.System.now())
+        subjectDao.deleteSubjectsWithCasacde(id, Clock.System.now())
     }
 }

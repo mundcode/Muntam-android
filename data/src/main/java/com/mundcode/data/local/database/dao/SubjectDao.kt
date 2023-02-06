@@ -50,7 +50,7 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
     abstract suspend fun deleteExamsBySubjectId(id: Int, deletedAt: Instant) // todo test
 
     @Transaction
-    open suspend fun deleteSubjectsAndExams(subjectId: Int, deletedAt: Instant) {
+    open suspend fun deleteSubjectsWithCasacde(subjectId: Int, deletedAt: Instant) {
         deleteSubjects(subjectId, deletedAt)
         deleteExamsBySubjectId(subjectId, deletedAt)
         // todo 문제도 삭제, 알림 넣었던 것도 삭제
