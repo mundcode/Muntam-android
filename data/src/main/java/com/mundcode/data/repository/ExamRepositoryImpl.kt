@@ -29,6 +29,6 @@ class ExamRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteExam(id: Int) {
-       examDao.deleteExamWithCasacade(id, Clock.System.now())
+        examDao.deleteExamWithCasacade(id, Clock.System.now())
     }
 }
