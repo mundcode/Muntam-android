@@ -14,8 +14,8 @@ import kotlinx.datetime.Clock
 class ExamRepositoryImpl @Inject constructor(
     private val examDao: ExamDao
 ) : ExamRepository {
-    override suspend fun insertExams(exmas: List<Exam>) {
-        examDao.insertAll(exmas.map(Exam::asEntity))
+    override suspend fun insertExam(exam: Exam) {
+        examDao.insert(exam.asEntity())
     }
 
     override fun getExams(): Flow<List<Exam>> {
@@ -24,7 +24,11 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteExams(ids: List<Int>) {
-        examDao.deleteExams(ids, Clock.System.now())
+    override suspend fun updateExam(exam: Exam) {
+        examDao.updateExam(exam.asEntity())
+    }
+
+    override suspend fun deleteExam(id: Int) {
+       examDao.deleteExamWithCasacade(id, Clock.System.now())
     }
 }
