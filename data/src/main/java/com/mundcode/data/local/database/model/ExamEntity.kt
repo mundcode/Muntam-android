@@ -31,7 +31,9 @@ data class ExamEntity(
     @ColumnInfo(name = "end_at")
     val endAt: Instant?,
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Instant? = null,
+    val lastAt: Instant? = null,
+    @ColumnInfo(name = "last_question_number")
+    val lastQuestionNumber: Int? = null,
     @ColumnInfo(name = "deleted_at")
     val deletedAt: Instant? = null,
     val state: ExamState
@@ -47,7 +49,8 @@ fun ExamEntity.asExternalModel(): Exam = Exam(
     isFavorite = isFavorite,
     createdAt = createdAt,
     endAt = endAt,
-    modifiedAt = modifiedAt,
+    lastAt = lastAt,
+    lastQuestionNumber = lastQuestionNumber,
     deletedAt = deletedAt,
     state = state
 )
@@ -58,7 +61,8 @@ fun Exam.asEntity(): ExamEntity = ExamEntity(
     isFavorite = isFavorite,
     createdAt = createdAt,
     endAt = endAt,
-    modifiedAt = modifiedAt,
+    lastAt = lastAt,
+    lastQuestionNumber = lastQuestionNumber,
     deletedAt = deletedAt,
     state = state
 )

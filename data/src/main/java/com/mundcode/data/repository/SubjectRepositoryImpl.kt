@@ -24,11 +24,16 @@ class SubjectRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteSubjectRepository(id: Int) {
-        subjectDao.deleteSubjectsAndExams(listOf(id), Clock.System.now())
+    // todo 시험 리스트 화면에서 시험객체로 과목을 조회하고 싶을 때 사용.
+    override suspend fun getSubjectById(id: Int): Flow<Subject> {
+        return subjectDao.getSubjectById(id).map(SubjectEntity::asExternalModel)
     }
 
     override suspend fun updateSubject(subject: Subject) {
         subjectDao.updateSubject(subject.asEntity())
+    }
+
+    override suspend fun deleteSubjectRepository(id: Int) {
+        subjectDao.deleteSubjectsWithCasacde(id, Clock.System.now())
     }
 }

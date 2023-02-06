@@ -27,7 +27,7 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
             WHERE deleted_at IS NULL AND id = :id
         """
     )
-    abstract fun getSubject(id: Int): Flow<SubjectEntity>
+    abstract fun getSubjectById(id: Int): Flow<SubjectEntity>
 
     @Update
     abstract suspend fun updateSubjects(entities: List<SubjectEntity>)
@@ -37,24 +37,22 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
 
     @Query(
         value = """
-            UPDATE subjects SET deleted_at=:deletedAt WHERE id in (:ids)
+            UPDATE subjects SET deleted_at=:deletedAt WHERE id = :id
             """
     )
-    abstract suspend fun deleteSubjects(ids: List<Int>, deletedAt: Instant)
+    abstract suspend fun deleteSubjects(id: Int, deletedAt: Instant)
 
     @Query(
         value = """
-            UPDATE exams SET deleted_at=:deletedAt WHERE subject_id in (:id)
+            UPDATE exams SET deleted_at=:deletedAt WHERE subject_id = :id
         """
     )
-    abstract suspend fun deleteExamsBySubjectId(id: Int, deletedAt: Instant)
+    abstract suspend fun deleteExamsBySubjectId(id: Int, deletedAt: Instant) // todo test
 
     @Transaction
-    open suspend fun deleteSubjectsAndExams(ids: List<Int>, deletedAt: Instant) {
-        deleteSubjects(ids, deletedAt)
-        ids.forEach {
-            deleteExamsBySubjectId(it, deletedAt)
-            // todo 문제 삭제, 알림 넣었던 것도 삭제
-        }
+    open suspend fun deleteSubjectsWithCasacde(subjectId: Int, deletedAt: Instant) {
+        deleteSubjects(subjectId, deletedAt)
+        deleteExamsBySubjectId(subjectId, deletedAt)
+        // todo 문제도 삭제, 알림 넣었던 것도 삭제
     }
 }
