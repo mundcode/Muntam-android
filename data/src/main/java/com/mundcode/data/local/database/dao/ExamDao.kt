@@ -19,6 +19,13 @@ abstract class ExamDao : BaseDao<ExamEntity> {
 
     @Query(
         value = """
+            SELECT * FROM exams WHERE deleted_at IS NULL AND id = :id
+        """
+    )
+    abstract fun getExamById(id: Int): Flow<ExamEntity>
+
+    @Query(
+        value = """
             UPDATE exams SET deleted_at=:deletedAt WHERE id = :id
         """
     )

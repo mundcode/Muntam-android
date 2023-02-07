@@ -23,8 +23,7 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
 
     @Query(
         value = """
-            SELECT * FROM subjects 
-            WHERE deleted_at IS NULL AND id = :id
+            SELECT * FROM subjects WHERE deleted_at IS NULL AND id = :id
         """
     )
     abstract fun getSubjectById(id: Int): Flow<SubjectEntity>

@@ -24,6 +24,10 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getExamById(id: Int): Flow<Exam> {
+        return examDao.getExamById(id).map(ExamEntity::asExternalModel)
+    }
+
     override suspend fun updateExam(exam: Exam) {
         examDao.updateExam(exam.asEntity())
     }
