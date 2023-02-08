@@ -22,7 +22,7 @@ class ExamsViewModel @Inject constructor(
     private val getExamsUseCase: GetExamsUseCase,
     private val insertExamUseCase: InsertExamUseCase,
     private val deleteExamUseCase: DeleteExamUseCase,
-    private val updateExamUseCase: UpdateExamUseCase,
+    private val updateExamUseCase: UpdateExamUseCase
 ) : BaseViewModel() {
     private val _exams = MutableSharedFlow<List<ExamModel>>()
     val exams: SharedFlow<List<ExamModel>> = _exams
