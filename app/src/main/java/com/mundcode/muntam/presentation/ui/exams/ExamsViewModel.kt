@@ -7,16 +7,15 @@ import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.ui.model.ExamModel
-import com.mundcode.muntam.presentation.ui.model.SubjectModel
 import com.mundcode.muntam.presentation.ui.model.asExternalModel
 import com.mundcode.muntam.presentation.ui.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import javax.inject.Inject
 
 @HiltViewModel
 class ExamsViewModel @Inject constructor(

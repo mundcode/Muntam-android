@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
