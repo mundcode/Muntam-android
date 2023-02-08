@@ -33,9 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
+import com.mundcode.muntam.presentation.ui.model.SubjectModel
 import com.mundcode.muntam.presentation.ui.theme.Circle
 import com.mundcode.muntam.presentation.ui.theme.DefaultSpace12
 import com.mundcode.muntam.presentation.ui.theme.DefaultSpace16
@@ -44,7 +45,6 @@ import com.mundcode.muntam.presentation.ui.theme.DefaultSpace4
 import com.mundcode.muntam.presentation.ui.theme.DefaultSpace8
 import com.mundcode.muntam.util.sharedActivityViewModel
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
@@ -99,7 +99,7 @@ fun SubjectsScreen(
                     Modifier.padding(horizontal = DefaultSpace8),
                     subjectState = subject,
                     onClickSubject = {
-                        viewModel.updateSubject(it)
+                        onNavOutEvent(Exams.getRouteWithArgs(it.id))
                     }
                 )
             }
@@ -110,8 +110,8 @@ fun SubjectsScreen(
 @Composable
 fun SubjectsContent(
     modifier: Modifier = Modifier,
-    subjectStates: List<SubjectState>,
-    onClickSubject: (SubjectState) -> Unit
+    subjectStates: List<SubjectModel>,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     SubjectsList(
         modifier = modifier,
@@ -126,8 +126,8 @@ fun SubjectsContent(
 fun SubjectsList(
     state: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    list: List<SubjectState>,
-    onClickSubject: (SubjectState) -> Unit
+    list: List<SubjectModel>,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -149,8 +149,8 @@ fun SubjectsList(
 @Composable
 fun SubjectListItem(
     modifier: Modifier = Modifier,
-    subjectState: SubjectState,
-    onClickSubject: (SubjectState) -> Unit
+    subjectState: SubjectModel,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -218,7 +218,7 @@ fun SubjectListItem(
 @Composable
 fun PreviewSubjectListItem() {
     SubjectListItem(
-        subjectState = SubjectState(
+        subjectState = SubjectModel(
             subjectTitle = "수학",
             lastExamDate = "2022.12.10",
             pinned = false
@@ -232,7 +232,7 @@ fun PreviewSubjectListItem() {
 fun PreviewSubjectsList() {
     SubjectsList(
         list = (1..30).map {
-            SubjectState(
+            SubjectModel(
                 id = it,
                 subjectTitle = "수학$it",
                 lastExamDate = "2022.12.$it",

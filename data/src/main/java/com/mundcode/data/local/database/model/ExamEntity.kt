@@ -21,6 +21,8 @@ import kotlinx.datetime.Instant
     ]
 )
 data class ExamEntity(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
     @ColumnInfo(name = "subject_id")
     val subjectId: Int,
     val name: String,
@@ -37,10 +39,7 @@ data class ExamEntity(
     @ColumnInfo(name = "deleted_at")
     val deletedAt: Instant? = null,
     val state: ExamState
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
+)
 
 fun ExamEntity.asExternalModel(): Exam = Exam(
     id = id,
@@ -56,6 +55,7 @@ fun ExamEntity.asExternalModel(): Exam = Exam(
 )
 
 fun Exam.asEntity(): ExamEntity = ExamEntity(
+    id = id,
     subjectId = subjectId,
     name = name,
     isFavorite = isFavorite,

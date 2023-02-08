@@ -24,8 +24,7 @@ class SubjectRepositoryImpl @Inject constructor(
         }
     }
 
-    // todo 시험 리스트 화면에서 시험객체로 과목을 조회하고 싶을 때 사용.
-    override suspend fun getSubjectById(id: Int): Flow<Subject> {
+    override fun getSubjectById(id: Int): Flow<Subject> {
         return subjectDao.getSubjectById(id).map(SubjectEntity::asExternalModel)
     }
 

@@ -4,7 +4,9 @@ import com.mundcode.domain.model.Exam
 import kotlinx.coroutines.flow.Flow
 
 interface ExamRepository {
-    fun getExams(): Flow<List<Exam>>
+    fun getExams(subjectId: Int): Flow<List<Exam>>
+
+    fun getExamById(id: Int): Flow<Exam>
 
     suspend fun insertExam(exam: Exam)
 
