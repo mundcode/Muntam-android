@@ -2,22 +2,70 @@ package com.mundcode.muntam.presentation.ui.exams
 
 import android.Manifest
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.mundcode.muntam.Dummy
+import com.mundcode.muntam.presentation.ui.main.subjects.SubjectListItem
+import com.mundcode.muntam.presentation.ui.theme.DefaultSpace8
+import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable
 fun ExamsScreen(
-    subjectId: Int
+    subjectId: Int,
+    viewModel: ExamsViewModel = sharedActivityViewModel()
 ) {
-    Dummy(screenName = "$subjectId")
+    val exams = viewModel.exams.collectAsState(listOf())
+
+    LaunchedEffect(key1 = true) {
+        viewModel.getExams(subjectId)
+    }
+
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        item {
+            Row {
+                Button(onClick = {
+                    viewModel.insertExam(subjectId)
+                }) {
+                    Text(text = "insert")
+                }
+
+                Button(onClick = {
+                    viewModel.updateExam(exams.value.random())
+                }) {
+                    Text(text = "update")
+                }
+
+                Button(onClick = {
+                    viewModel.deleteExam(exams.value.random())
+                }) {
+                    Text(text = "delete")
+                }
+            }
+        }
+
+        items(exams.value) { model ->
+            Text(text = model.name, fontSize = 42.sp)
+        }
+    }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)

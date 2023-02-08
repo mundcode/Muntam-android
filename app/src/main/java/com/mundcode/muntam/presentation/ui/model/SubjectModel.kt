@@ -1,10 +1,10 @@
-package com.mundcode.muntam.presentation.ui.main.subjects
+package com.mundcode.muntam.presentation.ui.model
 
 import androidx.compose.ui.graphics.Color
 import com.mundcode.domain.model.Subject
 import kotlinx.datetime.Clock
 
-data class SubjectState(
+data class SubjectModel( // todo 수정
     val id: Int = 0,
     val subjectTitle: String,
     val backgroundColor: Color = Color.DarkGray,
@@ -12,13 +12,13 @@ data class SubjectState(
     val pinned: Boolean = false
 )
 
-fun Subject.asStateModel() = SubjectState( // todo
+fun Subject.asStateModel() = SubjectModel( // todo 수정
     id = id,
     subjectTitle = name,
     lastExamDate = "2022.12.12"
 )
 
-fun SubjectState.asExternalModel(): Subject = Subject( // todo
+fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
     id = id,
     name = subjectTitle,
     totalQuestionNumber = 1,

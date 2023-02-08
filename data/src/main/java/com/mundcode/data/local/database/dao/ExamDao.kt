@@ -12,10 +12,10 @@ import kotlinx.datetime.Instant
 abstract class ExamDao : BaseDao<ExamEntity> {
     @Query(
         value = """
-            SELECT * FROM exams WHERE deleted_at IS NULL
+            SELECT * FROM exams WHERE deleted_at IS NULL AND subject_id = :subjectId
         """
     )
-    abstract fun getExams(): Flow<List<ExamEntity>>
+    abstract fun getExams(subjectId: Int): Flow<List<ExamEntity>>
 
     @Query(
         value = """

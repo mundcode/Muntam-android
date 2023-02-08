@@ -18,8 +18,8 @@ class ExamRepositoryImpl @Inject constructor(
         examDao.insert(exam.asEntity())
     }
 
-    override fun getExams(): Flow<List<Exam>> {
-        return examDao.getExams().map { list ->
+    override fun getExams(subjectId: Int): Flow<List<Exam>> {
+        return examDao.getExams(subjectId).map { list ->
             list.map(ExamEntity::asExternalModel)
         }
     }

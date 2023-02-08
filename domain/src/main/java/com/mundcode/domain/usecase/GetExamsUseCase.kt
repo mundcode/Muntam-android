@@ -10,5 +10,5 @@ import javax.inject.Singleton
 class GetExamsUseCase @Inject constructor(
     private val examRepository: ExamRepository
 ) {
-    operator fun invoke(): Flow<List<Exam>> = examRepository.getExams()
+    operator fun invoke(subjectId: Int): Flow<List<Exam>> = examRepository.getExams(subjectId)
 }
