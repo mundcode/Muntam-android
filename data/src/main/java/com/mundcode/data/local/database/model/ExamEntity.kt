@@ -33,7 +33,7 @@ data class ExamEntity(
     @ColumnInfo(name = "end_at")
     val endAt: Instant?,
     @ColumnInfo(name = "modified_at")
-    val lastAt: Instant? = null,
+    val lastAt: Long? = null,
     @ColumnInfo(name = "last_question_number")
     val lastQuestionNumber: Int? = null,
     @ColumnInfo(name = "deleted_at")
