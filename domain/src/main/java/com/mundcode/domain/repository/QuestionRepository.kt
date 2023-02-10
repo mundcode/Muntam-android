@@ -12,7 +12,7 @@ interface QuestionRepository {
 
     fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<Question>
 
-    fun getQuestionById(id: Int):Flow<Question>
+    fun getQuestionById(id: Int): Flow<Question>
 
     suspend fun updateQuestion(question: Question)
 }
