@@ -4,15 +4,15 @@ import com.mundcode.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 
 interface QuestionRepository {
-    suspend fun insertQuestion(exam: Question)
+    suspend fun insertQuestion(question: Question)
 
-    suspend fun insertQuestions(exmas: List<Question>)
+    suspend fun insertQuestions(questions: List<Question>)
 
     fun getQuestions(examId: Int): Flow<List<Question>>
 
-    fun getQuestionExamId(examId: Int, questionNumber: String): Flow<Question>
+    fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<Question>
 
-    fun getQuestionById(questionId: Int):Flow<Question>
+    fun getQuestionById(id: Int):Flow<Question>
 
-    suspend fun updateQuestionId(question: Question)
+    suspend fun updateQuestion(question: Question)
 }
