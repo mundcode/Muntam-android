@@ -1,5 +1,6 @@
 package com.mundcode.domain.model
 
+import com.mundcode.domain.model.enums.ExamState
 import kotlinx.datetime.Instant
 
 data class Exam(

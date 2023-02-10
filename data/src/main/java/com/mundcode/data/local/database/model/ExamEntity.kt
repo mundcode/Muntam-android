@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.mundcode.domain.model.Exam
-import com.mundcode.domain.model.ExamState
+import com.mundcode.domain.model.enums.ExamState
 import kotlinx.datetime.Instant
 
 @Entity(

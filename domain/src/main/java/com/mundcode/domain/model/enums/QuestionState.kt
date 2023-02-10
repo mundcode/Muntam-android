@@ -1,4 +1,4 @@
-package com.mundcode.domain.model
+package com.mundcode.domain.model.enums
 
 enum class QuestionState {
     READY,

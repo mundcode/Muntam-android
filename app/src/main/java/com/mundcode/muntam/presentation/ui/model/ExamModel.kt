@@ -1,7 +1,7 @@
 package com.mundcode.muntam.presentation.ui.model
 
 import com.mundcode.domain.model.Exam
-import com.mundcode.domain.model.ExamState
+import com.mundcode.domain.model.enums.ExamState
 import kotlinx.datetime.Instant
 
 data class ExamModel( // todo 수정
