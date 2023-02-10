@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.mundcode.domain.model.Exam
-import com.mundcode.domain.model.ExamState
+import com.mundcode.domain.model.enums.ExamState
 import kotlinx.datetime.Instant
 
 @Entity(
@@ -33,7 +33,7 @@ data class ExamEntity(
     @ColumnInfo(name = "end_at")
     val endAt: Instant?,
     @ColumnInfo(name = "modified_at")
-    val lastAt: Instant? = null,
+    val lastAt: Long? = null,
     @ColumnInfo(name = "last_question_number")
     val lastQuestionNumber: Int? = null,
     @ColumnInfo(name = "deleted_at")
