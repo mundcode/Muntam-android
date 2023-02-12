@@ -11,6 +11,8 @@ data class Question(
     val isCorrect: Boolean = false,
     val isFavorite: Boolean = false,
     val lapsedTime: Long = 0,
+    val lapsedExamTime: Long = 0,
+    val createdAt: Instant,
     val modifiedAt: Instant? = null,
     val deletedAt: Instant? = null,
     val state: QuestionState = QuestionState.READY
