@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mundcode.data.local.database.dao.ExamDao
+import com.mundcode.data.local.database.dao.QuestionDao
 import com.mundcode.data.local.database.dao.SubjectDao
 import com.mundcode.data.local.database.model.ExamEntity
 import com.mundcode.data.local.database.model.QuestionEntity
@@ -22,4 +23,5 @@ import com.mundcode.data.local.database.util.InstantConverters
 abstract class MuntamDatabase : RoomDatabase() {
     abstract fun subjectDao(): SubjectDao
     abstract fun examDao(): ExamDao
+    abstract fun questionDao(): QuestionDao
 }
