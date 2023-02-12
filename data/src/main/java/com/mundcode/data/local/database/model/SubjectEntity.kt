@@ -8,6 +8,8 @@ import kotlinx.datetime.Instant
 
 @Entity(tableName = "subjects")
 data class SubjectEntity(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
     val name: String,
     @ColumnInfo(name = "total_question_number")
     val totalQuestionNumber: Int,
@@ -18,9 +20,7 @@ data class SubjectEntity(
     @ColumnInfo(name = "modified_at")
     val modifiedAt: Instant? = null,
     @ColumnInfo(name = "deleted_at")
-    val deletedAt: Instant? = null,
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    val deletedAt: Instant? = null
 )
 
 fun SubjectEntity.asExternalModel(): Subject = Subject(
