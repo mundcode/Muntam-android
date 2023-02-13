@@ -25,10 +25,10 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
 
     @Query(
         value = """
-            SELECT * FROM questions WHERE deleted_at IS NULL
+            SELECT * FROM questions WHERE deleted_at IS NULL AND id = :id
         """
     )
-    abstract fun getQuestionById(id: Int): Flow<QuestionEntity>
+    abstract fun getQuestionById(id: Int): Flow<QuestionEntity> // 파라미터를 쓰지 않으면 Unused Parameter 에러를 던진다.
 
     @Update
     abstract suspend fun updateQuestion(question: QuestionEntity)
