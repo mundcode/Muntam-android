@@ -14,22 +14,22 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
-    abstract fun getQuestions(examId: Int): Flow<List<Question>>
+    abstract fun getQuestions(examId: Int): Flow<List<QuestionEntity>>
 
     @Query(
         value = """
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId AND question_number = :questionNumber
         """
     )
-    abstract fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<Question>
+    abstract fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<QuestionEntity>
 
     @Query(
         value = """
             SELECT * FROM questions WHERE deleted_at IS NULL
         """
     )
-    abstract fun getQuestionById(id: Int): Flow<Question>
+    abstract fun getQuestionById(id: Int): Flow<QuestionEntity>
 
     @Update
-    abstract suspend fun updateQuestion(question: Question)
+    abstract suspend fun updateQuestion(question: QuestionEntity)
 }
