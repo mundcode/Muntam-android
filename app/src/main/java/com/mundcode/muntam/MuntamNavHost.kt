@@ -39,7 +39,14 @@ fun MuntamNavHost(
         ) { navBackStackEntry ->
             val subjectId =
                 navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
-            ExamsScreen(subjectId)
+            ExamsScreen(subjectId) { route ->
+                navController.navigate(route) {
+                    popUpTo(route) {
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            }
         }
 
         composable(
@@ -69,7 +76,7 @@ fun MuntamNavHost(
         composable(
             route = QuestionDetails.route
         ) {
-            // todo
+
         }
 
         composable(
