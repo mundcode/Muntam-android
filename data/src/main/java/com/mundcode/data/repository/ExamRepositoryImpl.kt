@@ -18,7 +18,7 @@ class ExamRepositoryImpl @Inject constructor(
         examDao.insert(exam.asEntity())
     }
 
-    override fun getExam(examId: Int): Exam {
+    override suspend fun getExam(examId: Int): Exam {
         return examDao.getExam(examId).asExternalModel()
     }
 

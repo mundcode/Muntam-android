@@ -22,7 +22,7 @@ abstract class ExamDao : BaseDao<ExamEntity> {
             SELECT * FROM exams WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
-    abstract fun getExam(examId: Int): ExamEntity
+    abstract suspend fun getExam(examId: Int): ExamEntity
 
     @Query(
         value = """
