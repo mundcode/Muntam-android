@@ -98,6 +98,7 @@ fun createQuestionEntity(
     id = id,
     subjectId = subjectId,
     examId = examId,
-    questionNumber = id,
+    // questionNumber 로 조회하는 기능을 따로 테스트 하기위해 + 1 추가
+    questionNumber = id + 1,
     createdAt = Clock.System.now()
 )

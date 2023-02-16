@@ -51,7 +51,7 @@ class QuestionDaoTest {
         subjectEntity = createSubjectEntity(subjectId)
         examEntity = createExamEntity(id = examId, subjectId = subjectId)
         questionsEntity = createQuestionEntities(
-            size = 10,
+            size = QUESTION_LIST_SIZE,
             subjectId = SUBJECT_ID,
             examId = EXAM_ID
         )
@@ -67,6 +67,7 @@ class QuestionDaoTest {
         db.close()
     }
 
+    // QuestionDao 를 테스트 하기 위해 필요한 Subject, Exam 이 잘 들어갔는지 테스트
     @Test
     fun testWriteAndReadExam() = runBlocking(Dispatchers.IO) {
         // subjectId 과 examId 모두 0 으로 하면 Foreign Key Constraint Failed  에러
@@ -78,14 +79,27 @@ class QuestionDaoTest {
 
     @Test
     fun testGetQuestionsByExamId() = runBlocking {
-
         val result = questionDao.getQuestionsByExamId(examId = EXAM_ID).firstOrNull()
         assertEquals(result?.map { it.id }, questionsEntity.map { it.id })
+    }
+
+    @Test
+    fun testGetQuestionByQuestionId() = runBlocking {
+        val questionNumber = 2
+        val result = questionDao.getQuestionByQuestionNumber(
+            examId = EXAM_ID,
+            questionNumber = questionNumber
+        ).firstOrNull()
+        assertEquals(
+            questionsEntity.find { it.questionNumber == 2 }?.id,
+            result?.id
+        )
     }
 
     companion object {
         const val SUBJECT_ID = 1
         const val EXAM_ID = 2
         const val QUESTION_LIST_SIZE = 10
+
     }
 }
