@@ -14,6 +14,7 @@ import com.mundcode.data.local.database.model.SubjectEntity
 import com.mundcode.data.local.database.model.createExamEntity
 import com.mundcode.data.local.database.model.createQuestionEntities
 import com.mundcode.data.local.database.model.createSubjectEntity
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
@@ -24,7 +25,6 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class QuestionDaoTest {
@@ -125,6 +125,5 @@ class QuestionDaoTest {
         const val SUBJECT_ID = 1
         const val EXAM_ID = 2
         const val QUESTION_LIST_SIZE = 10
-
     }
 }
