@@ -96,6 +96,16 @@ class QuestionDaoTest {
         )
     }
 
+    @Test
+    fun testGetQuestionsById() = runBlocking {
+        val id = 2
+        val result = questionDao.getQuestionById(id).firstOrNull()
+        assertEquals(
+            questionsEntity.find { it.id == 2 }?.id,
+            result?.id
+        )
+    }
+
     companion object {
         const val SUBJECT_ID = 1
         const val EXAM_ID = 2
