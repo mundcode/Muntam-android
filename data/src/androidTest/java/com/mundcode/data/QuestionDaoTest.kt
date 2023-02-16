@@ -9,6 +9,7 @@ import com.mundcode.data.local.database.dao.ExamDao
 import com.mundcode.data.local.database.dao.QuestionDao
 import com.mundcode.data.local.database.dao.SubjectDao
 import com.mundcode.data.local.database.model.ExamEntity
+import com.mundcode.data.local.database.model.QuestionEntity
 import com.mundcode.data.local.database.model.SubjectEntity
 import com.mundcode.data.local.database.model.createExamEntity
 import com.mundcode.data.local.database.model.createQuestionEntities
@@ -32,6 +33,7 @@ class QuestionDaoTest {
     private lateinit var db: MuntamDatabase
     private lateinit var subjectEntity: SubjectEntity
     private lateinit var examEntity: ExamEntity
+    private lateinit var questionsEntity: List<QuestionEntity>
 
     @Before
     fun createDb() = runBlocking {
@@ -48,9 +50,15 @@ class QuestionDaoTest {
         val examId = EXAM_ID
         subjectEntity = createSubjectEntity(subjectId)
         examEntity = createExamEntity(id = examId, subjectId = subjectId)
-
+        questionsEntity = createQuestionEntities(
+            size = 10,
+            subjectId = SUBJECT_ID,
+            examId = EXAM_ID
+        )
         subjectDao.insert(subjectEntity)
         examDao.insert(examEntity)
+
+        questionDao.insertAll(questionsEntity)
     }
 
     @After
@@ -69,20 +77,15 @@ class QuestionDaoTest {
     }
 
     @Test
-    fun testGetQuestions() = runBlocking {
-        val questions = createQuestionEntities(
-            size = 10,
-            subjectId = SUBJECT_ID,
-            examId = EXAM_ID
-        )
-        questionDao.insertAll(questions)
+    fun testGetQuestionsByExamId() = runBlocking {
 
-        val result = questionDao.getQuestions(examId = EXAM_ID).firstOrNull()
-        assertEquals(result?.map { it.id }, questions.map { it.id })
+        val result = questionDao.getQuestionsByExamId(examId = EXAM_ID).firstOrNull()
+        assertEquals(result?.map { it.id }, questionsEntity.map { it.id })
     }
 
     companion object {
         const val SUBJECT_ID = 1
         const val EXAM_ID = 2
+        const val QUESTION_LIST_SIZE = 10
     }
 }
