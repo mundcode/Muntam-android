@@ -20,6 +20,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -104,6 +105,20 @@ class QuestionDaoTest {
             questionsEntity.find { it.id == 2 }?.id,
             result?.id
         )
+    }
+
+    @Test
+    fun testUpdateQuestion() = runBlocking {
+        val id = 2
+        val question = questionsEntity.find { it.id == id }
+        question?.copy(isCorrect = question.isCorrect.not())?.let {
+            questionDao.updateQuestion(it)
+        }
+
+        val result = questionDao.getQuestionById(id).firstOrNull()
+
+        assertNotEquals(question?.isCorrect, result?.isCorrect)
+        assertEquals(question?.isFavorite, result?.isFavorite)
     }
 
     companion object {
