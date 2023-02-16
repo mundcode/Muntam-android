@@ -5,8 +5,8 @@ import com.mundcode.domain.repository.QuestionRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class GetQuestionsUseCase @Inject constructor(
+class GetQuestionsByExamIdUseCase @Inject constructor(
     private val questionRepository: QuestionRepository
 ) {
-    operator fun invoke(examId: Int): Flow<List<Question>> = questionRepository.getQuestions(examId)
+    operator fun invoke(examId: Int): Flow<List<Question>> = questionRepository.getQuestionsByExamId(examId)
 }

@@ -18,15 +18,15 @@ class QuestionRepositoryImpl @Inject constructor(
     override suspend fun insertQuestions(questions: List<Question>) =
         questionDao.insertAll(questions.map { it.asEntity() })
 
-    override fun getQuestions(examId: Int): Flow<List<Question>> =
-        questionDao.getQuestions(examId).map { questions ->
+    override fun getQuestionsByExamId(examId: Int): Flow<List<Question>> =
+        questionDao.getQuestionsByExamId(examId).map { questions ->
             questions.map { question ->
                 question.asExternalModel()
             }
         }
 
-    override fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<Question> =
-        questionDao.getQuestionExamId(examId, questionNumber).map {
+    override fun getQuestionByQuestionId(examId: Int, questionNumber: Int): Flow<Question> =
+        questionDao.getQuestionByQuestionNumber(examId, questionNumber).map {
             it.asExternalModel()
         }
 
