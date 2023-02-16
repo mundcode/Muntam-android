@@ -76,7 +76,6 @@ fun MuntamNavHost(
         composable(
             route = QuestionDetails.route
         ) {
-
         }
 
         composable(

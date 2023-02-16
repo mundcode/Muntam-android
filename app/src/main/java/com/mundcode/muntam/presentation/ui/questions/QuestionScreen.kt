@@ -11,6 +11,5 @@ fun QuestionScreen(
 ) {
     val list = viewModel.questions.collectAsState(listOf())
     LazyColumn() {
-
     }
 }
