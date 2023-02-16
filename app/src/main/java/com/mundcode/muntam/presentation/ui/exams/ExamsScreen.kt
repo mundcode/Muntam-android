@@ -24,7 +24,8 @@ import com.mundcode.muntam.util.sharedActivityViewModel
 @Composable
 fun ExamsScreen(
     subjectId: Int,
-    viewModel: ExamsViewModel = sharedActivityViewModel()
+    viewModel: ExamsViewModel = sharedActivityViewModel(),
+    onNavEvent: (String) -> Unit
 ) {
     val exams = viewModel.exams.collectAsState(listOf())
 

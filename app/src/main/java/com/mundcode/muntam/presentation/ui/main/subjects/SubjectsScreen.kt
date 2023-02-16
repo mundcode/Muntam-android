@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.model.SubjectModel
+import com.mundcode.muntam.presentation.ui.model.SubjectState
 import com.mundcode.muntam.presentation.ui.theme.Circle
 import com.mundcode.muntam.presentation.ui.theme.DefaultSpace12
 import com.mundcode.muntam.presentation.ui.theme.DefaultSpace16
@@ -110,8 +110,8 @@ fun SubjectsScreen(
 @Composable
 fun SubjectsContent(
     modifier: Modifier = Modifier,
-    subjectStates: List<SubjectModel>,
-    onClickSubject: (SubjectModel) -> Unit
+    subjectStates: List<SubjectState>,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     SubjectsList(
         modifier = modifier,
@@ -126,8 +126,8 @@ fun SubjectsContent(
 fun SubjectsList(
     state: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    list: List<SubjectModel>,
-    onClickSubject: (SubjectModel) -> Unit
+    list: List<SubjectState>,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -149,8 +149,8 @@ fun SubjectsList(
 @Composable
 fun SubjectListItem(
     modifier: Modifier = Modifier,
-    subjectState: SubjectModel,
-    onClickSubject: (SubjectModel) -> Unit
+    subjectState: SubjectState,
+    onClickSubject: (SubjectState) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -218,7 +218,7 @@ fun SubjectListItem(
 @Composable
 fun PreviewSubjectListItem() {
     SubjectListItem(
-        subjectState = SubjectModel(
+        subjectState = SubjectState(
             subjectTitle = "수학",
             lastExamDate = "2022.12.10",
             pinned = false
@@ -232,7 +232,7 @@ fun PreviewSubjectListItem() {
 fun PreviewSubjectsList() {
     SubjectsList(
         list = (1..30).map {
-            SubjectModel(
+            SubjectState(
                 id = it,
                 subjectTitle = "수학$it",
                 lastExamDate = "2022.12.$it",
