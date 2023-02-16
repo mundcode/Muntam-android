@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 @Entity(
@@ -14,9 +15,7 @@ import kotlinx.datetime.Instant
         ForeignKey(
             entity = SubjectEntity::class,
             parentColumns = ["id"],
-            childColumns = ["subject_id"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
+            childColumns = ["subject_id"]
         )
     ]
 )
@@ -27,18 +26,18 @@ data class ExamEntity(
     val subjectId: Int,
     val name: String,
     @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean,
+    val isFavorite: Boolean = false,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "end_at")
-    val endAt: Instant?,
+    val endAt: Instant? = null,
     @ColumnInfo(name = "modified_at")
     val lastAt: Long? = null,
     @ColumnInfo(name = "last_question_number")
     val lastQuestionNumber: Int? = null,
     @ColumnInfo(name = "deleted_at")
     val deletedAt: Instant? = null,
-    val state: ExamState
+    val state: ExamState = ExamState.READY
 )
 
 fun ExamEntity.asExternalModel(): Exam = Exam(
@@ -65,4 +64,24 @@ fun Exam.asEntity(): ExamEntity = ExamEntity(
     lastQuestionNumber = lastQuestionNumber,
     deletedAt = deletedAt,
     state = state
+)
+
+fun createExamEntities(
+    size: Int,
+    subjectId: Int = 0
+) = (1..size).map {
+    createExamEntity(
+        id = it,
+        subjectId = subjectId
+    )
+}
+
+fun createExamEntity(
+    id: Int,
+    subjectId: Int
+) = ExamEntity(
+    id = id,
+    subjectId = subjectId,
+    name = "테스트 시험 이름 : $id",
+    createdAt = Clock.System.now()
 )

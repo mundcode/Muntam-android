@@ -42,9 +42,7 @@ class SubjectEntityReadWriteTest {
     fun writeSubjectAndReadInList() = runBlocking {
         val subjectEntities = (1..10).map {
             createSubjectEntity(
-                id = it,
-                name = "과목 이름 : $it",
-                totalQuestionNumber = it
+                id = it
             )
         }
         val answer = subjectEntities[1]

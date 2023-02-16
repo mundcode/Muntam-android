@@ -3,8 +3,8 @@ package com.mundcode.muntam.presentation.ui.questions
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.GetExamByIdUseCase
 import com.mundcode.domain.usecase.GetExamUseCase
-import com.mundcode.domain.usecase.GetQuestionByExamUseCase
-import com.mundcode.domain.usecase.GetQuestionsUseCase
+import com.mundcode.domain.usecase.GetQuestionByQuestionNumberUseCase
+import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
 import com.mundcode.domain.usecase.InsertQuestionsExamUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
 import com.mundcode.muntam.base.BaseViewModel
@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 class QuestionViewModel @Inject constructor(
     private val getExamUseCase: GetExamUseCase,
     private val insertQuestionsExamUseCase: InsertQuestionsExamUseCase,
-    private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase,
     private val getQuestionByIdUseCase: GetExamByIdUseCase,
-    private val getQuestionByExamUseCase: GetQuestionByExamUseCase,
+    private val getQuestionByQuestionNumberUseCase: GetQuestionByQuestionNumberUseCase,
     private val updateQuestionUseCase: UpdateQuestionUseCase
 ) : BaseViewModel() {
     // todo 여러 UseCase 모아서 화면에 필요한 모든 데이터 가져오는 상태모델 정의하고 교체
@@ -36,7 +36,7 @@ class QuestionViewModel @Inject constructor(
     }
 
     fun getQuestions(examId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        getQuestionsUseCase(examId).collectLatest {
+        getQuestionsByExamIdUseCase(examId).collectLatest {
             _questions.emit(it.map { it.asStateModel() })
         }
     }

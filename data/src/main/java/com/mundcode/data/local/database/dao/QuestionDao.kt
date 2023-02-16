@@ -13,14 +13,14 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
-    abstract fun getQuestions(examId: Int): Flow<List<QuestionEntity>>
+    abstract fun getQuestionsByExamId(examId: Int): Flow<List<QuestionEntity>>
 
     @Query(
         value = """
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId AND question_number = :questionNumber
         """
     )
-    abstract fun getQuestionExamId(examId: Int, questionNumber: Int): Flow<QuestionEntity>
+    abstract fun getQuestionByQuestionNumber(examId: Int, questionNumber: Int): Flow<QuestionEntity>
 
     // 파라미터를 쓰지 않으면 Unused Parameter 에러를 던진다.
     @Query(

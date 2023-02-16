@@ -44,11 +44,15 @@ fun Subject.asEntity(): SubjectEntity = SubjectEntity(
     deletedAt = deletedAt
 )
 
-fun createSubjectEntity(id: Int, name: String, totalQuestionNumber: Int): SubjectEntity {
+fun createSubjectEntities(size: Int) = (1..size).map {
+    createSubjectEntity(id = it)
+}
+
+fun createSubjectEntity(id: Int): SubjectEntity {
     return SubjectEntity(
         id = id,
-        name = name,
-        totalQuestionNumber = totalQuestionNumber,
+        name = "테스트 과목 : $id",
+        totalQuestionNumber = id,
         timeLimit = 100000L,
         createdAt = Clock.System.now()
     )
