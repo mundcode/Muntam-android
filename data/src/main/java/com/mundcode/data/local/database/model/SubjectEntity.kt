@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mundcode.domain.model.Subject
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 @Entity(tableName = "subjects")
@@ -42,3 +43,13 @@ fun Subject.asEntity(): SubjectEntity = SubjectEntity(
     modifiedAt = modifiedAt,
     deletedAt = deletedAt
 )
+
+fun createSubjectEntity(id: Int, name: String, totalQuestionNumber: Int): SubjectEntity {
+    return SubjectEntity(
+        id = id,
+        name = name,
+        totalQuestionNumber = totalQuestionNumber,
+        timeLimit = 100000L,
+        createdAt = Clock.System.now()
+    )
+}
