@@ -85,7 +85,7 @@ fun createQuestionEntities(size: Int, subjectId: Int, examId: Int) =
         createQuestionEntity(
             id = it,
             subjectId = subjectId,
-            examId = examId,
+            examId = examId
         )
     }
 
