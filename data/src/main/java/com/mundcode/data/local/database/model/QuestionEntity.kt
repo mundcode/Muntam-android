@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionState
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 @Entity(
@@ -33,20 +34,20 @@ data class QuestionEntity(
     @ColumnInfo(name = "question_number")
     val questionNumber: Int,
     @ColumnInfo(name = "is_correct")
-    val isCorrect: Boolean,
+    val isCorrect: Boolean = false,
     @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean,
+    val isFavorite: Boolean = false,
     @ColumnInfo(name = "lapsed_time")
-    val lapsedTime: Long,
+    val lapsedTime: Long = 0L,
     @ColumnInfo(name = "lapsed_exam_time")
-    val lapsedExamTime: Long,
+    val lapsedExamTime: Long = 0L,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "modified_at")
     val modifiedAt: Instant? = null,
     @ColumnInfo(name = "deleted_at")
     val deletedAt: Instant? = null,
-    val state: QuestionState
+    val state: QuestionState = QuestionState.READY
 )
 
 fun QuestionEntity.asExternalModel() = Question(
@@ -77,4 +78,26 @@ fun Question.asEntity() = QuestionEntity(
     modifiedAt = modifiedAt,
     deletedAt = deletedAt,
     state = state
+)
+
+fun createQuestionEntities(size: Int, subjectId: Int, examId: Int) =
+    (1..size).map {
+        createQuestionEntity(
+            id = it,
+            subjectId = subjectId,
+            examId = examId,
+        )
+    }
+
+
+fun createQuestionEntity(
+    id: Int,
+    subjectId: Int,
+    examId: Int
+) = QuestionEntity(
+    id = id,
+    subjectId = subjectId,
+    examId = examId,
+    questionNumber = id,
+    createdAt = Clock.System.now()
 )
