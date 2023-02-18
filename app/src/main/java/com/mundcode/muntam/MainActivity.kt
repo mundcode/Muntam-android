@@ -66,7 +66,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MuntamApp() {
-    MuntamTheme {
+    MuntamTheme(
+        darkTheme = false // todo 다크테마 적용시 삭제
+    ) {
         val navController = rememberNavController()
         val currentBackstack by navController.currentBackStackEntryAsState()
 
