@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mundcode.muntam.presentation.ui.theme.MuntamTheme
+import com.mundcode.muntam.presentation.theme.MuntamTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
