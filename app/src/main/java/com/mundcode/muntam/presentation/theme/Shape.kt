@@ -1,7 +1,6 @@
 package com.mundcode.muntam.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Shapes
 import androidx.compose.ui.unit.dp
 
 val Circle = RoundedCornerShape(50)
