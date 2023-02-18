@@ -34,15 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mundcode.muntam.Exams
+import com.mundcode.muntam.presentation.theme.Circle
+import com.mundcode.muntam.presentation.theme.DefaultSpace12
+import com.mundcode.muntam.presentation.theme.DefaultSpace16
+import com.mundcode.muntam.presentation.theme.DefaultSpace32
+import com.mundcode.muntam.presentation.theme.DefaultSpace4
+import com.mundcode.muntam.presentation.theme.DefaultSpace8
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.model.SubjectState
-import com.mundcode.muntam.presentation.ui.theme.Circle
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace12
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace16
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace32
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace4
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace8
 import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable

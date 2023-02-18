@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.muntam.presentation.theme.DefaultSpace16
+import com.mundcode.muntam.presentation.theme.DefaultSpace8
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace16
-import com.mundcode.muntam.presentation.ui.theme.DefaultSpace8
 
 @Composable
 fun SubjectAddScreen() {

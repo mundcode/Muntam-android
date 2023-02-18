@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mundcode.muntam.presentation.ui.theme.MuntamTheme
+import com.mundcode.muntam.presentation.theme.MuntamTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,7 +66,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MuntamApp() {
-    MuntamTheme {
+    MuntamTheme(
+        darkTheme = false // todo 다크테마 적용시 삭제
+    ) {
         val navController = rememberNavController()
         val currentBackstack by navController.currentBackStackEntryAsState()
 
