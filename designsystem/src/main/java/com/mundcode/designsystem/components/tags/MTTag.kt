@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.CornerRadius4
+import com.mundcode.designsystem.theme.Gray200
+import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.MTGreen
 import com.mundcode.designsystem.theme.MTLightGreen
 import com.mundcode.designsystem.theme.MTLightOrange
@@ -51,6 +53,35 @@ private fun BigMTTag(
     )
 }
 
+@Composable
+fun SubjectTag(name: String, isSmall: Boolean = true) {
+    if (isSmall) {
+        SmallMTTag(text = name, backgroundColor = MTLightOrange, textColor = MTOrange)
+    } else {
+        BigMTTag(text = name, backgroundColor = MTLightOrange, textColor = MTOrange)
+    }
+}
+
+@Composable
+fun RunningTag(isSmall: Boolean = true) {
+    // todo string 리소스화
+    if (isSmall) {
+        SmallMTTag(text = "진행중", backgroundColor = MTLightGreen, textColor = MTGreen)
+    } else {
+        BigMTTag(text = "진행중", backgroundColor = MTLightGreen, textColor = MTGreen)
+    }
+}
+
+@Composable
+fun FinishedTag(isSmall: Boolean = true) {
+    // todo string 리소스화
+    if (isSmall) {
+        SmallMTTag(text = "완료", backgroundColor = Gray200, textColor = Gray600)
+    } else {
+        BigMTTag(text = "완료", backgroundColor = Gray200, textColor = Gray600)
+    }
+}
+
 @Preview
 @Composable
 fun MTTagPreview() {
@@ -60,5 +91,14 @@ fun MTTagPreview() {
         SmallMTTag(text = "과목명", backgroundColor = MTLightGreen, textColor = MTGreen)
         BigMTTag(text = "과목명", backgroundColor = MTLightGreen, textColor = MTGreen)
         BigMTTag(text = "과목명", backgroundColor = MTLightOrange, textColor = MTOrange)
+
+        SubjectTag("수능 영어")
+        SubjectTag("수학")
+        SubjectTag("TOEIC")
+        SubjectTag("TOEIC", isSmall = false)
+        RunningTag()
+        RunningTag(true)
+        FinishedTag()
+        FinishedTag(true)
     }
 }
