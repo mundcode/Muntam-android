@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.mundcode.designsystem'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 24
@@ -30,6 +30,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
+    }
+    buildFeatures {
+        compose true
     }
 }
 
