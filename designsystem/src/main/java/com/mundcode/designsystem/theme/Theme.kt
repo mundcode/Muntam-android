@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.theme
+package com.mundcode.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
