@@ -84,7 +84,6 @@ fun MuntamApp() {
     }
 }
 
-
 @Composable
 fun MuntamTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
@@ -98,4 +97,3 @@ fun MuntamTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
         content = content
     )
 }
-
