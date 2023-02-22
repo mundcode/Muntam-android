@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.theme
+package com.mundcode.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -17,3 +17,4 @@ val Gray400 = Color(0xFFC6C8CC)
 val Gray300 = Color(0xFFDDDEE1)
 val Gray200 = Color(0xFFECECEC)
 val White = Color(0xFFFFFFFF)
+val Transparent = Color(0x00FFFFFF)

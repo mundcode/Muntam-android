@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mundcode.muntam.presentation.theme.DefaultSpace16
-import com.mundcode.muntam.presentation.theme.DefaultSpace8
+import com.mundcode.designsystem.theme.DefaultSpace16
+import com.mundcode.designsystem.theme.DefaultSpace8
 
 @Composable
 fun MuntamToolbar(
