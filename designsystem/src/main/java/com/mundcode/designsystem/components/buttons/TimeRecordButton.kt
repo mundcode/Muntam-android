@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mundcode.designsystem.R
-import com.mundcode.designsystem.components.etc.HorizontalMargin
+import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.CornerRadius12
 import com.mundcode.designsystem.theme.MTGreen
 import com.mundcode.designsystem.theme.MTTextStyle
@@ -50,7 +50,7 @@ fun TimeRecordButton(
                 text = "⏰",
                 fontSize = with(LocalDensity.current) { 24.sp.toDp().value.sp }
             )
-            HorizontalMargin(dp = 12.dp)
+            Margin(dp = 12.dp)
             Text(
                 text = stringResource(id = R.string.title_record_time),
                 style = MTTextStyle.textBold16,
