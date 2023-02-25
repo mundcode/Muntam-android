@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.model.SelectableTextState
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTTextStyle
@@ -24,7 +25,7 @@ import com.mundcode.designsystem.theme.White
 @Composable
 fun SelectableNumberText(
     number: Int,
-    isSelected: Boolean,
+    state: SelectableTextState,
     modifier: Modifier = Modifier,
     onClickNumber: (Int) -> Unit = {},
 ) {
@@ -32,7 +33,7 @@ fun SelectableNumberText(
         modifier = modifier
             .wrapContentSize()
             .size(40.dp) // todo 텍스트 크게 설정한 경우 고려
-            .background(color = if (isSelected) MTOrange else Transparent, shape = CircleShape)
+            .background(color = state.backgroundColor, shape = CircleShape)
             .clickable {
                 onClickNumber(number)
             },
@@ -40,8 +41,8 @@ fun SelectableNumberText(
     ) {
         Text(
             text = "$number",
-            style = if (isSelected) MTTextStyle.textBold16 else MTTextStyle.text16,
-            color = if (isSelected) White else Gray900,
+            style = state.textStyle,
+            color = state.textColor,
             textAlign = TextAlign.Center
         )
     }
@@ -51,11 +52,14 @@ fun SelectableNumberText(
 @Composable
 fun SelectableTextPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        SelectableNumberText(number = 1, isSelected = true)
-        SelectableNumberText(number = 2, isSelected = false)
-        SelectableNumberText(number = 3, isSelected = true)
-        SelectableNumberText(number = 4, isSelected = false)
-        SelectableNumberText(number = 100, isSelected = true)
-        SelectableNumberText(number = 100, isSelected = false)
+        SelectableNumberText(number = 1, state = SelectableTextState.SELECTABLE)
+        SelectableNumberText(number = 2, state = SelectableTextState.SELECTED)
+        SelectableNumberText(number = 2, state = SelectableTextState.UNSELECTABLE)
+        SelectableNumberText(number = 3, state = SelectableTextState.SELECTABLE)
+        SelectableNumberText(number = 4, state = SelectableTextState.SELECTED)
+        SelectableNumberText(number = 4, state = SelectableTextState.UNSELECTABLE)
+        SelectableNumberText(number = 100, state = SelectableTextState.SELECTABLE)
+        SelectableNumberText(number = 100, state = SelectableTextState.SELECTED)
+        SelectableNumberText(number = 100, state = SelectableTextState.UNSELECTABLE)
     }
 }

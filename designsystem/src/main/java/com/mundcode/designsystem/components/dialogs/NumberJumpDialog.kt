@@ -16,9 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.texts.SelectableNumberText
 import com.mundcode.designsystem.model.SelectableTextState
 
-
 @Composable
-fun TotalNumberPickerDialog(
+fun NumberJumpDialog(
+    currentNumber: Int,
+
     onResult: (Int) -> Unit,
     onCancel: () -> Unit
 ) {
@@ -52,7 +53,7 @@ fun TotalNumberPickerDialog(
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun TotalNumberPickerDialogPreview() {
+fun NumberJumpDialogPreview() {
     TotalNumberPickerDialog(
         onResult = {},
         onCancel = {}
