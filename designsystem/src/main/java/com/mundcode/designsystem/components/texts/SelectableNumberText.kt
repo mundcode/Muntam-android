@@ -16,11 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.model.SelectableTextState
-import com.mundcode.designsystem.theme.Gray900
-import com.mundcode.designsystem.theme.MTOrange
-import com.mundcode.designsystem.theme.MTTextStyle
-import com.mundcode.designsystem.theme.Transparent
-import com.mundcode.designsystem.theme.White
 
 @Composable
 fun SelectableNumberText(
@@ -35,7 +30,9 @@ fun SelectableNumberText(
             .size(40.dp) // todo 텍스트 크게 설정한 경우 고려
             .background(color = state.backgroundColor, shape = CircleShape)
             .clickable {
-                onClickNumber(number)
+                if (state != SelectableTextState.UNSELECTABLE) {
+                    onClickNumber(number)
+                }
             },
         contentAlignment = Alignment.Center
     ) {
