@@ -27,7 +27,7 @@ fun NameTextField(
     placeholderText: String = "",
     readOnly: Boolean = false,
 
-    ) {
+) {
     MTBasicTextField(
         value = value,
         onValueChange = onValueChange,

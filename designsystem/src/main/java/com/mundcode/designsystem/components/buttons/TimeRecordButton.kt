@@ -64,7 +64,6 @@ fun TimeRecordButton(
             contentDescription = null
         )
     }
-
 }
 
 @Preview

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.texts.SelectableNumberText
 import com.mundcode.designsystem.model.SelectableTextState
 
-
 @Composable
 fun TotalNumberPickerDialog(
     onResult: (Int) -> Unit,
@@ -44,7 +43,8 @@ fun TotalNumberPickerDialog(
                 SelectableNumberText(
                     number = number,
                     state = if (number == selectedNumber) SelectableTextState.SELECTED else SelectableTextState.SELECTABLE,
-                    onClickNumber = { selectedNumber = it })
+                    onClickNumber = { selectedNumber = it }
+                )
             }
         }
     }

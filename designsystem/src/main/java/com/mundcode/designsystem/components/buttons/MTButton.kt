@@ -145,11 +145,11 @@ fun MTButtonPreview() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             SecondaryMTButton(text = "취소", onClick = {}, modifier = Modifier.weight(1f))
             PrimaryMTButton(text = "확인", onClick = {}, modifier = Modifier.weight(1f))
         }
     }
-
 }

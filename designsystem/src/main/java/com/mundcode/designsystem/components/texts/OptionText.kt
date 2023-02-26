@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.Gray700
 import com.mundcode.designsystem.theme.MTTextStyle
 
-
 @Composable
 fun OptionText(
     text: String,

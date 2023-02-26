@@ -50,7 +50,6 @@ fun MTBottomSheets(
             .background(color = backgroundColor)
     )
 
-
     AnimatedVisibility(
         visible = show,
         modifier = modifier
@@ -76,7 +75,6 @@ fun MTBottomSheets(
             content()
         }
     }
-
 }
 
 @Preview
