@@ -24,7 +24,7 @@ import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 
 @Composable
-fun SelectableDialog(
+fun ContentDialog(
     title: String,
     onClickClose: () -> Unit = {},
     onClickConfirm: () -> Unit = {},
@@ -42,7 +42,8 @@ fun SelectableDialog(
             modifier = Modifier
                 .background(color = White, shape = CornerRadius16)
                 .padding(horizontal = 20.dp)
-                .padding(top = 24.dp, bottom = 20.dp)
+                .padding(top = 24.dp, bottom = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Row {
                 Text(
@@ -58,11 +59,7 @@ fun SelectableDialog(
                 )
             }
 
-            Margin(dp = 20.dp)
-
             content()
-
-            Margin(dp = 20.dp)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
