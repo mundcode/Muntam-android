@@ -26,6 +26,8 @@ import com.mundcode.designsystem.theme.White
 @Composable
 fun ContentDialog(
     title: String,
+    cancelText: String = "취소",
+    confirmText: String = "확인",
     onClickClose: () -> Unit = {},
     onClickConfirm: () -> Unit = {},
     onClickCancel: () -> Unit = {},
@@ -66,12 +68,12 @@ fun ContentDialog(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 SecondaryMTButton(
-                    text = "취소",
+                    text = cancelText,
                     onClick = onClickCancel,
                     modifier = Modifier.weight(1f)
                 )
                 PrimaryMTButton(
-                    text = "확인",
+                    text = confirmText,
                     onClick = onClickConfirm,
                     modifier = Modifier.weight(1f)
                 )

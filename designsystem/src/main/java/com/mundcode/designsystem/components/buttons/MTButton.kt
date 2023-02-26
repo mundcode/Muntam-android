@@ -47,7 +47,7 @@ fun MTButton(
             backgroundColor = backgroundColor,
             disabledBackgroundColor = Gray200
         ),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 20.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 18.dp)
     ) {
         Text(
             text = text,
