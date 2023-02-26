@@ -26,7 +26,7 @@ fun TotalNumberPickerDialog(
         mutableStateOf(1)
     }
 
-    SelectableDialog(
+    ContentDialog(
         title = "총 문항수 설정",
         onClickClose = onCancel,
         onClickCancel = onCancel,
