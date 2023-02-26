@@ -4,14 +4,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,12 +26,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.R
 import com.mundcode.designsystem.components.buttons.PrimaryMTButton
@@ -69,28 +64,35 @@ fun MTBottomSheets(
         modifier = Modifier
             .fillMaxSize()
             .background(color = backgroundColor)
-    ) {
-        AnimatedVisibility(
-            visible = show,
-            modifier = modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .align(Alignment.BottomCenter),
-            enter = slideInVertically(
-                animationSpec = spring(
-                    dampingRatio = DampingRatioLowBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
-            ) { contentHeight ->
-                with(density) {
-                    height.dp.roundToPx() + contentHeight
-                }
-            },
-            exit = slideOutVertically { _ ->
-                with(density) {
-                    height.dp.roundToPx()
-                }
+    )
+
+
+    AnimatedVisibility(
+        visible = show,
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        enter = slideInVertically(
+            animationSpec = spring(
+                dampingRatio = DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        ) { contentHeight ->
+            with(density) {
+                height.dp.roundToPx() + contentHeight
             }
+        },
+        exit = slideOutVertically { _ ->
+            with(density) {
+                height.dp.roundToPx()
+            }
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable { onClickOutSide() },
+            contentAlignment = Alignment.BottomCenter
         ) {
             content()
         }
