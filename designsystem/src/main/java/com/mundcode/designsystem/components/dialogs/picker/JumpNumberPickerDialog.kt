@@ -19,7 +19,7 @@ import com.mundcode.designsystem.model.SelectableNumber
 import com.mundcode.designsystem.model.SelectableTextState
 
 @Composable
-fun NumberJumpDialog(
+fun JumpNumberPickerDialog(
     selectableNumbers: List<SelectableNumber>,
     currentNumber: Int,
     onResult: (Int) -> Unit = {},
@@ -29,7 +29,7 @@ fun NumberJumpDialog(
         mutableStateOf(currentNumber)
     }
 
-    SelectableDialog(
+    ContentDialog(
         title = "총 문항수 설정",
         onClickClose = onCancel,
         onClickCancel = onCancel,
@@ -57,8 +57,8 @@ fun NumberJumpDialog(
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun NumberJumpDialogPreview() {
-    NumberJumpDialog(
+fun JumpNumberPickerDialogPreview() {
+    JumpNumberPickerDialog(
         selectableNumbers =
         (1..200).map {
             SelectableNumber(
@@ -72,8 +72,8 @@ fun NumberJumpDialogPreview() {
 
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
-fun NumberJumpDialogPreview2() {
-    NumberJumpDialog(
+fun JumpNumberPickerDialogPreview2() {
+    JumpNumberPickerDialog(
         selectableNumbers =
         (1..20).map {
             SelectableNumber(
