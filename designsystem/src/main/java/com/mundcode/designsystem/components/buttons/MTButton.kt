@@ -21,6 +21,7 @@ import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.Gray700
 import com.mundcode.designsystem.theme.MTOrange
+import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 
@@ -101,6 +102,21 @@ fun SecondaryMTButton(
 }
 
 @Composable
+fun AlertMTButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    MTButton(
+        text = text,
+        backgroundColor = MTRed,
+        textColor = White,
+        onClick = onClick,
+        modifier = modifier
+    )
+}
+
+@Composable
 fun OutlinedPrimaryMTButton(
     text: String,
     onClick: () -> Unit,
@@ -121,12 +137,16 @@ fun OutlinedPrimaryMTButton(
 fun MTButtonPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         PrimaryMTButton(text = "과목 추가하기", onClick = {})
-        
+
         DisableMTButton(text = "과목 추가하기")
 
         OutlinedPrimaryMTButton(text = "과목 추가하기", onClick = {})
 
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             SecondaryMTButton(text = "취소", onClick = {}, modifier = Modifier.weight(1f))
             PrimaryMTButton(text = "확인", onClick = {}, modifier = Modifier.weight(1f))
         }
