@@ -15,14 +15,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +42,15 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.toast.CustomToast
 import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toast.rememberToastState
+import com.mundcode.designsystem.theme.Circle
 import com.mundcode.designsystem.theme.DefaultSpace12
 import com.mundcode.designsystem.theme.DefaultSpace16
 import com.mundcode.designsystem.theme.DefaultSpace32
 import com.mundcode.designsystem.theme.DefaultSpace4
 import com.mundcode.designsystem.theme.DefaultSpace8
+import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
+import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
 import com.mundcode.muntam.presentation.ui.model.SubjectState
 import com.mundcode.muntam.util.sharedActivityViewModel
 import kotlinx.coroutines.delay
@@ -54,89 +61,61 @@ fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
     viewModel: SubjectViewModel = sharedActivityViewModel()
 ) {
-    val toastState = rememberToastState()
+    val subjects by viewModel.subjects.collectAsState(listOf())
 
-    rememberLazyListState()
+    Scaffold(
+        topBar = {
+            MuntamToolbar(
+                showBack = false,
+                title = "과목 선택",
+                icons = listOf {
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(Circle)
+                    )
+                }
+            )
+        }
+    ) { paddingValue ->
+        LazyColumn(
+            Modifier.padding(paddingValue),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            item {
+                Row {
+                    Button(onClick = {
+                        viewModel.insertSubject()
+                    }) {
+                        Text(text = "insertSubject")
+                    }
 
-    var show by remember {
-        mutableStateOf(false)
-    }
-    val coroutineScope = rememberCoroutineScope()
+                    Button(onClick = {
+                        viewModel.updateSubject(subjects.random())
+                    }) {
+                        Text(text = "updateSubject")
+                    }
 
-    LaunchedEffect(key1 = Unit) {
-        delay(1000)
-        show = true
-
-        delay(2000)
-        show = false
-//        toastState.showToast()
-    }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "나와라 참깨", modifier = Modifier.clickable {
-            coroutineScope.launch {
-                toastState.showToast()
+                    Button(onClick = {
+                        viewModel.deleteSubject(subjects.random())
+                    }) {
+                        Text(text = "deleteSubject")
+                    }
+                }
             }
-        })
-        CustomToast(toastState = toastState) {
-            MTToast(text = "새로운 과목이 추가되었습니다.", modifier = Modifier.padding(20.dp))
+
+            items(subjects) { subject ->
+                SubjectListItem(
+                    Modifier.padding(horizontal = DefaultSpace8),
+                    subjectState = subject,
+                    onClickSubject = {
+                        onNavOutEvent(Exams.getRouteWithArgs(it.id))
+                    }
+                )
+            }
         }
     }
-//    val subjects by viewModel.subjects.collectAsState(listOf())
-//
-//    Scaffold(
-//        topBar = {
-//            MuntamToolbar(
-//                showBack = false,
-//                title = "과목 선택",
-//                icons = listOf {
-//                    Icon(
-//                        imageVector = Icons.Default.AddCircle,
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .clip(Circle)
-//                    )
-//                }
-//            )
-//        }
-//    ) { paddingValue ->
-//        LazyColumn(
-//            Modifier.padding(paddingValue),
-//            verticalArrangement = Arrangement.spacedBy(4.dp)
-//        ) {
-//            item {
-//                Row {
-//                    Button(onClick = {
-//                        viewModel.insertSubject()
-//                    }) {
-//                        Text(text = "insertSubject")
-//                    }
-//
-//                    Button(onClick = {
-//                        viewModel.updateSubject(subjects.random())
-//                    }) {
-//                        Text(text = "updateSubject")
-//                    }
-//
-//                    Button(onClick = {
-//                        viewModel.deleteSubject(subjects.random())
-//                    }) {
-//                        Text(text = "deleteSubject")
-//                    }
-//                }
-//            }
-//
-//            items(subjects) { subject ->
-//                SubjectListItem(
-//                    Modifier.padding(horizontal = DefaultSpace8),
-//                    subjectState = subject,
-//                    onClickSubject = {
-//                        onNavOutEvent(Exams.getRouteWithArgs(it.id))
-//                    }
-//                )
-//            }
-//        }
-//    }
 }
 
 @Composable
