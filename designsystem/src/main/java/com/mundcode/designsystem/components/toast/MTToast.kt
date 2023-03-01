@@ -24,7 +24,6 @@ import com.mundcode.designsystem.theme.MTToastBackground
 import com.mundcode.designsystem.theme.White
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun MTToast(
     toastState: ToastState,
@@ -63,5 +62,4 @@ fun MTToastPreview() {
         }
         MTToast(toastState = toastState, modifier = Modifier.padding(horizontal = 20.dp))
     }
-
 }
