@@ -4,7 +4,7 @@ import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
 import kotlinx.datetime.Instant
 
-data class ExamState( // todo 수정
+data class ExamModel( // todo 수정
     var id: Int = 0,
     val subjectId: Int,
     val name: String,
@@ -17,7 +17,7 @@ data class ExamState( // todo 수정
     val state: ExamState = ExamState.READY
 )
 
-fun Exam.asStateModel() = ExamState( // todo 수정
+fun Exam.asStateModel() = ExamModel( // todo 수정
     id = id,
     subjectId = subjectId,
     name = name,
@@ -30,7 +30,7 @@ fun Exam.asStateModel() = ExamState( // todo 수정
     state = state
 )
 
-fun com.mundcode.muntam.presentation.ui.model.ExamState.asExternalModel(): Exam = Exam( // todo 수정
+fun com.mundcode.muntam.presentation.ui.model.ExamModel.asExternalModel(): Exam = Exam( // todo 수정
     id = id,
     subjectId = subjectId,
     name = name,

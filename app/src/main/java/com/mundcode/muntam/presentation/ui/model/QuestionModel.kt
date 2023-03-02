@@ -4,7 +4,7 @@ import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionState
 import kotlinx.datetime.Instant
 
-data class QuestionState(
+data class QuestionModel(
     val id: Int = 0,
     val subjectId: Int,
     val examId: Int,
@@ -19,7 +19,7 @@ data class QuestionState(
     val state: QuestionState = QuestionState.READY
 )
 
-fun com.mundcode.muntam.presentation.ui.model.QuestionState.asExternalModel() = Question(
+fun QuestionModel.asExternalModel() = Question(
     id = id,
     subjectId = subjectId,
     examId = examId,
@@ -34,7 +34,7 @@ fun com.mundcode.muntam.presentation.ui.model.QuestionState.asExternalModel() = 
     state = state
 )
 
-fun Question.asStateModel() = QuestionState(
+fun Question.asStateModel() = QuestionModel(
     id = id,
     subjectId = subjectId,
     examId = examId,

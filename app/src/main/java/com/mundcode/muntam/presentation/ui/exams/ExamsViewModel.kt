@@ -6,7 +6,7 @@ import com.mundcode.domain.usecase.GetExamsUseCase
 import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
-import com.mundcode.muntam.presentation.ui.model.ExamState
+import com.mundcode.muntam.presentation.ui.model.ExamModel
 import com.mundcode.muntam.presentation.ui.model.asExternalModel
 import com.mundcode.muntam.presentation.ui.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,8 +24,8 @@ class ExamsViewModel @Inject constructor(
     private val deleteExamUseCase: DeleteExamUseCase,
     private val updateExamUseCase: UpdateExamUseCase
 ) : BaseViewModel() {
-    private val _exams = MutableSharedFlow<List<ExamState>>()
-    val exams: SharedFlow<List<ExamState>> = _exams
+    private val _exams = MutableSharedFlow<List<ExamModel>>()
+    val exams: SharedFlow<List<ExamModel>> = _exams
 
     fun getExams(subjectId: Int) = viewModelScope.launch {
         getExamsUseCase(subjectId).collectLatest { list ->
@@ -36,7 +36,7 @@ class ExamsViewModel @Inject constructor(
     // todo https://stackoverflow.com/questions/29341380/sqlite-foreign-key-constraint-failed-code-787
     fun insertExam(subjectId: Int) = viewModelScope.launch {
         insertExamUseCase(
-            ExamState(
+            ExamModel(
                 subjectId = subjectId,
                 name = "신참이다",
                 createdAt = Clock.System.now()
@@ -44,11 +44,11 @@ class ExamsViewModel @Inject constructor(
         )
     }
 
-    fun updateExam(examState: ExamState) = viewModelScope.launch {
-        updateExamUseCase(examState.copy(name = "눌러짐").asExternalModel())
+    fun updateExam(examModel: ExamModel) = viewModelScope.launch {
+        updateExamUseCase(examModel.copy(name = "눌러짐").asExternalModel())
     }
 
-    fun deleteExam(examState: ExamState) = viewModelScope.launch {
-        deleteExamUseCase(examState.id)
+    fun deleteExam(examModel: ExamModel) = viewModelScope.launch {
+        deleteExamUseCase(examModel.id)
     }
 }

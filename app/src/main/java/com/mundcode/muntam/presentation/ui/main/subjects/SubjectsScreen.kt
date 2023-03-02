@@ -42,7 +42,7 @@ import com.mundcode.designsystem.theme.DefaultSpace8
 import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.model.SubjectState
+import com.mundcode.muntam.presentation.ui.model.SubjectModel
 import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable
@@ -97,7 +97,7 @@ fun SubjectsScreen(
             items(subjects) { subject ->
                 SubjectListItem(
                     Modifier.padding(horizontal = DefaultSpace8),
-                    subjectState = subject,
+                    subjectModel = subject,
                     onClickSubject = {
                         onNavOutEvent(Exams.getRouteWithArgs(it.id))
                     }
@@ -110,12 +110,12 @@ fun SubjectsScreen(
 @Composable
 fun SubjectsContent(
     modifier: Modifier = Modifier,
-    subjectStates: List<SubjectState>,
-    onClickSubject: (SubjectState) -> Unit
+    subjectModels: List<SubjectModel>,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     SubjectsList(
         modifier = modifier,
-        list = subjectStates,
+        list = subjectModels,
         onClickSubject = { subject ->
             onClickSubject(subject)
         }
@@ -126,8 +126,8 @@ fun SubjectsContent(
 fun SubjectsList(
     state: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier,
-    list: List<SubjectState>,
-    onClickSubject: (SubjectState) -> Unit
+    list: List<SubjectModel>,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -137,7 +137,7 @@ fun SubjectsList(
         items(list) { subject ->
             SubjectListItem(
                 modifier.padding(horizontal = DefaultSpace8),
-                subjectState = subject,
+                subjectModel = subject,
                 onClickSubject = {
                     onClickSubject(subject)
                 }
@@ -149,16 +149,16 @@ fun SubjectsList(
 @Composable
 fun SubjectListItem(
     modifier: Modifier = Modifier,
-    subjectState: SubjectState,
-    onClickSubject: (SubjectState) -> Unit
+    subjectModel: SubjectModel,
+    onClickSubject: (SubjectModel) -> Unit
 ) {
     Box(
         modifier = modifier
             .wrapContentSize()
-            .background(color = subjectState.backgroundColor, shape = MaterialTheme.shapes.large)
+            .background(color = subjectModel.backgroundColor, shape = MaterialTheme.shapes.large)
             .clip(shape = MaterialTheme.shapes.large)
             .clickable {
-                onClickSubject(subjectState)
+                onClickSubject(subjectModel)
             }
             .padding(horizontal = DefaultSpace16, vertical = DefaultSpace12)
 
@@ -170,7 +170,7 @@ fun SubjectListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = subjectState.id.toString(),
+                    text = subjectModel.id.toString(),
                     style = MaterialTheme.typography.h6,
                     color = Color.Black,
                     fontWeight = FontWeight.ExtraBold
@@ -179,7 +179,7 @@ fun SubjectListItem(
 
                 Icon(
                     imageVector =
-                    if (subjectState.pinned) {
+                    if (subjectModel.pinned) {
                         Icons.Filled.Star
                     } else {
                         Icons.Outlined.Star
@@ -204,7 +204,7 @@ fun SubjectListItem(
                 MarginSpacer(dp = DefaultSpace4)
 
                 Text(
-                    text = subjectState.subjectTitle.ifEmpty { "없음" },
+                    text = subjectModel.subjectTitle.ifEmpty { "없음" },
                     style = MaterialTheme.typography.body2,
                     color = Color.LightGray,
                     fontWeight = FontWeight.Bold
@@ -218,7 +218,7 @@ fun SubjectListItem(
 @Composable
 fun PreviewSubjectListItem() {
     SubjectListItem(
-        subjectState = SubjectState(
+        subjectModel = SubjectModel(
             subjectTitle = "수학",
             lastExamDate = "2022.12.10",
             pinned = false
@@ -232,7 +232,7 @@ fun PreviewSubjectListItem() {
 fun PreviewSubjectsList() {
     SubjectsList(
         list = (1..30).map {
-            SubjectState(
+            SubjectModel(
                 id = it,
                 subjectTitle = "수학$it",
                 lastExamDate = "2022.12.$it",
