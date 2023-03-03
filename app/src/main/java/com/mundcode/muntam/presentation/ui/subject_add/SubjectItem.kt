@@ -12,6 +12,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,9 @@ import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 import com.mundcode.designsystem.util.spToDp
+import com.mundcode.muntam.R
 import com.mundcode.muntam.presentation.ui.model.SubjectModel
+import com.mundcode.muntam.presentation.ui.model.createMockedSubjectModel
 
 @Composable
 fun SubjectItem(
@@ -33,9 +36,10 @@ fun SubjectItem(
     Column(
         modifier = modifier
             .size(width = 162.dp, height = 156.dp)
-            .padding(16.dp)
+            .clip(shape = CornerRadius12)
+            .clickable(onClick = onClick)
             .background(color = White, shape = CornerRadius12)
-            .clickable(onClick = onClick),
+            .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
@@ -50,7 +54,7 @@ fun SubjectItem(
             )
 
             Icon(
-                painter = painterResource(id = com.mundcode.designsystem.R.drawable.ic_more_24_dp),
+                painter = painterResource(id = R.drawable.ic_more_24_dp),
                 contentDescription = null
             )
         }
@@ -60,15 +64,22 @@ fun SubjectItem(
             if (subject.lastExamName != null && subject.lastExamDateText != null) {
                 Text(
                     text = subject.lastExamName,
-                    style = MTTextStyle.text16,
+                    style = MTTextStyle.text16.spToDp(),
                     color = Gray800
                 )
                 Text(
                     text = subject.lastExamDateText,
-                    style = MTTextStyle.text13,
+                    style = MTTextStyle.text13.spToDp(),
                     color = Gray600
                 )
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun SubjectItemPreview() {
+    val model = createMockedSubjectModel(1)
+    SubjectItem(subject = model, onClick = {})
 }

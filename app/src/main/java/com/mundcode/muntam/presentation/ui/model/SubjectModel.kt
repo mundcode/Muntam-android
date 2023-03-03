@@ -37,7 +37,7 @@ fun Subject.asStateModel(): SubjectModel {
 // todo 테스트
 fun Instant.toMTDateText(): String {
     val date = this.toLocalDateTime(TimeZone.UTC)
-    return "%02d.%02d.%02d".format(date.year, date.month, date.dayOfMonth)
+    return "%02d.%02d.%02d".format(date.year, date.monthNumber, date.dayOfMonth)
 }
 
 fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
@@ -58,7 +58,7 @@ fun createMockedSubjectModel(id: Int): SubjectModel {
         subjectTitle = "테스트 과목 : $id",
         imoji = "💪",
         lastExamName = "마지막 시험 이름 : $id",
-        lastExamDate = Instant.fromEpochMilliseconds(1677842874000),
+        lastExamDate = Clock.System.now(),
         totalQuestionNumber = id,
         timeLimit = 100000L,
         isPinned = id % 2 == 0
