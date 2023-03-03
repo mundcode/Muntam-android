@@ -4,10 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.etc.VerticalMargin
 import com.mundcode.designsystem.components.tags.SubjectTag
 import com.mundcode.designsystem.theme.CornerRadius12
 import com.mundcode.designsystem.theme.Gray600
@@ -82,4 +89,24 @@ fun SubjectItem(
 fun SubjectItemPreview() {
     val model = createMockedSubjectModel(1)
     SubjectItem(subject = model, onClick = {})
+}
+
+@Preview
+@Composable
+fun SubjectItemInGridPreView() {
+    val list = (1..100).map {
+        createMockedSubjectModel(it)
+    }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(162.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.Center,
+        contentPadding = PaddingValues(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(list) { item ->
+            SubjectItem(subject = item, onClick = {}, modifier = Modifier.padding(bottom = 12.dp))
+        }
+    }
 }
