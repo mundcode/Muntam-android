@@ -21,9 +21,8 @@ data class SubjectModel( // todo 수정
 
 }
 
-fun Subject.asStateModel() {
-
-    SubjectModel( // todo 수정
+fun Subject.asStateModel(): SubjectModel {
+    return SubjectModel( // todo 수정
         id = id,
         subjectTitle = name,
         imoji = imoji,
@@ -52,3 +51,16 @@ fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
     isPinnded = isPinned,
     createdAt = Clock.System.now()
 )
+
+fun createMockedSubjectModel(id: Int): SubjectModel {
+    return SubjectModel(
+        id = id,
+        subjectTitle = "테스트 과목 : $id",
+        imoji = "💪",
+        lastExamName = "마지막 시험 이름 : $id",
+        lastExamDate = Instant.fromEpochMilliseconds(1677842874000),
+        totalQuestionNumber = id,
+        timeLimit = 100000L,
+        isPinned = id % 2 == 0
+    )
+}

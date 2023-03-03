@@ -39,6 +39,7 @@ import com.mundcode.designsystem.theme.DefaultSpace16
 import com.mundcode.designsystem.theme.DefaultSpace32
 import com.mundcode.designsystem.theme.DefaultSpace4
 import com.mundcode.designsystem.theme.DefaultSpace8
+import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.Exams
 import com.mundcode.muntam.presentation.ui.component.MarginSpacer
 import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
@@ -155,7 +156,7 @@ fun SubjectListItem(
     Box(
         modifier = modifier
             .wrapContentSize()
-            .background(color = subjectModel.backgroundColor, shape = MaterialTheme.shapes.large)
+            .background(color = White, shape = MaterialTheme.shapes.large)
             .clip(shape = MaterialTheme.shapes.large)
             .clickable {
                 onClickSubject(subjectModel)
@@ -212,34 +213,4 @@ fun SubjectListItem(
             }
         }
     }
-}
-
-@Preview(widthDp = 320, heightDp = 400, backgroundColor = 0x00ffffff)
-@Composable
-fun PreviewSubjectListItem() {
-    SubjectListItem(
-        subjectModel = SubjectModel(
-            subjectTitle = "수학",
-            lastExamDate = "2022.12.10",
-            isPinned = false
-        )
-    ) {
-    }
-}
-
-@Preview
-@Composable
-fun PreviewSubjectsList() {
-    SubjectsList(
-        list = (1..30).map {
-            SubjectModel(
-                id = it,
-                subjectTitle = "수학$it",
-                lastExamDate = "2022.12.$it",
-                isPinned = it % 2 == 0
-            )
-        },
-        onClickSubject = {
-        }
-    )
 }

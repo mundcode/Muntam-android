@@ -9,6 +9,7 @@ import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.ui.model.SubjectModel
 import com.mundcode.muntam.presentation.ui.model.asExternalModel
 import com.mundcode.muntam.presentation.ui.model.asStateModel
+import com.mundcode.muntam.presentation.ui.model.createMockedSubjectModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,9 +39,7 @@ class SubjectViewModel @Inject constructor(
 
     fun insertSubject() = viewModelScope.launch {
         insertSubjectUseCase(
-            SubjectModel(
-                subjectTitle = "신참입니다."
-            ).asExternalModel()
+            createMockedSubjectModel(1).asExternalModel()
         )
     }
 
