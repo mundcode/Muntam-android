@@ -179,7 +179,7 @@ fun SubjectListItem(
 
                 Icon(
                     imageVector =
-                    if (subjectModel.pinned) {
+                    if (subjectModel.isPinned) {
                         Icons.Filled.Star
                     } else {
                         Icons.Outlined.Star
@@ -221,7 +221,7 @@ fun PreviewSubjectListItem() {
         subjectModel = SubjectModel(
             subjectTitle = "수학",
             lastExamDate = "2022.12.10",
-            pinned = false
+            isPinned = false
         )
     ) {
     }
@@ -236,7 +236,7 @@ fun PreviewSubjectsList() {
                 id = it,
                 subjectTitle = "수학$it",
                 lastExamDate = "2022.12.$it",
-                pinned = it % 2 == 0
+                isPinned = it % 2 == 0
             )
         },
         onClickSubject = {
