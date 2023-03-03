@@ -13,8 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.tags.SubjectTag
 import com.mundcode.designsystem.theme.CornerRadius12
+import com.mundcode.designsystem.theme.Gray600
+import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 import com.mundcode.designsystem.util.spToDp
@@ -49,6 +53,22 @@ fun SubjectItem(
                 painter = painterResource(id = com.mundcode.designsystem.R.drawable.ic_more_24_dp),
                 contentDescription = null
             )
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            SubjectTag(subject.subjectTitle)
+            if (subject.lastExamName != null && subject.lastExamDateText != null) {
+                Text(
+                    text = subject.lastExamName,
+                    style = MTTextStyle.text16,
+                    color = Gray800
+                )
+                Text(
+                    text = subject.lastExamDateText,
+                    style = MTTextStyle.text13,
+                    color = Gray600
+                )
+            }
         }
     }
 }
