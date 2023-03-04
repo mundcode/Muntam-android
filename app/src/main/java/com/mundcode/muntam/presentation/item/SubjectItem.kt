@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -66,7 +67,7 @@ fun SubjectItem(
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_24_dp),
                 contentDescription = null,
-                modifier = Modifier.clickable(onClick = onClickMore)
+                modifier = Modifier.clip(CircleShape).clickable(onClick = onClickMore)
             )
         }
 

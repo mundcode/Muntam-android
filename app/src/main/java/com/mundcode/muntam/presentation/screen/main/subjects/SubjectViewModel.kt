@@ -8,14 +8,14 @@ import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
-import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.model.createMockedSubjectModel
+import com.mundcode.muntam.presentation.model.createMockedSubjectModels
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SubjectViewModel @Inject constructor(
@@ -24,18 +24,19 @@ class SubjectViewModel @Inject constructor(
     private val deleteSubjectUseCase: DeleteSubjectUseCase,
     private val updateSubjectUseCase: UpdateSubjectUseCase
 ) : BaseViewModel() {
-    private val _subjects = MutableSharedFlow<List<SubjectModel>>()
-    val subjects: SharedFlow<List<SubjectModel>> = _subjects
-//
-//    init {
-//        getSubjects()
-//    }
+    private val _subjects = MutableStateFlow<List<SubjectModel>>(listOf())
+    val subjects: StateFlow<List<SubjectModel>> = _subjects.asStateFlow()
 
-//    private fun getSubjects() = viewModelScope.launch {
+    init {
+        getSubjects()
+    }
+
+    private fun getSubjects() = viewModelScope.launch {
+        _subjects.emit(createMockedSubjectModels(12))
 //        getSubjectsUseCase().collectLatest { list ->
 //            _subjects.emit(list.map { it.asStateModel() })
 //        }
-//    }
+    }
 
     fun insertSubject() = viewModelScope.launch {
         insertSubjectUseCase(

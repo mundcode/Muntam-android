@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mundcode.designsystem.theme.DarkColorPalette
 import com.mundcode.designsystem.theme.LightColorPalette
+import com.mundcode.muntam.navigation.MuntamNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

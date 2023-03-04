@@ -44,6 +44,12 @@ fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
     createdAt = Clock.System.now()
 )
 
+fun createMockedSubjectModels(size: Int): List<SubjectModel> {
+    return (1..size).map {
+        createMockedSubjectModel(it)
+    }
+}
+
 fun createMockedSubjectModel(id: Int): SubjectModel {
     return SubjectModel(
         id = id,

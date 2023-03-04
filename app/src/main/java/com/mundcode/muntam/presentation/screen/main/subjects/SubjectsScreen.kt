@@ -15,8 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.MTScreenBackground
-import com.mundcode.muntam.Exams
+import com.mundcode.muntam.navigation.Exams
 import com.mundcode.muntam.presentation.item.SubjectAddItem
+import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.presentation.screen.component.MTLogoToolbar
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectItem
 import com.mundcode.muntam.util.hiltViewModel
@@ -25,6 +26,7 @@ import com.mundcode.muntam.util.hiltViewModel
 @Composable
 fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
+    onBottomSheetEvent: (BottomSheetModel) -> Unit,
     viewModel: SubjectViewModel = hiltViewModel()
 ) {
     val subjects by viewModel.subjects.collectAsState(initial = listOf())
@@ -49,7 +51,16 @@ fun SubjectsScreen(
                     subject = item,
                     onClick = { onNavOutEvent(Exams.getRouteWithArgs(item.id)) },
                     onClickMore = {
-                        // todo 바텀시트 연결
+                        onBottomSheetEvent(
+                            BottomSheetModel.SubjectMoreBottomSheet(
+                                onClickModify = {
+                                    // todo 수정 화면으로 이동
+                                },
+                                onClickDelete = {
+                                    // todo 삭제
+                                }
+                            )
+                        )
                     },
                     modifier = Modifier.padding(bottom = 12.dp)
                 )

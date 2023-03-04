@@ -6,6 +6,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,7 +70,11 @@ fun MTBottomSheets(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { onClickOutSide() },
+                .clickable(
+                    onClick = onClickOutSide,
+                    indication = null,
+                    interactionSource = MutableInteractionSource()
+                ),
             contentAlignment = Alignment.BottomCenter
         ) {
             content()
