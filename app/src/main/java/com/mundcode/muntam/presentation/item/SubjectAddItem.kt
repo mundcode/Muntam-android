@@ -15,11 +15,11 @@ import com.mundcode.muntam.R
 import com.mundcode.muntam.presentation.screen.subject_add.SUBJECT_ITEM_HEIGHT_DP
 import com.mundcode.muntam.presentation.screen.subject_add.SUBJECT_ITEM_WIDTH_DP
 
-//@Composable
-//fun SubjectAddItem(
+// @Composable
+// fun SubjectAddItem(
 //    onClick: () -> Unit = {},
 //    modifier: Modifier = Modifier
-//) {
+// ) {
 //    val stroke = Stroke(
 //        width = 1f,
 //        pathEffect = PathEffect.dashPathEffect(floatArrayOf(1f, 1f), 0f)
@@ -40,7 +40,7 @@ import com.mundcode.muntam.presentation.screen.subject_add.SUBJECT_ITEM_WIDTH_DP
 //            drawRoundRect(
 //                color = MTOrange,
 //                style = stroke,
-////                cornerRadius = CornerRadius(12f, 12f)
+// //                cornerRadius = CornerRadius(12f, 12f)
 //            )
 //        }
 //
@@ -57,7 +57,7 @@ import com.mundcode.muntam.presentation.screen.subject_add.SUBJECT_ITEM_WIDTH_DP
 //            Text(text = "과목 추가하기", style = MTTextStyle.text14, color = MTOrange)
 //        }
 //    }
-//}
+// }
 
 @Composable
 fun SubjectAddItem(

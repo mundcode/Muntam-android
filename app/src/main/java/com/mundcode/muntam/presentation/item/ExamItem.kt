@@ -64,7 +64,13 @@ fun ExamItem(
 
             Row(modifier = Modifier.height(IntrinsicSize.Max)) {
                 Icon(
-                    painter = painterResource(id = if (exam.isFavorite) R.drawable.ic_save_on_24_dp else R.drawable.ic_save_off_24_dp),
+                    painter = painterResource(
+                        id = if (exam.isFavorite) {
+                            R.drawable.ic_save_on_24_dp
+                        } else {
+                            R.drawable.ic_save_off_24_dp
+                        }
+                    ),
                     contentDescription = null,
                     modifier = Modifier
                         .clickable(
