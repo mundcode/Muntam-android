@@ -1,21 +1,30 @@
 package com.mundcode.muntam.presentation.screen.main
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mundcode.designsystem.theme.Gray200
+import com.mundcode.designsystem.theme.Gray900
+import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.muntam.Main
 
 @Composable
@@ -55,20 +64,35 @@ fun MuntamBottomNavigation(
     currentDestination: NavDestination?,
     onNavInEvent: (route: String) -> Unit
 ) {
-    BottomNavigation {
-        Main.screens.forEach { screen ->
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        imageVector = screen.icon,
-                        contentDescription = screen.javaClass.simpleName
-                    )
-                },
-                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                onClick = {
-                    onNavInEvent(screen.route)
-                }
-            )
+    Column {
+        Divider(modifier = Modifier.fillMaxWidth(), color = Gray200)
+        BottomNavigation(
+            backgroundColor = MaterialTheme.colors.background,
+        ) {
+            Main.screens.forEach { screen ->
+                val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                BottomNavigationItem(
+                    icon = {
+                        Icon(
+                            painter = painterResource(
+                                id = if (isSelected) {
+                                    screen.selectedIcon
+                                } else {
+                                    screen.unselectedIcon
+                                }
+                            ),
+                            contentDescription = screen.javaClass.simpleName
+                        )
+                    },
+                    selected = isSelected,
+                    onClick = {
+                        onNavInEvent(screen.route)
+                    },
+                    label = {
+                        Text(text = screen.display, style = MTTextStyle.text10, color = Gray900)
+                    }
+                )
+            }
         }
     }
 }
