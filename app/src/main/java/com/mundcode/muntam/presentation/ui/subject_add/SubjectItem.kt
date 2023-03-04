@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,8 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mundcode.designsystem.components.etc.VerticalMargin
-import com.mundcode.designsystem.components.tags.SubjectTag
+import com.mundcode.designsystem.components.tags.SubjectNameTag
 import com.mundcode.designsystem.theme.CornerRadius12
 import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray800
@@ -57,7 +55,8 @@ fun SubjectItem(
             Text(
                 text = subject.imoji,
                 style = MTTextStyle.text20.spToDp(),
-                modifier = Modifier.padding(2.dp)
+                modifier = Modifier.padding(2.dp),
+                maxLines = 1
             )
 
             Icon(
@@ -67,17 +66,19 @@ fun SubjectItem(
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            SubjectTag(subject.subjectTitle)
+            SubjectNameTag(subject.subjectTitle)
             if (subject.lastExamName != null && subject.lastExamDateText != null) {
                 Text(
                     text = subject.lastExamName,
                     style = MTTextStyle.text16.spToDp(),
-                    color = Gray800
+                    color = Gray800,
+                    maxLines = 2
                 )
                 Text(
                     text = subject.lastExamDateText,
                     style = MTTextStyle.text13.spToDp(),
-                    color = Gray600
+                    color = Gray600,
+                    maxLines = 1
                 )
             }
         }

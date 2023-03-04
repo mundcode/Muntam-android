@@ -37,7 +37,11 @@ fun Subject.asStateModel(): SubjectModel {
 // todo 테스트
 fun Instant.toMTDateText(): String {
     val date = this.toLocalDateTime(TimeZone.UTC)
-    return "%02d.%02d.%02d".format(date.year, date.monthNumber, date.dayOfMonth)
+    return try {
+        "%02d.%02d.%02d".format("${date.year}".takeLast(2), date.monthNumber, date.dayOfMonth)
+    } catch (e: Exception) {
+        "$e"
+    }
 }
 
 fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정

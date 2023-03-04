@@ -32,7 +32,8 @@ private fun SmallMTTag(
             .background(color = backgroundColor, shape = CornerRadius4)
             .padding(horizontal = 6.dp, vertical = 2.dp),
         style = MTTextStyle.textBold13,
-        color = textColor
+        color = textColor,
+        maxLines = 1
     )
 }
 
@@ -49,12 +50,13 @@ private fun BigMTTag(
             .background(color = backgroundColor, shape = CornerRadius4)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         style = MTTextStyle.textBold14,
-        color = textColor
+        color = textColor,
+        maxLines = 1
     )
 }
 
 @Composable
-fun SubjectTag(name: String, isSmall: Boolean = true) {
+fun SubjectNameTag(name: String, isSmall: Boolean = true) {
     if (isSmall) {
         SmallMTTag(text = name, backgroundColor = MTLightOrange, textColor = MTOrange)
     } else {
@@ -92,10 +94,10 @@ fun MTTagPreview() {
         BigMTTag(text = "과목명", backgroundColor = MTLightGreen, textColor = MTGreen)
         BigMTTag(text = "과목명", backgroundColor = MTLightOrange, textColor = MTOrange)
 
-        SubjectTag("수능 영어")
-        SubjectTag("수학")
-        SubjectTag("TOEIC")
-        SubjectTag("TOEIC", isSmall = false)
+        SubjectNameTag("수능 영어")
+        SubjectNameTag("수학")
+        SubjectNameTag("TOEIC")
+        SubjectNameTag("TOEIC", isSmall = false)
         RunningTag()
         RunningTag(true)
         FinishedTag()
