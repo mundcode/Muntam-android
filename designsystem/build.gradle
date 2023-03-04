@@ -55,4 +55,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     implementation "com.google.accompanist:accompanist-pager:$accmopanist_version"
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$date_time_version")
+
 }
