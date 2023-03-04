@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.exams
+package com.mundcode.muntam.presentation.screen.exams
 
 import android.Manifest
 import android.util.Log

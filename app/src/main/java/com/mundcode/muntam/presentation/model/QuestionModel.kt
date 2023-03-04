@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.model
+package com.mundcode.muntam.presentation.model
 
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionState

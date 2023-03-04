@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.subject_add
+package com.mundcode.muntam.presentation.screen.subject_add
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.DefaultSpace16
 import com.mundcode.designsystem.theme.DefaultSpace8
-import com.mundcode.muntam.presentation.ui.component.MarginSpacer
-import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
+import com.mundcode.muntam.presentation.screen.component.MarginSpacer
+import com.mundcode.muntam.presentation.screen.component.MuntamToolbar
 
 @Composable
 fun SubjectAddScreen() {

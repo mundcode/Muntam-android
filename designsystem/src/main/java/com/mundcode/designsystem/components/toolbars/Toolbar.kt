@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.component
+package com.mundcode.muntam.presentation.screen.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.DefaultSpace16
 import com.mundcode.designsystem.theme.DefaultSpace8
 
@@ -39,7 +40,7 @@ fun MuntamToolbar(
         ) {
             if (showBack) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
-                MarginSpacer(dp = DefaultSpace8)
+                Margin(dp = DefaultSpace8)
             }
 
             Text(

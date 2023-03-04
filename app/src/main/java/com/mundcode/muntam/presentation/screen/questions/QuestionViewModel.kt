@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.questions
+package com.mundcode.muntam.presentation.screen.questions
 
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.GetExamByIdUseCase
@@ -8,8 +8,8 @@ import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
 import com.mundcode.domain.usecase.InsertQuestionsExamUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
 import com.mundcode.muntam.base.BaseViewModel
-import com.mundcode.muntam.presentation.ui.model.QuestionModel
-import com.mundcode.muntam.presentation.ui.model.asStateModel
+import com.mundcode.muntam.presentation.model.QuestionModel
+import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers

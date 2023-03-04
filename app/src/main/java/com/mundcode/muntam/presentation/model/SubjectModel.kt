@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.model
+package com.mundcode.muntam.presentation.model
 
 import com.mundcode.domain.model.Subject
 import com.mundcode.muntam.util.asMTDateText

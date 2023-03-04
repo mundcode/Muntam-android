@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.exams
+package com.mundcode.muntam.presentation.screen.exams
 
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.DeleteExamUseCase
@@ -6,9 +6,9 @@ import com.mundcode.domain.usecase.GetExamsUseCase
 import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
-import com.mundcode.muntam.presentation.ui.model.ExamModel
-import com.mundcode.muntam.presentation.ui.model.asExternalModel
-import com.mundcode.muntam.presentation.ui.model.asStateModel
+import com.mundcode.muntam.presentation.model.ExamModel
+import com.mundcode.muntam.presentation.model.asExternalModel
+import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow

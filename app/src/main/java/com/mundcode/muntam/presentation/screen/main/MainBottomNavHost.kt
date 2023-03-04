@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main
+package com.mundcode.muntam.presentation.screen.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,9 +9,9 @@ import com.mundcode.muntam.FavoriteQuestions
 import com.mundcode.muntam.MuntamBottomDestination
 import com.mundcode.muntam.Settings
 import com.mundcode.muntam.Subjects
-import com.mundcode.muntam.presentation.ui.main.favorites.FavoriteQuestionsScreen
-import com.mundcode.muntam.presentation.ui.main.settings.SettingsScreen
-import com.mundcode.muntam.presentation.ui.main.subjects.SubjectsScreen
+import com.mundcode.muntam.presentation.screen.main.favorites.FavoriteQuestionsScreen
+import com.mundcode.muntam.presentation.screen.main.settings.SettingsScreen
+import com.mundcode.muntam.presentation.screen.main.subjects.SubjectsScreen
 
 @Composable
 fun MainBottomNavHost(

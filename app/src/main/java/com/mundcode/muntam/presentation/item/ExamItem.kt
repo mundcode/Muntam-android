@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.exams
+package com.mundcode.muntam.presentation.screen.exams
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,9 +29,9 @@ import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.R
-import com.mundcode.muntam.presentation.ui.model.ExamModel
-import com.mundcode.muntam.presentation.ui.model.createExamModel
-import com.mundcode.muntam.presentation.ui.model.createExamModels
+import com.mundcode.muntam.presentation.model.ExamModel
+import com.mundcode.muntam.presentation.model.createExamModel
+import com.mundcode.muntam.presentation.model.createExamModels
 
 @Composable
 fun ExamItem(

@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.subject_add
+package com.mundcode.muntam.presentation.screen.subject_add
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,8 +29,11 @@ import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 import com.mundcode.designsystem.util.spToDp
 import com.mundcode.muntam.R
-import com.mundcode.muntam.presentation.ui.model.SubjectModel
-import com.mundcode.muntam.presentation.ui.model.createMockedSubjectModel
+import com.mundcode.muntam.presentation.model.SubjectModel
+import com.mundcode.muntam.presentation.model.createMockedSubjectModel
+
+const val SUBJECT_ITEM_WIDTH_DP = 162
+const val SUBJECT_ITEM_HEIGHT_DP = 156
 
 @Composable
 fun SubjectItem(
@@ -40,7 +43,7 @@ fun SubjectItem(
 ) {
     Column(
         modifier = modifier
-            .size(width = 162.dp, height = 156.dp)
+            .size(width = SUBJECT_ITEM_WIDTH_DP.dp, height = SUBJECT_ITEM_HEIGHT_DP.dp)
             .clip(shape = CornerRadius12)
             .clickable(onClick = onClick)
             .background(color = White, shape = CornerRadius12)

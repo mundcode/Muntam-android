@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main.subjects
+package com.mundcode.muntam.presentation.screen.main.subjects
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,9 +40,9 @@ import com.mundcode.designsystem.theme.DefaultSpace4
 import com.mundcode.designsystem.theme.DefaultSpace8
 import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.Exams
-import com.mundcode.muntam.presentation.ui.component.MarginSpacer
-import com.mundcode.muntam.presentation.ui.component.MuntamToolbar
-import com.mundcode.muntam.presentation.ui.model.SubjectModel
+import com.mundcode.muntam.presentation.screen.component.MarginSpacer
+import com.mundcode.muntam.presentation.screen.component.MuntamToolbar
+import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable

@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.questions
+package com.mundcode.muntam.presentation.screen.questions
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable

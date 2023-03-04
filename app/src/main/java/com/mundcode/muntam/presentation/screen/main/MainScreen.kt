@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main
+package com.mundcode.muntam.presentation.screen.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation

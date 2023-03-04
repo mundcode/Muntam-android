@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main.subjects
+package com.mundcode.muntam.presentation.screen.main.subjects
 
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.DeleteSubjectUseCase
@@ -6,10 +6,10 @@ import com.mundcode.domain.usecase.GetSubjectsUseCase
 import com.mundcode.domain.usecase.InsertSubjectUseCase
 import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
-import com.mundcode.muntam.presentation.ui.model.SubjectModel
-import com.mundcode.muntam.presentation.ui.model.asExternalModel
-import com.mundcode.muntam.presentation.ui.model.asStateModel
-import com.mundcode.muntam.presentation.ui.model.createMockedSubjectModel
+import com.mundcode.muntam.presentation.model.SubjectModel
+import com.mundcode.muntam.presentation.model.asExternalModel
+import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.presentation.model.createMockedSubjectModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow

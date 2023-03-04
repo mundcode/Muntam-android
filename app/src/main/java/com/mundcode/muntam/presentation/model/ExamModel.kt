@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.model
+package com.mundcode.muntam.presentation.model
 
 import androidx.compose.ui.graphics.Color
 import com.mundcode.designsystem.theme.Gray500

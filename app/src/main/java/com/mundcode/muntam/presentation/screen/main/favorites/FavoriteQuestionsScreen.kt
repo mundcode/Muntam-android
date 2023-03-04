@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main.favorites
+package com.mundcode.muntam.presentation.screen.main.favorites
 
 import androidx.compose.runtime.Composable
 

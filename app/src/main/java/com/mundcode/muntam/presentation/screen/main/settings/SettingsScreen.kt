@@ -1,4 +1,4 @@
-package com.mundcode.muntam.presentation.ui.main.settings
+package com.mundcode.muntam.presentation.screen.main.settings
 
 import androidx.compose.runtime.Composable
 
