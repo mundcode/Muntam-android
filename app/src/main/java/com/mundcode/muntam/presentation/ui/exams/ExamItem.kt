@@ -1,5 +1,7 @@
 package com.mundcode.muntam.presentation.ui.exams
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.tags.FinishedTag
 import com.mundcode.designsystem.components.tags.RunningTag
@@ -22,14 +25,19 @@ import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.R
 import com.mundcode.muntam.presentation.ui.model.ExamModel
+import com.mundcode.muntam.presentation.ui.model.createExamModel
 
 @Composable
 fun ExamItem(
-    exam: ExamModel
+    exam: ExamModel,
+    onClickSave: () -> Unit = {},
+    onClickMore: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -42,7 +50,7 @@ fun ExamItem(
                 ExamState.PAUSE -> {
                     RunningTag(isSmall = true)
                 }
-                ExamState.END -> {
+                else -> {
                     FinishedTag(isSmall = true)
                 }
             }
@@ -51,12 +59,16 @@ fun ExamItem(
                 Icon(
                     painter = painterResource(id = if (exam.isFavorite) R.drawable.ic_save_on_24_dp else R.drawable.ic_save_off_24_dp),
                     contentDescription = null,
-                    modifier = Modifier.padding(end = 6.dp)
+                    modifier = Modifier
+                        .clickable(onClick = onClickSave, indication = null, interactionSource = MutableInteractionSource())
+                        .padding(end = 6.dp)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_more_24_dp),
                     contentDescription = null,
-                    modifier = Modifier.padding(start = 6.dp)
+                    modifier = Modifier
+                        .clickable(onClick = onClickSave, indication = null, interactionSource = MutableInteractionSource())
+                        .padding(start = 6.dp)
                 )
             }
         }
@@ -76,4 +88,15 @@ fun ExamItem(
             color = exam.expiredTimeTextColor
         )
     }
+}
+
+@Preview
+@Composable
+fun ExamItemPreview() {
+    val exam = createExamModel(
+        id = 1,
+        subjectId = 1
+    )
+
+    ExamItem(exam = exam)
 }

@@ -39,7 +39,8 @@ class ExamsViewModel @Inject constructor(
             ExamModel(
                 subjectId = subjectId,
                 name = "신참이다",
-                createdAt = Clock.System.now()
+                createdAt = Clock.System.now(),
+                timeLimit = subjectId * 100000L
             ).asExternalModel()
         )
     }

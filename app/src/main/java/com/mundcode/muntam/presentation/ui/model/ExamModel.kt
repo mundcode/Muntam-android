@@ -1,11 +1,13 @@
 package com.mundcode.muntam.presentation.ui.model
 
 import androidx.compose.ui.graphics.Color
+import com.mundcode.data.local.database.model.ExamEntity
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.util.asMTDateText
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 data class ExamModel( // todo 수정
@@ -76,3 +78,25 @@ fun ExamModel.asExternalModel(): Exam = Exam( // todo 수정
     deletedAt = deletedAt,
     state = state
 )
+
+fun createExamModels(
+    size: Int,
+    subjectId: Int = 0
+) = (1..size).map {
+    createExamModel(
+        id = it,
+        subjectId = subjectId,
+    )
+}
+
+fun createExamModel(
+    id: Int,
+    subjectId: Int
+) = ExamModel(
+    id = id,
+    subjectId = subjectId,
+    name = "테스트 시험 이름 : $id",
+    createdAt = Clock.System.now(),
+    timeLimit = id * 100000L
+)
+

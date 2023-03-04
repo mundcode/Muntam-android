@@ -8,7 +8,7 @@ import kotlinx.datetime.toLocalDateTime
 fun Instant.asMTDateText(): String {
     val date = this.toLocalDateTime(TimeZone.UTC)
     return try {
-        "%02d.%02d.%02d".format("${date.year}".takeLast(2), date.monthNumber, date.dayOfMonth)
+        "%02d.%02d.%02d".format("${date.year}".takeLast(2).toInt(), date.monthNumber, date.dayOfMonth)
     } catch (e: Exception) {
         "$e"
     }
