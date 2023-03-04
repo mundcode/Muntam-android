@@ -26,16 +26,16 @@ class SubjectViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _subjects = MutableSharedFlow<List<SubjectModel>>()
     val subjects: SharedFlow<List<SubjectModel>> = _subjects
+//
+//    init {
+//        getSubjects()
+//    }
 
-    init {
-        getSubjects()
-    }
-
-    private fun getSubjects() = viewModelScope.launch {
-        getSubjectsUseCase().collectLatest { list ->
-            _subjects.emit(list.map { it.asStateModel() })
-        }
-    }
+//    private fun getSubjects() = viewModelScope.launch {
+//        getSubjectsUseCase().collectLatest { list ->
+//            _subjects.emit(list.map { it.asStateModel() })
+//        }
+//    }
 
     fun insertSubject() = viewModelScope.launch {
         insertSubjectUseCase(

@@ -39,6 +39,7 @@ const val SUBJECT_ITEM_HEIGHT_DP = 156
 fun SubjectItem(
     subject: SubjectModel,
     onClick: () -> Unit,
+    onClickMore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,7 +65,8 @@ fun SubjectItem(
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_24_dp),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.clickable(onClick = onClickMore)
             )
         }
 
@@ -92,7 +94,7 @@ fun SubjectItem(
 @Composable
 fun SubjectItemPreview() {
     val model = createMockedSubjectModel(1)
-    SubjectItem(subject = model, onClick = {})
+    SubjectItem(subject = model, onClick = {}, onClickMore = {})
 }
 
 @Preview
@@ -110,7 +112,7 @@ fun SubjectItemInGridPreView() {
             .fillMaxSize()
     ) {
         items(list) { item ->
-            SubjectItem(subject = item, onClick = {}, modifier = Modifier.padding(bottom = 12.dp))
+            SubjectItem(subject = item, onClick = {}, modifier = Modifier.padding(bottom = 12.dp), onClickMore = {})
         }
     }
 }
