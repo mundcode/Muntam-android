@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.MTScreenBackground
 import com.mundcode.muntam.navigation.Exams
+import com.mundcode.muntam.navigation.SubjectAdd
+import com.mundcode.muntam.navigation.SubjectModify
 import com.mundcode.muntam.presentation.item.SubjectAddItem
 import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.presentation.screen.component.MTLogoToolbar
@@ -54,10 +56,10 @@ fun SubjectsScreen(
                         onBottomSheetEvent(
                             BottomSheetModel.SubjectMoreBottomSheet(
                                 onClickModify = {
-                                    // todo 수정 화면으로 이동
+                                    onNavOutEvent(SubjectModify.getRouteWithArgs(item.id))
                                 },
                                 onClickDelete = {
-                                    // todo 삭제
+                                    viewModel.deleteSubject(item)
                                 }
                             )
                         )
@@ -69,7 +71,7 @@ fun SubjectsScreen(
             item {
                 SubjectAddItem(
                     onClick = {
-                        // todo 과목 추가하기 화면으로 이동
+                        onNavOutEvent(SubjectAdd.route)
                     }
                 )
             }

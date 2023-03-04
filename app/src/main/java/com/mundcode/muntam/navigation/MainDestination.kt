@@ -10,9 +10,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-interface MutamDestination : Destination
+interface MuntamDestination : Destination
 
-object Main : MutamDestination {
+object Main : MuntamDestination {
     override val route = "main"
 
     val screens = listOf(
@@ -22,15 +22,26 @@ object Main : MutamDestination {
     )
 }
 
-object SubjectAdd : MutamDestination {
+object SubjectAdd : MuntamDestination {
     override val route = "subject_addition"
 }
 
-object SubjectSettings : MutamDestination {
+object SubjectModify : MuntamDestination {
+    override val route = "subject_modify"
+    val subjectIdArg = "subject_id"
+    val routeWithArgs = "$route/{${subjectIdArg}}"
+    val arguments = listOf(
+        navArgument(subjectIdArg) { type = NavType.IntType }
+    )
+
+    fun getRouteWithArgs(subjectIdArg: Int) = "$route/$subjectIdArg"
+}
+
+object SubjectSettings : MuntamDestination {
     override val route = "subject_settings"
 }
 
-object Exams : MutamDestination {
+object Exams : MuntamDestination {
     override val route = "exams"
     const val subjectIdArg = "subject_id"
     val routeWithArgs = "$route/{$subjectIdArg}"
@@ -41,19 +52,19 @@ object Exams : MutamDestination {
     fun getRouteWithArgs(subjectIdArg: Int) = "$route/$subjectIdArg"
 }
 
-object ExamRecord : MutamDestination {
+object ExamRecord : MuntamDestination {
     override val route = "exam_record"
 }
 
-object Questions : MutamDestination {
+object Questions : MuntamDestination {
     override val route = "questions"
 }
 
-object QuestionSettings : MutamDestination {
+object QuestionSettings : MuntamDestination {
     override val route = "question_editor"
 }
 
-object QuestionDetails : MutamDestination {
+object QuestionDetails : MuntamDestination {
     override val route = "question_details"
 }
 
