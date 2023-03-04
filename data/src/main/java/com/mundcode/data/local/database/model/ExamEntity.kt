@@ -27,6 +27,8 @@ data class ExamEntity(
     val name: String,
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean = false,
+    @ColumnInfo(name = "time_limit")
+    val timeLimit: Long,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "end_at")
@@ -45,6 +47,7 @@ fun ExamEntity.asExternalModel(): Exam = Exam(
     subjectId = subjectId,
     name = name,
     isFavorite = isFavorite,
+    timeLimit = timeLimit,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
@@ -58,6 +61,7 @@ fun Exam.asEntity(): ExamEntity = ExamEntity(
     subjectId = subjectId,
     name = name,
     isFavorite = isFavorite,
+    timeLimit = timeLimit,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
@@ -72,7 +76,7 @@ fun createExamEntities(
 ) = (1..size).map {
     createExamEntity(
         id = it,
-        subjectId = subjectId
+        subjectId = subjectId,
     )
 }
 
@@ -83,5 +87,6 @@ fun createExamEntity(
     id = id,
     subjectId = subjectId,
     name = "테스트 시험 이름 : $id",
-    createdAt = Clock.System.now()
+    createdAt = Clock.System.now(),
+    timeLimit = id * 100000L
 )

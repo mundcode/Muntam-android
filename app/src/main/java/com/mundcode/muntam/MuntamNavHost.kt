@@ -5,10 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mundcode.muntam.presentation.ui.exams.ExamsScreen
-import com.mundcode.muntam.presentation.ui.main.MainScreen
-import com.mundcode.muntam.presentation.ui.subject_add.SubjectAddScreen
-import com.mundcode.muntam.presentation.ui.subject_setting.SubjectSettingsScreen
+import com.mundcode.muntam.presentation.screen.exams.ExamsScreen
+import com.mundcode.muntam.presentation.screen.main.MainScreen
+import com.mundcode.muntam.presentation.screen.subject_add.SubjectAddScreen
+import com.mundcode.muntam.presentation.screen.subject_setting.SubjectSettingsScreen
 
 @Composable
 fun MuntamNavHost(
