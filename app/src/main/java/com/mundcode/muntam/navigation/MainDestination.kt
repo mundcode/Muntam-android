@@ -29,7 +29,7 @@ object SubjectAdd : MuntamDestination {
 object SubjectModify : MuntamDestination {
     override val route = "subject_modify"
     val subjectIdArg = "subject_id"
-    val routeWithArgs = "$route/{${subjectIdArg}}"
+    val routeWithArgs = "$route/{$subjectIdArg}"
     val arguments = listOf(
         navArgument(subjectIdArg) { type = NavType.IntType }
     )

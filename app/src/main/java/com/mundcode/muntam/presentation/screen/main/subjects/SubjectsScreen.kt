@@ -24,7 +24,6 @@ import com.mundcode.muntam.presentation.screen.component.MTLogoToolbar
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectItem
 import com.mundcode.muntam.util.hiltViewModel
 
-
 @Composable
 fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,

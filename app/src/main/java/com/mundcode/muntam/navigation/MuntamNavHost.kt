@@ -65,8 +65,6 @@ fun MuntamNavHost(
             }
         }
 
-
-
         composable(
             route = SubjectSettings.route
         ) {

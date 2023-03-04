@@ -47,6 +47,5 @@ internal fun createHiltViewModelFactory(
     null
 }
 
-
 @Composable
 fun getActivity() = LocalContext.current as ComponentActivity

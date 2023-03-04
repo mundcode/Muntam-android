@@ -67,7 +67,9 @@ fun SubjectItem(
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_24_dp),
                 contentDescription = null,
-                modifier = Modifier.clip(CircleShape).clickable(onClick = onClickMore)
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClick = onClickMore)
             )
         }
 
@@ -113,7 +115,11 @@ fun SubjectItemInGridPreView() {
             .fillMaxSize()
     ) {
         items(list) { item ->
-            SubjectItem(subject = item, onClick = {}, modifier = Modifier.padding(bottom = 12.dp), onClickMore = {})
+            SubjectItem(
+                subject = item,
+                onClick = {},
+                modifier = Modifier.padding(bottom = 12.dp), onClickMore = {}
+            )
         }
     }
 }

@@ -76,7 +76,6 @@ fun MainScreen(
     }
 
     BottomSheetScreen(bottomSheetState, onCloseEvent = { bottomSheetState = BottomSheetModel.None })
-
 }
 
 @Composable
@@ -90,7 +89,9 @@ fun MuntamBottomNavigation(
             backgroundColor = MaterialTheme.colors.background,
         ) {
             Main.screens.forEach { screen ->
-                val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                val isSelected = currentDestination?.hierarchy?.any {
+                    it.route == screen.route
+                } == true
                 BottomNavigationItem(
                     icon = {
                         Icon(
