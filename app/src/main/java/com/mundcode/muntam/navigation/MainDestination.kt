@@ -1,4 +1,4 @@
-package com.mundcode.muntam
+package com.mundcode.muntam.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,17 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-interface Destination {
-    val route: String
-}
-
 interface MutamDestination : Destination
-
-interface MuntamBottomDestination : Destination {
-    val selectedIcon: Int
-    val unselectedIcon: Int
-    val display: String
-}
 
 object Main : MutamDestination {
     override val route = "main"
@@ -30,27 +20,6 @@ object Main : MutamDestination {
         FavoriteQuestions,
         Settings
     )
-}
-
-object Subjects : MuntamBottomDestination {
-    override val unselectedIcon = R.drawable.ic_bottom_navigation_unselected_home
-    override val selectedIcon: Int = R.drawable.ic_bottom_navigation_selected_home
-    override val route = "subjects"
-    override val display = "홈"
-}
-
-object FavoriteQuestions : MuntamBottomDestination {
-    override val unselectedIcon = R.drawable.ic_bottom_navigation_unselected_favorite
-    override val selectedIcon: Int = R.drawable.ic_bottom_navigation_selected_favorite
-    override val route = "favorite_questions"
-    override val display = "즐겨찾기"
-}
-
-object Settings : MuntamBottomDestination {
-    override val unselectedIcon = R.drawable.ic_bottom_navigation_unselected_settings
-    override val selectedIcon: Int = R.drawable.ic_bottom_navigation_selected_settings
-    override val route = "settings"
-    override val display = "설정"
 }
 
 object SubjectAdd : MutamDestination {
