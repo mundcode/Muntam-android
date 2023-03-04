@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ const val SUBJECT_ITEM_HEIGHT_DP = 156
 fun SubjectItem(
     subject: SubjectModel,
     onClick: () -> Unit,
+    onClickMore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,7 +66,10 @@ fun SubjectItem(
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_more_24_dp),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClick = onClickMore)
             )
         }
 
@@ -92,7 +97,7 @@ fun SubjectItem(
 @Composable
 fun SubjectItemPreview() {
     val model = createMockedSubjectModel(1)
-    SubjectItem(subject = model, onClick = {})
+    SubjectItem(subject = model, onClick = {}, onClickMore = {})
 }
 
 @Preview
@@ -110,7 +115,11 @@ fun SubjectItemInGridPreView() {
             .fillMaxSize()
     ) {
         items(list) { item ->
-            SubjectItem(subject = item, onClick = {}, modifier = Modifier.padding(bottom = 12.dp))
+            SubjectItem(
+                subject = item,
+                onClick = {},
+                modifier = Modifier.padding(bottom = 12.dp), onClickMore = {}
+            )
         }
     }
 }

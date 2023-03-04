@@ -1,4 +1,4 @@
-package com.mundcode.muntam
+package com.mundcode.muntam.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,12 +8,13 @@ import androidx.navigation.compose.composable
 import com.mundcode.muntam.presentation.screen.exams.ExamsScreen
 import com.mundcode.muntam.presentation.screen.main.MainScreen
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectAddScreen
+import com.mundcode.muntam.presentation.screen.subject_modify.SubjectModifyScreen
 import com.mundcode.muntam.presentation.screen.subject_setting.SubjectSettingsScreen
 
 @Composable
 fun MuntamNavHost(
     navController: NavHostController,
-    startDestination: MutamDestination = Main,
+    startDestination: MuntamDestination = Main,
     modifier: Modifier
 ) {
     NavHost(
@@ -34,6 +35,21 @@ fun MuntamNavHost(
         }
 
         composable(
+            route = SubjectAdd.route
+        ) {
+            SubjectAddScreen()
+        }
+
+        composable(
+            route = SubjectModify.routeWithArgs,
+            arguments = SubjectModify.arguments
+        ) { navBackStackEntry ->
+            val subjectId =
+                navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
+            SubjectModifyScreen()
+        }
+
+        composable(
             route = Exams.routeWithArgs,
             arguments = Exams.arguments
         ) { navBackStackEntry ->
@@ -47,12 +63,6 @@ fun MuntamNavHost(
                     restoreState = true
                 }
             }
-        }
-
-        composable(
-            route = SubjectAdd.route
-        ) {
-            SubjectAddScreen()
         }
 
         composable(

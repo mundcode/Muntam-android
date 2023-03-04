@@ -76,4 +76,11 @@ object MTTextStyle {
         lineHeight = 18.sp,
         letterSpacing = (-0.03).sp
     )
+
+    val text10 = TextStyle(
+        fontSize = 10.sp,
+        fontFamily = MTFontFamily,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 12.sp
+    )
 }

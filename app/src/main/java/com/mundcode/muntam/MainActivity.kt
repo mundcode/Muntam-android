@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mundcode.designsystem.theme.DarkColorPalette
 import com.mundcode.designsystem.theme.LightColorPalette
+import com.mundcode.muntam.navigation.MuntamNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -86,9 +88,17 @@ fun MuntamApp() {
 
 @Composable
 fun MuntamTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val systemUiController = rememberSystemUiController()
+
     val colors = if (darkTheme) {
+        systemUiController.setSystemBarsColor(
+            color = DarkColorPalette.background
+        )
         DarkColorPalette
     } else {
+        systemUiController.setSystemBarsColor(
+            color = LightColorPalette.background
+        )
         LightColorPalette
     }
 

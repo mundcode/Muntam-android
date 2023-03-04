@@ -9,6 +9,7 @@ val MTLightGreen = Color(0xFFE0FFDF)
 val MTRed = Color(0xFFFF2969)
 val MTBottomSheetBackground = Color(0xB2242526)
 val MTToastBackground = Color(0xCC242526)
+val MTScreenBackground = Color(0xFFD6D6D6)
 
 val Gray900 = Color(0xFF212121)
 val Gray800 = Color(0xFF343637)
