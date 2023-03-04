@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.Circle
 import com.mundcode.designsystem.theme.DefaultSpace12
 import com.mundcode.designsystem.theme.DefaultSpace16
@@ -40,9 +41,8 @@ import com.mundcode.designsystem.theme.DefaultSpace4
 import com.mundcode.designsystem.theme.DefaultSpace8
 import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.Exams
-import com.mundcode.muntam.presentation.screen.component.MarginSpacer
-import com.mundcode.muntam.presentation.screen.component.MuntamToolbar
 import com.mundcode.muntam.presentation.model.SubjectModel
+import com.mundcode.muntam.presentation.screen.component.MuntamToolbar
 import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable
@@ -188,7 +188,7 @@ fun SubjectListItem(
                 )
             }
 
-            MarginSpacer(dp = DefaultSpace4)
+            Margin(dp = DefaultSpace4)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -201,7 +201,7 @@ fun SubjectListItem(
                     fontWeight = FontWeight.Light
                 )
 
-                MarginSpacer(dp = DefaultSpace4)
+                Margin(dp = DefaultSpace4)
 
                 Text(
                     text = subjectModel.subjectTitle.ifEmpty { "없음" },

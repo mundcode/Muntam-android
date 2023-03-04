@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.DefaultSpace16
 import com.mundcode.designsystem.theme.DefaultSpace8
-import com.mundcode.muntam.presentation.screen.component.MarginSpacer
 import com.mundcode.muntam.presentation.screen.component.MuntamToolbar
 
 @Composable
@@ -65,7 +65,7 @@ fun MuntamTextField(
             modifier = Modifier.padding(start = DefaultSpace16, top = DefaultSpace8)
         )
 
-        MarginSpacer(dp = 8.dp)
+        Margin(dp = 8.dp)
 
         TextField(
             value = value,

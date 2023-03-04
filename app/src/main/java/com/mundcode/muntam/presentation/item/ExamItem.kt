@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.tags.FinishedTag
 import com.mundcode.designsystem.components.tags.RunningTag
 import com.mundcode.designsystem.theme.Gray200
+import com.mundcode.designsystem.theme.Gray400
 import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTTextStyle
@@ -71,7 +72,8 @@ fun ExamItem(
                             indication = null,
                             interactionSource = MutableInteractionSource()
                         )
-                        .padding(end = 6.dp)
+                        .padding(end = 6.dp),
+                    tint = Gray400
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_more_24_dp),
@@ -82,7 +84,8 @@ fun ExamItem(
                             indication = null,
                             interactionSource = MutableInteractionSource()
                         )
-                        .padding(start = 6.dp)
+                        .padding(start = 6.dp),
+                    tint = Gray400
                 )
             }
         }
