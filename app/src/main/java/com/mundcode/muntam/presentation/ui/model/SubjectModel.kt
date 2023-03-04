@@ -17,7 +17,6 @@ data class SubjectModel( // todo 수정
 ) {
     val lastExamDateText: String? =
         lastExamDate?.asMTDateText()
-
 }
 
 fun Subject.asStateModel(): SubjectModel {

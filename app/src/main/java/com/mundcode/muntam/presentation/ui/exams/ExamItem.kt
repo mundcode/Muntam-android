@@ -127,7 +127,8 @@ fun ExamItemListPreview() {
                     Divider(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp), color = Gray200
+                            .padding(horizontal = 16.dp),
+                        color = Gray200
                     )
                 }
             }

@@ -1,7 +1,6 @@
 package com.mundcode.muntam.presentation.ui.model
 
 import androidx.compose.ui.graphics.Color
-import com.mundcode.data.local.database.model.ExamEntity
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
@@ -48,7 +47,6 @@ data class ExamModel( // todo 수정
             else -> MTRed
         }
     }
-
 }
 
 fun Exam.asStateModel() = ExamModel( // todo 수정
@@ -99,4 +97,3 @@ fun createExamModel(
     createdAt = Clock.System.now(),
     timeLimit = id * 100000L
 )
-
