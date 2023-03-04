@@ -1,10 +1,9 @@
 package com.mundcode.muntam.presentation.ui.model
 
 import com.mundcode.domain.model.Subject
+import com.mundcode.muntam.util.asMTDateText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 data class SubjectModel( // todo 수정
     val id: Int = 0,
@@ -17,7 +16,7 @@ data class SubjectModel( // todo 수정
     val isPinned: Boolean = false
 ) {
     val lastExamDateText: String? =
-        lastExamDate?.toMTDateText()
+        lastExamDate?.asMTDateText()
 
 }
 
@@ -32,16 +31,6 @@ fun Subject.asStateModel(): SubjectModel {
         totalQuestionNumber = totalQuestionNumber,
         isPinned = isPinnded
     )
-}
-
-// todo 테스트
-fun Instant.toMTDateText(): String {
-    val date = this.toLocalDateTime(TimeZone.UTC)
-    return try {
-        "%02d.%02d.%02d".format("${date.year}".takeLast(2), date.monthNumber, date.dayOfMonth)
-    } catch (e: Exception) {
-        "$e"
-    }
 }
 
 fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
