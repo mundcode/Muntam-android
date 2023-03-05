@@ -19,12 +19,12 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.mundcode.muntam.util.sharedActivityViewModel
+import com.mundcode.muntam.util.hiltViewModel
 
 @Composable
 fun ExamsScreen(
     subjectId: Int,
-    viewModel: ExamsViewModel = sharedActivityViewModel(),
+    viewModel: ExamsViewModel = hiltViewModel(),
     onNavEvent: (String) -> Unit
 ) {
     val exams = viewModel.exams.collectAsState(listOf())

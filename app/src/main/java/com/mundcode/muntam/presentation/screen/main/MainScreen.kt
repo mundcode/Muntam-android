@@ -138,8 +138,14 @@ fun BottomSheetScreen(bottomSheetState: BottomSheetModel, onCloseEvent: () -> Un
             is BottomSheetModel.SubjectMoreBottomSheet -> {
                 SubjectOptionBottomSheetContent(
                     onClickClose = onCloseEvent,
-                    onClickDelete = bottomSheetState.onClickDelete,
-                    onClickModify = bottomSheetState.onClickModify
+                    onClickDelete = {
+                        bottomSheetState.onClickDelete()
+                        onCloseEvent()
+                    },
+                    onClickModify = {
+                        bottomSheetState.onClickModify()
+                        onCloseEvent()
+                    }
                 )
             }
         }

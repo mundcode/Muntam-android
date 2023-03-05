@@ -1,6 +1,7 @@
 package com.mundcode.muntam.presentation.screen.subject_add
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.InsertSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
@@ -18,7 +19,7 @@ import kotlinx.coroutines.sync.withLock
 @HiltViewModel
 class SubjectAddViewModel @Inject constructor(
     private val insertSubjectUseCase: InsertSubjectUseCase
-) : BaseViewModel() {
+) : ViewModel() {
     private val emojiList = listOf( // todo 데이터베이스에 대량으로 넣고 가져오기
         "💎",
         "⏰",

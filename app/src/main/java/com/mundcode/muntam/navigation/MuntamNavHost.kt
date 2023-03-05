@@ -1,5 +1,6 @@
 package com.mundcode.muntam.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -51,7 +52,16 @@ fun MuntamNavHost(
         ) { navBackStackEntry ->
             val subjectId =
                 navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
-            SubjectModifyScreen()
+            SubjectModifyScreen(
+                onClickBack = {
+                    Log.d("SR-N", "SubjectModifyScreen onClickBack")
+                    navController.popBackStack(
+                        route = SubjectModify.routeWithArgs,
+                        inclusive = true,
+                        saveState = false
+                    )
+                }
+            )
         }
 
         composable(
