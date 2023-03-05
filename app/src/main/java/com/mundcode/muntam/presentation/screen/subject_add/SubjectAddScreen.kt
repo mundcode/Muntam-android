@@ -83,7 +83,11 @@ fun SubjectAddScreen(
 
                 ReadOnlyOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = if (state.totalQuestionNumber != 0) "${state.totalQuestionNumber}개" else "",
+                    value = if (state.totalQuestionNumber != 0) {
+                        "${state.totalQuestionNumber}개"
+                    } else {
+                        ""
+                    },
                     placeholder = "총 문항수",
                     emoji = "✍️",
                     onClick = viewModel::onClickTotalQuestionNumber
@@ -115,7 +119,7 @@ fun SubjectAddScreen(
 
         if (state.showTotalQuestionNumberDialog) {
             TotalNumberPickerDialog(
-                onResult =viewModel::onSelectTotalQuestionNumber,
+                onResult = viewModel::onSelectTotalQuestionNumber,
                 onCancel = viewModel::onCancelDialog
             )
         }
@@ -179,7 +183,6 @@ fun SubjectNameSection(
         SubjectAddDescriptionText(desc = "과목 카테고리 생성 후 다음 안내 사항")
     }
 }
-
 
 @Composable
 fun ReadOnlyOutlinedTextField(

@@ -7,13 +7,13 @@ import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import javax.inject.Inject
 
 @HiltViewModel
 class SubjectAddViewModel @Inject constructor(
@@ -31,7 +31,6 @@ class SubjectAddViewModel @Inject constructor(
 
     init {
         Log.d("SR-N", "SubjectAddViewModel init")
-
     }
 
     private val _subjectAddState = MutableStateFlow(SubjectAddState(emoji = emojiList.random()))
@@ -127,7 +126,6 @@ class SubjectAddViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun updateState(getNewState: () -> SubjectAddState) = viewModelScope.launch {
         mutex.withLock {
