@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.subject_add
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
@@ -59,12 +60,18 @@ class SubjectAddViewModel @Inject constructor(
     }
 
     fun onSelectTimeLimit(hour: Int, min: Int, sec: Int) {
+        Log.d("SR-N", "$hour / $min / $sec")
         updateState {
             subjectAddState.value.copy(
                 showTimeLimitDialog = false,
                 timeLimitHour = hour,
                 timeLimitMin = min,
-                timeLimitSec = sec
+                timeLimitSec = sec,
+                timeLimitText = if (hour == 0 && min == 0 && sec == 0) {
+                    ""
+                } else {
+                    "%d시간 %02d분 %02d초".format(hour, min, sec)
+                }
             )
         }
     }
@@ -97,13 +104,13 @@ class SubjectAddViewModel @Inject constructor(
     }
 
     fun onClickCompleteButton() = viewModelScope.launch(Dispatchers.IO) {
-        if (subjectAddState.value.enableButton) {
+        if (subjectAddState.value.canEnableButton()) {
             val input = subjectAddState.value
             val subject = SubjectModel(
-                subjectTitle = input.subjectName ?: return@launch,
+                subjectTitle = input.subjectName,
                 emoji = input.emoji,
-                timeLimit = input.timeLimit ?: return@launch,
-                totalQuestionNumber = input.totalQuestionNumber ?: return@launch
+                timeLimit = input.getTimeLimitMilliSec(),
+                totalQuestionNumber = input.totalQuestionNumber
             )
             updateSubjectUseCase(subject.asExternalModel())
             updateState {
@@ -113,9 +120,12 @@ class SubjectAddViewModel @Inject constructor(
     }
 
 
-    private fun updateState(newState: () -> SubjectAddState) = viewModelScope.launch {
+    private fun updateState(getNewState: () -> SubjectAddState) = viewModelScope.launch {
         mutex.withLock {
-            _subjectAddState.value = newState()
+            val newState = getNewState()
+            _subjectAddState.value = newState.copy(
+                enableButton = newState.canEnableButton()
+            )
         }
     }
 }
@@ -130,20 +140,13 @@ data class SubjectAddState(
     val showNameDialog: Boolean = false,
     val showTimeLimitDialog: Boolean = false,
     val showTotalQuestionNumberDialog: Boolean = false,
-    val completeSubjectAddition: Boolean = false
+    val completeSubjectAddition: Boolean = false,
+    val timeLimitText: String = "",
+    val enableButton: Boolean = false
 ) {
-
-    val timeLimitText get() =  if (timeLimitHour == 0 && timeLimitMin == 0 && timeLimitSec == 0) {
-        ""
-    } else {
-        "%d시간 %02d분 %02d초".format(timeLimitHour, timeLimitMin, timeLimitSec)
-    }
-
-    val timeLimit get() =
+    fun getTimeLimitMilliSec(): Long =
         (timeLimitHour * 60 * 60 * 1000L) + (timeLimitMin * 60 * 1000L) + (timeLimitSec * 1000L)
 
-    val enableButton =
-        subjectName.isNotEmpty() && timeLimit != 0L && totalQuestionNumber in (1..200)
-
+    fun canEnableButton(): Boolean =
+        subjectName.isNotEmpty() && getTimeLimitMilliSec() != 0L && totalQuestionNumber in (1..200)
 }
-

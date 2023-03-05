@@ -41,7 +41,6 @@ import com.mundcode.muntam.util.hiltViewModel
 fun SubjectAddScreen(
     viewModel: SubjectAddViewModel = hiltViewModel(),
     onClickBack: () -> Unit = {},
-    onNavEvent: (route: String) -> Unit = {},
 ) {
     val state by viewModel.subjectAddState.collectAsState()
 
@@ -116,9 +115,13 @@ fun SubjectAddScreen(
 
         if (state.showTotalQuestionNumberDialog) {
             TotalNumberPickerDialog(
-                onResult = viewModel::onSelectTotalQuestionNumber,
+                onResult =viewModel::onSelectTotalQuestionNumber,
                 onCancel = viewModel::onCancelDialog
             )
+        }
+
+        if (state.completeSubjectAddition) {
+            onClickBack()
         }
     }
 }
