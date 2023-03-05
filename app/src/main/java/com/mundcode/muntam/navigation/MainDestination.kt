@@ -54,6 +54,15 @@ object Exams : MuntamDestination {
 
 object ExamRecord : MuntamDestination {
     override val route = "exam_record"
+    const val subjectIdArg = "subject_id"
+    const val examIdArg = "exam_id"
+    val routeWithArgs = "$route/{$subjectIdArg}/{$examIdArg}"
+    val arguments = listOf(
+        navArgument(subjectIdArg) { type = NavType.IntType },
+        navArgument(examIdArg) { type = NavType.IntType }
+    )
+
+    fun getRouteWithArgs(subjectId: Int, examId: Int) = "$route/$subjectId/$examId"
 }
 
 object Questions : MuntamDestination {
