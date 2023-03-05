@@ -7,5 +7,5 @@ interface BaseDao<T> {
     suspend fun insertAll(entities: List<T>)
 
     @Insert
-    suspend fun insert(entity: T)
+    suspend fun insert(entity: T): Long
 }

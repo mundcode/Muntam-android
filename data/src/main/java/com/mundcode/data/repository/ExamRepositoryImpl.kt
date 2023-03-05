@@ -14,8 +14,8 @@ import kotlinx.datetime.Clock
 class ExamRepositoryImpl @Inject constructor(
     private val examDao: ExamDao
 ) : ExamRepository {
-    override suspend fun insertExam(exam: Exam) {
-        examDao.insert(exam.asEntity())
+    override suspend fun insertExam(exam: Exam): Long {
+        return examDao.insert(exam.asEntity())
     }
 
     override suspend fun getExam(examId: Int): Exam {

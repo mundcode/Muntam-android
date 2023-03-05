@@ -10,7 +10,7 @@ interface ExamRepository {
 
     fun getExamById(id: Int): Flow<Exam>
 
-    suspend fun insertExam(exam: Exam)
+    suspend fun insertExam(exam: Exam): Long
 
     suspend fun updateExam(exam: Exam)
 
