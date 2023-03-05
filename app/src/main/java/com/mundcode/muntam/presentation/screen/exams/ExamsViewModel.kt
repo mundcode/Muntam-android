@@ -110,7 +110,7 @@ class ExamsViewModel @Inject constructor(
         val questions = (1..subject.totalQuestionNumber).map {
             QuestionModel(
                 subjectId = subjectId,
-                examId = examId,
+                examId = examId.toInt(),
                 questionNumber = it,
                 createdAt = Clock.System.now()
             )
@@ -120,7 +120,7 @@ class ExamsViewModel @Inject constructor(
 
         insertQuestionsUseCase(questions)
 
-        _navigationEvent.emit(ExamRecord.getRouteWithArgs(subjectId, examId))
+        _navigationEvent.emit(ExamRecord.getRouteWithArgs(subjectId, examId.toInt()))
     }
 
     fun onCancelDialog() {

@@ -70,14 +70,23 @@ fun MuntamNavHost(
         ) { navBackStackEntry ->
             val subjectId =
                 navBackStackEntry.arguments?.getInt(Exams.subjectIdArg) ?: return@composable
-            ExamsScreen(subjectId) { route ->
-                navController.navigate(route) {
-                    popUpTo(route) {
-                        saveState = true
+            ExamsScreen(
+                onNavEvent = { route ->
+                    navController.navigate(route) {
+                        popUpTo(route) {
+                            saveState = true
+                        }
+                        restoreState = true
                     }
-                    restoreState = true
+                },
+                onClickBack = {
+                    navController.popBackStack(
+                        route = Exams.routeWithArgs,
+                        inclusive = true,
+                        saveState = false
+                    )
                 }
-            }
+            )
         }
 
         composable(
