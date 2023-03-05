@@ -56,11 +56,25 @@ private fun BigMTTag(
 }
 
 @Composable
-fun SubjectNameTag(name: String, isSmall: Boolean = true) {
+fun SubjectNameTag(
+    name: String,
+    modifier: Modifier = Modifier,
+    isSmall: Boolean = true,
+) {
     if (isSmall) {
-        SmallMTTag(text = name, backgroundColor = MTLightOrange, textColor = MTOrange)
+        SmallMTTag(
+            text = name,
+            backgroundColor = MTLightOrange,
+            textColor = MTOrange,
+            modifier = modifier
+        )
     } else {
-        BigMTTag(text = name, backgroundColor = MTLightOrange, textColor = MTOrange)
+        BigMTTag(
+            text = name,
+            backgroundColor = MTLightOrange,
+            textColor = MTOrange,
+            modifier = modifier
+        )
     }
 }
 
