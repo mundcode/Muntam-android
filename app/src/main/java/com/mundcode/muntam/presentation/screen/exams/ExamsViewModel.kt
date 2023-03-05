@@ -1,11 +1,11 @@
 package com.mundcode.muntam.presentation.screen.exams
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.DeleteExamUseCase
 import com.mundcode.domain.usecase.GetExamsUseCase
 import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
-import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
@@ -23,7 +23,7 @@ class ExamsViewModel @Inject constructor(
     private val insertExamUseCase: InsertExamUseCase,
     private val deleteExamUseCase: DeleteExamUseCase,
     private val updateExamUseCase: UpdateExamUseCase
-) : BaseViewModel() {
+) : ViewModel() {
     private val _exams = MutableSharedFlow<List<ExamModel>>()
     val exams: SharedFlow<List<ExamModel>> = _exams
 

@@ -8,7 +8,7 @@ interface SubjectRepository {
 
     fun getSubjects(): Flow<List<Subject>>
 
-    fun getSubjectById(id: Int): Flow<Subject>
+    suspend fun getSubjectById(id: Int): Subject
 
     suspend fun deleteSubjectRepository(id: Int)
 

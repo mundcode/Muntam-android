@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.toolbars.MTLogoToolbar
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTScreenBackground
@@ -33,7 +34,8 @@ fun SubjectsScreen(
     onBottomSheetEvent: (BottomSheetModel) -> Unit,
     viewModel: SubjectViewModel = hiltViewModel()
 ) {
-    val subjects by viewModel.subjects.collectAsState(initial = listOf())
+    val state by viewModel.state.collectAsState()
+    val subjects = state.subjects
 
     Column(
         modifier = Modifier
@@ -70,7 +72,7 @@ fun SubjectsScreen(
                                     onNavOutEvent(SubjectModify.getRouteWithArgs(item.id))
                                 },
                                 onClickDelete = {
-                                    viewModel.deleteSubject(item)
+                                    viewModel.onClickDeleteSubject(item)
                                 }
                             )
                         )
@@ -88,5 +90,20 @@ fun SubjectsScreen(
         }
 
         // todo 애드몹 네이티브 추가
+    }
+
+    if (state.showDeleteConfirmDialog) {
+        AlertDialog(
+            title = "과목 삭제하기",
+            subtitle = "선택한 과목 리스트를 삭제합니다.\n삭제한 항목은 다시 되돌릴 수 없습니다.",
+            cancelText = "취소",
+            confirmText = "삭제하기",
+            onClickCancel = {
+                viewModel.onCancelDialog()
+            },
+            onClickConfirm = {
+                viewModel.onClickDeleteSubjectConfirm()
+            }
+        )
     }
 }

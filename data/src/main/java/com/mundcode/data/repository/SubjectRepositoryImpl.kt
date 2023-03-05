@@ -24,8 +24,8 @@ class SubjectRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSubjectById(id: Int): Flow<Subject> {
-        return subjectDao.getSubjectById(id).map(SubjectEntity::asExternalModel)
+    override suspend fun getSubjectById(id: Int): Subject {
+        return subjectDao.getSubjectById(id).asExternalModel()
     }
 
     override suspend fun updateSubject(subject: Subject) {

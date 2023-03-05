@@ -26,7 +26,7 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
             SELECT * FROM subjects WHERE deleted_at IS NULL AND id = :id
         """
     )
-    abstract fun getSubjectById(id: Int): Flow<SubjectEntity>
+    abstract fun getSubjectById(id: Int): SubjectEntity
 
     @Update
     abstract suspend fun updateSubjects(entities: List<SubjectEntity>)
