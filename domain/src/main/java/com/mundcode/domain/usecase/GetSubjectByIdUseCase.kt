@@ -11,5 +11,5 @@ import kotlinx.coroutines.flow.Flow
 class GetSubjectByIdUseCase @Inject constructor(
     private val subjectRepository: SubjectRepository
 ) {
-    operator fun invoke(id: Int): Flow<Subject> = subjectRepository.getSubjectById(id)
+    suspend operator fun invoke(id: Int): Subject = subjectRepository.getSubjectById(id)
 }
