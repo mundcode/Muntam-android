@@ -1,21 +1,21 @@
 package com.mundcode.muntam.presentation.screen.exams
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.DeleteExamUseCase
 import com.mundcode.domain.usecase.GetExamsUseCase
 import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
-import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import javax.inject.Inject
 
 @HiltViewModel
 class ExamsViewModel @Inject constructor(
@@ -23,7 +23,7 @@ class ExamsViewModel @Inject constructor(
     private val insertExamUseCase: InsertExamUseCase,
     private val deleteExamUseCase: DeleteExamUseCase,
     private val updateExamUseCase: UpdateExamUseCase
-) : BaseViewModel() {
+) : ViewModel() {
     private val _exams = MutableSharedFlow<List<ExamModel>>()
     val exams: SharedFlow<List<ExamModel>> = _exams
 

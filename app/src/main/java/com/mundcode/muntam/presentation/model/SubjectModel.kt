@@ -7,10 +7,10 @@ import kotlinx.datetime.Instant
 
 data class SubjectModel( // todo 수정
     val id: Int = 0,
-    val subjectTitle: String,
-    val emoji: String,
-    val timeLimit: Long,
-    val totalQuestionNumber: Int,
+    val subjectTitle: String = "",
+    val emoji: String = "",
+    val timeLimit: Long = 0,
+    val totalQuestionNumber: Int = 0,
     val lastExamName: String? = null,
     val lastExamDate: Instant? = null,
     val isPinned: Boolean = false
