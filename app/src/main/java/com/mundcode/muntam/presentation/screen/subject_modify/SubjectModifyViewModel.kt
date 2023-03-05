@@ -11,10 +11,10 @@ import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
-import javax.inject.Inject
 
 @HiltViewModel
 class SubjectModifyViewModel @Inject constructor(
@@ -45,7 +45,6 @@ class SubjectModifyViewModel @Inject constructor(
                         changedName = subject.name
                     )
                 }
-
             }
         } catch (e: Exception) {
             Log.d("SR-N", "SubjectModifyViewModel $e")
@@ -57,7 +56,6 @@ class SubjectModifyViewModel @Inject constructor(
             changedEmoji = emojiList.random()
         )
     }
-
 
     fun onClickName() = updateState {
         state.value.copy(

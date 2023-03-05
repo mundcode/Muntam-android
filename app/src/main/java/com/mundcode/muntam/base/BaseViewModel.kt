@@ -15,7 +15,6 @@ abstract class BaseViewModel<T> : ViewModel() {
 
     protected val mutex = Mutex()
 
-
     abstract fun createInitialState(): T
 
     open fun updateState(newState: () -> T) = viewModelScope.launch {

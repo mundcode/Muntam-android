@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.InsertSubjectUseCase
-import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import dagger.hilt.android.lifecycle.HiltViewModel
