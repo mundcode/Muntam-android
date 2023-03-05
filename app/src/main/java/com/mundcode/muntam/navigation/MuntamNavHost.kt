@@ -37,7 +37,7 @@ fun MuntamNavHost(
         composable(
             route = SubjectAdd.route
         ) {
-            SubjectAddScreen()
+            SubjectAddScreen(onClickBack = {}, onNavEvent = {})
         }
 
         composable(

@@ -34,7 +34,7 @@ data class SubjectEntity(
 fun SubjectEntity.asExternalModel(): Subject = Subject(
     id = id,
     name = name,
-    imoji = imoji,
+    emoji = imoji,
     lastExamName = lastExamName,
     lastExamDate = lastExamDate,
     totalQuestionNumber = totalQuestionNumber,
@@ -48,7 +48,7 @@ fun SubjectEntity.asExternalModel(): Subject = Subject(
 fun Subject.asEntity(): SubjectEntity = SubjectEntity(
     id = id, // 업데이트 시 필요
     name = name,
-    imoji = imoji,
+    imoji = emoji,
     lastExamName = lastExamName,
     lastExamDate = lastExamDate,
     totalQuestionNumber = totalQuestionNumber,

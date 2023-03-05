@@ -58,7 +58,7 @@ fun SubjectItem(
         ) {
             // todo 컴포즈로 이모지 API 제대로 사용하기
             Text(
-                text = subject.imoji,
+                text = subject.emoji,
                 style = MTTextStyle.text20.spToDp(),
                 modifier = Modifier.padding(2.dp),
                 maxLines = 1

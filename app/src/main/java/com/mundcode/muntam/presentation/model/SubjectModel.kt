@@ -8,7 +8,7 @@ import kotlinx.datetime.Instant
 data class SubjectModel( // todo 수정
     val id: Int = 0,
     val subjectTitle: String,
-    val imoji: String,
+    val emoji: String,
     val timeLimit: Long,
     val totalQuestionNumber: Int,
     val lastExamName: String? = null,
@@ -23,7 +23,7 @@ fun Subject.asStateModel(): SubjectModel {
     return SubjectModel( // todo 수정
         id = id,
         subjectTitle = name,
-        imoji = imoji,
+        emoji = emoji,
         lastExamName = lastExamName,
         lastExamDate = lastExamDate,
         timeLimit = timeLimit,
@@ -35,7 +35,7 @@ fun Subject.asStateModel(): SubjectModel {
 fun SubjectModel.asExternalModel(): Subject = Subject( // todo 수정
     id = id,
     name = subjectTitle,
-    imoji = imoji,
+    emoji = emoji,
     lastExamName = lastExamName,
     lastExamDate = lastExamDate,
     totalQuestionNumber = totalQuestionNumber,
@@ -54,7 +54,7 @@ fun createMockedSubjectModel(id: Int): SubjectModel {
     return SubjectModel(
         id = id,
         subjectTitle = "테스트 과목 : $id",
-        imoji = "💪",
+        emoji = "💪",
         lastExamName = "마지막 시험 이름 : $id",
         lastExamDate = Clock.System.now(),
         totalQuestionNumber = id,
