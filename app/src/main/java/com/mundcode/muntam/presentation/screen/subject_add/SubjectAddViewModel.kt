@@ -2,7 +2,7 @@ package com.mundcode.muntam.presentation.screen.subject_add
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.mundcode.domain.usecase.UpdateSubjectUseCase
+import com.mundcode.domain.usecase.InsertSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
@@ -17,13 +17,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubjectAddViewModel @Inject constructor(
-    private val updateSubjectUseCase: UpdateSubjectUseCase
+    private val insertSubjectUseCase: InsertSubjectUseCase
 ) : BaseViewModel() {
-    private val emojiList = listOf(
+    private val emojiList = listOf( // todo 데이터베이스에 대량으로 넣고 가져오기
         "💎",
         "⏰",
-        "🥰"
-    ) // todo 데이터베이스에 대량으로 넣고 가져오기
+        "🥰",
+        "👁",
+        "🦾",
+        "👅",
+        "🧠"
+    )
+
+    init {
+        Log.d("SR-N", "SubjectAddViewModel init")
+
+    }
 
     private val _subjectAddState = MutableStateFlow(SubjectAddState(emoji = emojiList.random()))
     val subjectAddState: StateFlow<SubjectAddState> = _subjectAddState
@@ -46,7 +55,7 @@ class SubjectAddViewModel @Inject constructor(
         updateState {
             subjectAddState.value.copy(
                 showNameDialog = false,
-                subjectName = name
+                subjectName = name.trim()
             )
         }
     }
@@ -112,7 +121,7 @@ class SubjectAddViewModel @Inject constructor(
                 timeLimit = input.getTimeLimitMilliSec(),
                 totalQuestionNumber = input.totalQuestionNumber
             )
-            updateSubjectUseCase(subject.asExternalModel())
+            insertSubjectUseCase(subject.asExternalModel())
             updateState {
                 subjectAddState.value.copy(completeSubjectAddition = true)
             }

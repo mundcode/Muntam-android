@@ -1,5 +1,6 @@
 package com.mundcode.muntam.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -7,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mundcode.muntam.presentation.screen.exams.ExamsScreen
 import com.mundcode.muntam.presentation.screen.main.MainScreen
+import com.mundcode.muntam.presentation.screen.main.navigateSingleTopTo
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectAddScreen
 import com.mundcode.muntam.presentation.screen.subject_modify.SubjectModifyScreen
 import com.mundcode.muntam.presentation.screen.subject_setting.SubjectSettingsScreen
@@ -26,11 +28,7 @@ fun MuntamNavHost(
             route = Main.route
         ) {
             MainScreen { route ->
-                navController.navigate(route) {
-                    popUpTo(Main.route) {
-                        saveState = true
-                    }
-                }
+                navController.navigateSingleTopTo(route)
             }
         }
 
@@ -39,7 +37,11 @@ fun MuntamNavHost(
         ) {
             SubjectAddScreen(
                 onClickBack = {
-                    navController.popBackStack()
+                    navController.popBackStack(
+                        route = SubjectAdd.route,
+                        inclusive = true,
+                        saveState = false
+                    )
                 }
             )
         }

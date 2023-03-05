@@ -75,20 +75,20 @@ fun SubjectItem(
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             SubjectNameTag(subject.subjectTitle)
-            if (subject.lastExamName != null && subject.lastExamDateText != null) {
-                Text(
-                    text = subject.lastExamName,
+
+            Text(
+                    text = subject.lastExamName ?: "최근 본 시험 없음",
                     style = MTTextStyle.text16.spToDp(),
                     color = Gray800,
                     maxLines = 2
                 )
                 Text(
-                    text = subject.lastExamDateText,
+                    text = subject.lastExamDateText ?: "클릭해서 시험보기",
                     style = MTTextStyle.text13.spToDp(),
                     color = Gray600,
                     maxLines = 1
                 )
-            }
+
         }
     }
 }
