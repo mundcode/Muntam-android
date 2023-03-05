@@ -5,7 +5,7 @@ import kotlinx.datetime.Instant
 data class Subject(
     val id: Int = 0,
     val name: String,
-    val imoji: String,
+    val emoji: String,
     val lastExamName: String?,
     val lastExamDate: Instant?,
     val isPinnded: Boolean,

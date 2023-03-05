@@ -1,5 +1,6 @@
 package com.mundcode.designsystem.components.dialogs.picker
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +49,8 @@ fun TimeLimitPickerDialog(
         onClickClose = onCancel,
         onClickCancel = onCancel,
         onClickConfirm = {
+            Log.d("SR-N", "${hourState.currentPage} / ${minState.currentPage} / ${secState.currentPage}")
+
             onResult(
                 hourState.currentPage % Unit24,
                 minState.currentPage % Unit60,
@@ -71,14 +74,17 @@ fun TimeLimitPickerDialog(
                 VerticalScrollNumberPicker(
                     count = 24,
                     unit = "시",
+                    pagerState = hourState
                 )
                 VerticalScrollNumberPicker(
                     count = 60,
                     unit = "분",
+                    pagerState = minState
                 )
                 VerticalScrollNumberPicker(
                     count = 60,
                     unit = "초",
+                    pagerState = secState
                 )
             }
         }

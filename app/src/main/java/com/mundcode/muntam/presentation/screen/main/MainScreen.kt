@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.main
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,7 +68,6 @@ fun MainScreen(
                 onNavOutEvent(route)
             },
             onBottomSheetEvent = {
-                Log.d("SR-N", "MainBottomNavHost onBottomSheetEvent")
                 bottomSheetState = it
             }
         )
