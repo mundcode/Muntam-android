@@ -86,7 +86,16 @@ class ExamsViewModel @Inject constructor(
         )
     }
 
-    fun onClickDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
+    fun onClickDeleteExam() {
+        onCancelDialog()
+        updateState {
+            state.value.copy(
+                showDeleteConfirmDialog = true
+            )
+        }
+    }
+
+    fun onClickConfirmDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
         deleteExamUseCase(state.value.currentExam.id)
     }
@@ -157,6 +166,7 @@ data class ExamsState(
     val showExamOptionBottomSheet: Boolean = false,
     val showUpdateNameDialog: Boolean = false,
     val showStartExamDialog: Boolean = false,
+    val showDeleteConfirmDialog: Boolean = false,
     val currentExam: ExamModel = ExamModel(),
     val toastState: ToastState = rememberToastState()
 )

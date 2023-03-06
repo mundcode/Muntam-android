@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.bottomsheets.MTBottomSheets
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.components.buttons.TimeRecordButton
+import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.dialogs.textfeild.NameEditorDialog
 import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
@@ -59,7 +60,9 @@ fun ExamsScreen(
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp)
                 ) {
                     items(state.exams) { item ->
                         Column {
@@ -129,6 +132,16 @@ fun ExamsScreen(
             hint = "시험명을 입력해주세요",
             onClickCancel = viewModel::onCancelDialog,
             onClickConfirm = viewModel::onClickStart
+        )
+    }
+
+    if (state.showDeleteConfirmDialog) {
+        AlertDialog(
+            title = "시험 삭제하기",
+            subtitle = "선택한 시험 리스트를 삭제합니다.\n삭제한 항목은 다시 되돌릴 수 없습니다.",
+            confirmText = "삭제하기",
+            onClickConfirm = viewModel::onClickConfirmDeleteExam,
+            onClickCancel = viewModel::onCancelDialog
         )
     }
 }
