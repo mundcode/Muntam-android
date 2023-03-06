@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class InsertExamUseCase @Inject constructor(
     private val examRepository: ExamRepository
 ) {
-    suspend operator fun invoke(exam: Exam) {
-        examRepository.insertExam(exam)
+    suspend operator fun invoke(exam: Exam): Long {
+        return examRepository.insertExam(exam)
     }
 }

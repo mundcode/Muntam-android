@@ -4,7 +4,7 @@ import com.mundcode.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 
 interface QuestionRepository {
-    suspend fun insertQuestion(question: Question)
+    suspend fun insertQuestion(question: Question): Long
 
     suspend fun insertQuestions(questions: List<Question>)
 

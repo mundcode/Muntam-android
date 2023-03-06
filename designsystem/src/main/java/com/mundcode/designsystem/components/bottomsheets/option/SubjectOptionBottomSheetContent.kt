@@ -21,7 +21,7 @@ fun SubjectOptionBottomSheetContent(
                 onClick = onClickDelete
             )
             OptionText(
-                text = "수정하기",
+                text = "이름 수정하기",
                 onClick = onClickModify
             )
         }

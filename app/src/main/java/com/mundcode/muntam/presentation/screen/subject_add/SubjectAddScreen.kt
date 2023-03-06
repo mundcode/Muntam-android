@@ -105,6 +105,7 @@ fun SubjectAddScreen(
 
         if (state.showNameDialog) {
             NameEditorDialog(
+                hint = "과목명을 입력해주세요",
                 onClickCancel = viewModel::onCancelDialog,
                 onClickConfirm = viewModel::onSelectSubjectName
             )

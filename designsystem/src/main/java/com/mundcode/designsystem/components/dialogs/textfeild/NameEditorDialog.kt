@@ -13,6 +13,8 @@ import com.mundcode.designsystem.components.texts.NameTextField
 
 @Composable
 fun NameEditorDialog(
+    title: String = "이름 수정하기",
+    hint: String = "시험명을 입력해주세요",
     onClickCancel: () -> Unit,
     onClickConfirm: (String) -> Unit
 ) {
@@ -21,7 +23,7 @@ fun NameEditorDialog(
     }
 
     ContentDialog(
-        title = "이름 수정하기",
+        title = title,
         onClickClose = onClickCancel,
         onClickCancel = onClickCancel,
         onClickConfirm = {
@@ -34,7 +36,7 @@ fun NameEditorDialog(
                 value = it
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholderText = "시험명을 입력해주세요"
+            placeholderText = hint
         )
     }
 }
@@ -42,5 +44,5 @@ fun NameEditorDialog(
 @Preview
 @Composable
 fun NameEditorDialogPreview() {
-    NameEditorDialog({}, {})
+    NameEditorDialog(onClickCancel = {}, onClickConfirm = {})
 }

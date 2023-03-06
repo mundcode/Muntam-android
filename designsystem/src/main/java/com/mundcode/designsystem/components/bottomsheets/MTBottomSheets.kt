@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.components.buttons.PrimaryMTButton
 import com.mundcode.designsystem.theme.MTBottomSheetBackground
@@ -36,6 +37,7 @@ fun MTBottomSheets(
 ) {
     val height = LocalConfiguration.current.screenHeightDp
     val density = LocalDensity.current
+    val systemUiController = rememberSystemUiController()
 
     val backgroundColor by animateColorAsState(
         targetValue = if (show) {
@@ -50,6 +52,8 @@ fun MTBottomSheets(
             .fillMaxSize()
             .background(color = backgroundColor)
     )
+
+    systemUiController.setStatusBarColor(color = backgroundColor)
 
     AnimatedVisibility(
         visible = show,

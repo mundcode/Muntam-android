@@ -99,6 +99,7 @@ fun SubjectModifyScreen(
 
         if (state.showNameEditorDialog) {
             NameEditorDialog(
+                title = "과목명을 입력해주세요",
                 onClickCancel = viewModel::onCancelDialog,
                 onClickConfirm = viewModel::onSelectName
             )
