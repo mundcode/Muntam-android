@@ -150,7 +150,8 @@ class ExamsViewModel @Inject constructor(
             state.value.copy(
                 showExamOptionBottomSheet = false,
                 showUpdateNameDialog = false,
-                showStartExamDialog = false
+                showStartExamDialog = false,
+                showDeleteConfirmDialog = false
             )
         }
     }
