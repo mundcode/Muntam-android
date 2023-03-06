@@ -92,7 +92,7 @@ class ExamsViewModel @Inject constructor(
         updateExamUseCase(exam.copy(name = name).asExternalModel())
     }
 
-    fun onClickStartExamDialogConfirm() = updateState {
+    fun onClickStartExamRecordButton() = updateState {
         state.value.copy(showStartExamDialog = true)
     }
 
