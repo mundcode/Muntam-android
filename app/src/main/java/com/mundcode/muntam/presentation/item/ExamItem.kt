@@ -27,6 +27,7 @@ import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray400
 import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray800
+import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.R
@@ -54,11 +55,11 @@ fun ExamItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             when (exam.state) {
-                ExamState.PAUSE -> {
-                    RunningTag(isSmall = true)
+                ExamState.END -> {
+                    FinishedTag(isSmall = true)
                 }
                 else -> {
-                    FinishedTag(isSmall = true)
+                    RunningTag(isSmall = true)
                 }
             }
 
@@ -79,14 +80,15 @@ fun ExamItem(
                             interactionSource = MutableInteractionSource()
                         )
                         .padding(end = 6.dp),
-                    tint = Gray400
+                    tint = if (exam.isFavorite) MTOrange else Gray400
                 )
+
                 Icon(
                     painter = painterResource(id = R.drawable.ic_more_24_dp),
                     contentDescription = null,
                     modifier = Modifier
                         .clickable(
-                            onClick = onClickSave,
+                            onClick = onClickMore,
                             indication = null,
                             interactionSource = MutableInteractionSource()
                         )
