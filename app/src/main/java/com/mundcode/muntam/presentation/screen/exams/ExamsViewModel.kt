@@ -74,6 +74,7 @@ class ExamsViewModel @Inject constructor(
 
     fun onClickExamSave(exam: ExamModel) = viewModelScope.launch(Dispatchers.IO) {
         updateExamUseCase(exam.copy(isFavorite = exam.isFavorite.not()).asExternalModel())
+        _toast.emit(if (exam.isFavorite) "즐겨찾기가 해제되었습니다." else "즐겨찾기가 추가되었습니다.")
     }
 
     fun onClickExamOption(examModel: ExamModel) = updateState {
@@ -90,11 +91,12 @@ class ExamsViewModel @Inject constructor(
 
     fun onClickModifyExamName() = updateState {
         state.value.copy(
-            showNameEditorDialog = true
+            showUpdateNameDialog = true
         )
     }
 
     fun onSelectExamName(name: String) = viewModelScope.launch(Dispatchers.IO) {
+        onCancelDialog()
         updateExamUseCase(state.value.currentExam.copy(name = name).asExternalModel())
     }
 
@@ -133,7 +135,7 @@ class ExamsViewModel @Inject constructor(
         updateState {
             state.value.copy(
                 showExamOptionBottomSheet = false,
-                showNameEditorDialog = false,
+                showUpdateNameDialog = false,
                 showStartExamDialog = false
             )
         }
@@ -148,7 +150,7 @@ data class ExamsState(
     val exams: List<ExamModel> = listOf(),
     val subjectTitle: String = "",
     val showExamOptionBottomSheet: Boolean = false,
-    val showNameEditorDialog: Boolean = false,
+    val showUpdateNameDialog: Boolean = false,
     val showStartExamDialog: Boolean = false,
     val currentExam: ExamModel = ExamModel(),
     val toastState: ToastState = rememberToastState()
