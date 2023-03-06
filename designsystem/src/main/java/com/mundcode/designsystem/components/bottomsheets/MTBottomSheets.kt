@@ -55,7 +55,6 @@ fun MTBottomSheets(
 
     systemUiController.setStatusBarColor(color = backgroundColor)
 
-
     AnimatedVisibility(
         visible = show,
         modifier = modifier
