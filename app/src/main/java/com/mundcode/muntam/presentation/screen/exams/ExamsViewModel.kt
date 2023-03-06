@@ -76,23 +76,29 @@ class ExamsViewModel @Inject constructor(
         updateExamUseCase(exam.copy(isFavorite = exam.isFavorite.not()).asExternalModel())
     }
 
-    fun onClickExamOption() = updateState {
-        state.value.copy(showExamOptionDialog = true)
+    fun onClickExamOption(examModel: ExamModel) = updateState {
+        state.value.copy(
+            showExamOptionBottomSheet = true,
+            currentExam = examModel
+        )
     }
 
-    fun onClickDeleteExam(exam: ExamModel) = viewModelScope.launch(Dispatchers.IO) {
-        deleteExamUseCase(exam.id)
+    fun onClickDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
+        onCancelDialog()
+        deleteExamUseCase(state.value.currentExam.id)
     }
 
     fun onClickModifyExamName() = updateState {
-        state.value.copy(showNameEditorDialog = true)
+        state.value.copy(
+            showNameEditorDialog = true
+        )
     }
 
-    fun onSelectExamName(exam: ExamModel, name: String) = viewModelScope.launch(Dispatchers.IO) {
-        updateExamUseCase(exam.copy(name = name).asExternalModel())
+    fun onSelectExamName(name: String) = viewModelScope.launch(Dispatchers.IO) {
+        updateExamUseCase(state.value.currentExam.copy(name = name).asExternalModel())
     }
 
-    fun onClickStartExamRecordButton() = updateState {
+    fun onClickMakeExamRecordButton() = updateState {
         state.value.copy(showStartExamDialog = true)
     }
 
@@ -126,7 +132,7 @@ class ExamsViewModel @Inject constructor(
     fun onCancelDialog() {
         updateState {
             state.value.copy(
-                showExamOptionDialog = false,
+                showExamOptionBottomSheet = false,
                 showNameEditorDialog = false,
                 showStartExamDialog = false
             )
@@ -141,8 +147,9 @@ class ExamsViewModel @Inject constructor(
 data class ExamsState(
     val exams: List<ExamModel> = listOf(),
     val subjectTitle: String = "",
-    val showExamOptionDialog: Boolean = false,
+    val showExamOptionBottomSheet: Boolean = false,
     val showNameEditorDialog: Boolean = false,
     val showStartExamDialog: Boolean = false,
+    val currentExam: ExamModel = ExamModel(),
     val toastState: ToastState = rememberToastState()
 )

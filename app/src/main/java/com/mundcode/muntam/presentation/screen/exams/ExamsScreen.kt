@@ -22,7 +22,6 @@ import com.mundcode.designsystem.components.buttons.TimeRecordButton
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.MTBottomSheetBackground
-import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -65,15 +64,30 @@ fun ExamsScreen(
                 }
             }
 
-            TimeRecordButton(onClick = { viewModel.onClickStartExamRecordButton() })
-
+            TimeRecordButton(onClick = { viewModel.onClickMakeExamRecordButton() })
 
 
             // todo 광고 뷰 추가
         }
     }
 
-    // todo 다이얼로그들 추가
-    // todo 토스트 추가
 
+
+
+    MTBottomSheets(
+        show = state.showExamOptionBottomSheet,
+        onClickOutSide = {}
+    ) {
+        SubjectOptionBottomSheetContent(
+            onClickClose = viewModel::onCancelDialog,
+            onClickDelete = {
+                viewModel.onClickDeleteExam()
+            },
+            onClickModify = {
+                viewModel.onClickModifyExamName()
+            }
+        )
+    }
+
+    // todo 토스트 추가
 }
