@@ -51,7 +51,9 @@ class ExamsViewModel @Inject constructor(
 
     private fun loadExams() = viewModelScope.launch(Dispatchers.IO) {
         getExamsUseCase(subjectId).collectLatest {
-            updateState { state.value.copy(exams = it.map { it.asStateModel() }) }
+            updateState {
+                state.value.copy(it.map { it.asStateModel() }.sorted())
+            }
         }
     }
 
@@ -89,10 +91,13 @@ class ExamsViewModel @Inject constructor(
         deleteExamUseCase(state.value.currentExam.id)
     }
 
-    fun onClickModifyExamName() = updateState {
-        state.value.copy(
-            showUpdateNameDialog = true
-        )
+    fun onClickModifyExamName() {
+        onCancelDialog()
+        updateState {
+            state.value.copy(
+                showUpdateNameDialog = true
+            )
+        }
     }
 
     fun onSelectExamName(name: String) = viewModelScope.launch(Dispatchers.IO) {

@@ -21,7 +21,7 @@ data class ExamModel( // todo 수정
     val lastQuestionNumber: Int? = null, // 시험 기록 중 마지막으로 푼 문제
     val deletedAt: Instant? = null, // 소프트 딜리트 용도
     val state: ExamState = ExamState.READY
-) {
+) : Comparable<ExamModel> {
     val createdAtText: String = createdAt.asMTDateText()
 
     val expiredTimeText: String? = obtainExpiredTime()
@@ -45,6 +45,26 @@ data class ExamModel( // todo 수정
             lastAt == null -> Gray500
             timeLimit - lastAt >= 0 -> Gray500
             else -> MTRed
+        }
+    }
+
+    override fun compareTo(other: ExamModel): Int {
+        return if (this.isFavorite != other.isFavorite) {
+            if (this.isFavorite && other.isFavorite.not()) {
+                -1
+            } else if (this.isFavorite.not() && other.isFavorite) {
+                1
+            } else {
+                0
+            }
+        } else {
+            if (this.createdAt > other.createdAt) {
+                -1
+            } else if (this.createdAt < other.createdAt) {
+                1
+            } else {
+                0
+            }
         }
     }
 }
