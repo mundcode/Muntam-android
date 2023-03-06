@@ -62,7 +62,6 @@ fun ExamsScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 20.dp)
                 ) {
                     items(state.exams) { item ->
                         Column {
@@ -78,7 +77,12 @@ fun ExamsScreen(
                                     viewModel.onClickExamSave(item)
                                 }
                             )
-                            Divider(Modifier.fillMaxWidth(), color = Gray200)
+                            Divider(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp),
+                                color = Gray200
+                            )
                         }
                     }
                 }
