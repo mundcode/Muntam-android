@@ -59,7 +59,7 @@ fun ExamsScreen(
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
                 ) {
                     items(state.exams) { item ->
                         Column {
