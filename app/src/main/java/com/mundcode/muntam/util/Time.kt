@@ -15,7 +15,7 @@ fun Instant.asMTDateText(): String {
     }
 }
 
-fun Long.getTimeLimitText(): String {
+fun Long.asTimeLimitText(): String {
     val totalSec = this / 1000
     val sec = totalSec % 60
     val totalMin = totalSec / 60
@@ -23,3 +23,13 @@ fun Long.getTimeLimitText(): String {
     val hour = totalMin / 60
     return "%d시간 %02d분 %02d초".format(hour, min, sec)
 }
+
+fun Long.asCurrentTimerText(): String {
+    val totalSec = this / 1000
+    val sec = totalSec % 60
+    val totalMin = totalSec / 60
+    val min = totalMin % 60
+    val hour = totalMin / 60
+    return "%02d:%02d:%02d".format(hour, min, sec)
+}
+

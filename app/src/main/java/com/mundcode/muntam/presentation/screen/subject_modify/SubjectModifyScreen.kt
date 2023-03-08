@@ -31,7 +31,7 @@ import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.muntam.R
-import com.mundcode.muntam.util.getTimeLimitText
+import com.mundcode.muntam.util.asTimeLimitText
 import com.mundcode.muntam.util.hiltViewModel
 
 @Composable
@@ -71,7 +71,7 @@ fun SubjectModifyScreen(
 
                 ReadOnlyOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = subject.timeLimit.getTimeLimitText(),
+                    value = subject.timeLimit.asTimeLimitText(),
                     placeholder = "제한 시간",
                     emoji = "⏰",
                     onClick = {}
