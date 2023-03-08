@@ -28,6 +28,10 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
     )
     abstract fun getSubjectById(id: Int): SubjectEntity
 
+    abstract fun getSubjectByIdFlow(id: Int): Flow<SubjectEntity>
+
+    fun getSubjectDistinctUntilChanged(id: Int) = getSubjectByIdFlow(id).distinctUntilChanged()
+
     @Update
     abstract suspend fun updateSubjects(entities: List<SubjectEntity>)
 

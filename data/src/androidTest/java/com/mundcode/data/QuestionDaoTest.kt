@@ -72,7 +72,7 @@ class QuestionDaoTest {
     @Test
     fun testWriteAndReadExam() = runBlocking(Dispatchers.IO) {
         // subjectId 과 examId 모두 0 으로 하면 Foreign Key Constraint Failed  에러
-        val result = examDao.getExam(EXAM_ID)
+        val result = examDao.getExamById(EXAM_ID)
         assertEquals(examEntity.id, result.id)
         // 디비에 들어갔다가 나오면 InstantConverters 에 따라서 값이 바뀌어 있음.
         assertFalse(examEntity.createdAt == result.createdAt)

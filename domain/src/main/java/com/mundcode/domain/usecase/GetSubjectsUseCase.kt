@@ -8,5 +8,5 @@ import javax.inject.Singleton
 class GetSubjectsUseCase @Inject constructor(
     private val subjectRepository: SubjectRepository
 ) {
-    operator fun invoke() = subjectRepository.getSubjects()
+    operator fun invoke() = subjectRepository.getSubjectsFlow()
 }

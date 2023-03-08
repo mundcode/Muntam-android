@@ -18,8 +18,12 @@ class ExamRepositoryImpl @Inject constructor(
         return examDao.insert(exam.asEntity())
     }
 
-    override suspend fun getExam(examId: Int): Exam {
-        return examDao.getExam(examId).asExternalModel()
+    override suspend fun getExamById(id: Int): Exam {
+        return examDao.getExamById(id).asExternalModel()
+    }
+
+    override fun getExamByIdFlow(id: Int): Flow<Exam> {
+        return examDao.getExamByIdDistinctUntilChanged(id).map(ExamEntity::asExternalModel)
     }
 
     override fun getExams(subjectId: Int): Flow<List<Exam>> {
@@ -28,9 +32,6 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getExamById(id: Int): Flow<Exam> {
-        return examDao.getExamById(id).map(ExamEntity::asExternalModel)
-    }
 
     override suspend fun updateExam(exam: Exam) {
         examDao.updateExam(exam.asEntity())
