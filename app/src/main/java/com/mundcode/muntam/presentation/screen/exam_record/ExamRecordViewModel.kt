@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.GetExamByIdFlowUseCase
 import com.mundcode.domain.usecase.GetExamByIdUseCase
 import com.mundcode.domain.usecase.GetSubjectByIdFlowUseCase
-import com.mundcode.domain.usecase.GetSubjectByIdUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
@@ -21,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getSubjectByIdUseCase: GetSubjectByIdUseCase,
     getSubjectByIdFlowUseCase: GetSubjectByIdFlowUseCase,
     getExamByIdUseCase: GetExamByIdUseCase,
     getExamByIdFlowUseCase: GetExamByIdFlowUseCase,
@@ -55,6 +53,52 @@ class ExamRecordViewModel @Inject constructor(
                     state.value.copy(examModel = it.asStateModel())
                 }
             }
+        }
+    }
+
+    fun onClickScreen() {
+
+    }
+
+    private fun onClickStart() {
+
+    }
+
+    fun onClickBack() {
+
+    }
+
+    fun onClickComplete() {
+
+    }
+
+    fun onClickPause() {
+
+    }
+
+    fun onClickJump() {
+
+    }
+
+    fun onSelectConfirmBackDialog() {
+
+    }
+
+    fun onSelectConfirmCompleteDialog() {
+
+    }
+
+    fun onSelectNumberJumpDialog() {
+
+    }
+
+    fun onCancelDialog() {
+        updateState {
+            state.value.copy(
+                showBackConfirmDialog = false,
+                showCompleteDialog = false,
+                showJumpQuestionDialog = false
+            )
         }
     }
 
