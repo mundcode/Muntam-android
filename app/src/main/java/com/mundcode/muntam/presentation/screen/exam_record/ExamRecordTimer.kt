@@ -1,7 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
 import com.mundcode.domain.model.enums.ExamState
-import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -9,9 +8,10 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class ExamRecordTimer(
-    private val initialTime: Long = 0,
+    private val initialTime: Long = DEFAULT_INITIAL_TIME,
     private val timeLimit: Long = 0,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val onTick: suspend (sec: Long) -> Unit,
 ) {
     private var currentTime: Long = initialTime
     private var remainTime: Long = timeLimit
@@ -30,6 +30,7 @@ class ExamRecordTimer(
             mutex.withLock {
                 currentTime += 1
                 remainTime -= 1
+                onTick(currentTime)
             }
         }
     }
@@ -40,7 +41,7 @@ class ExamRecordTimer(
         }
     }
 
-    fun getCurrentTimeText(): String = currentTime.asTimeLimitText()
-
-    fun getRemainTimeText(): String = remainTime.asTimeLimitText()
+    companion object {
+        const val DEFAULT_INITIAL_TIME = 0L
+    }
 }
