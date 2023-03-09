@@ -11,6 +11,8 @@ import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
+const val FIRST_QUESTION_NUMBER = 1
+
 data class ExamModel( // todo 수정
     var id: Int = 0,
     val subjectId: Int = 0,
