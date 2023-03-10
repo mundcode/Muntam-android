@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
 import com.mundcode.data.local.database.model.QuestionEntity
+import com.mundcode.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,7 +14,14 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
-    abstract fun getQuestionsByExamId(examId: Int): Flow<List<QuestionEntity>>
+    abstract fun getQuestionsByExamIdFlow(examId: Int): Flow<List<QuestionEntity>>
+
+    @Query(
+        value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
+        """
+    )
+    abstract fun getQuestionByExamId(examId: Int): List<QuestionEntity>
 
     @Query(
         value = """

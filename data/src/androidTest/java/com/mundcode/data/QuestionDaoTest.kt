@@ -80,7 +80,7 @@ class QuestionDaoTest {
 
     @Test
     fun testGetQuestionsByExamId() = runBlocking {
-        val result = questionDao.getQuestionsByExamId(examId = EXAM_ID).firstOrNull()
+        val result = questionDao.getQuestionsByExamIdFlow(examId = EXAM_ID).firstOrNull()
         assertEquals(result?.map { it.id }, questionsEntity.map { it.id })
     }
 

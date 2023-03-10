@@ -5,9 +5,9 @@ import com.mundcode.data.local.database.model.asEntity
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.repository.QuestionRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class QuestionRepositoryImpl @Inject constructor(
     private val questionDao: QuestionDao
@@ -18,12 +18,15 @@ class QuestionRepositoryImpl @Inject constructor(
     override suspend fun insertQuestions(questions: List<Question>) =
         questionDao.insertAll(questions.map { it.asEntity() })
 
-    override fun getQuestionsByExamId(examId: Int): Flow<List<Question>> =
-        questionDao.getQuestionsByExamId(examId).map { questions ->
+    override fun getQuestionsByExamIdFlow(examId: Int): Flow<List<Question>> =
+        questionDao.getQuestionsByExamIdFlow(examId).map { questions ->
             questions.map { question ->
                 question.asExternalModel()
             }
         }
+
+    override fun getQuestionByExamId(examId: Int): List<Question> =
+        questionDao.getQuestionByExamId(examId).map { it.asExternalModel() }
 
     override fun getQuestionByQuestionId(examId: Int, questionNumber: Int): Flow<Question> =
         questionDao.getQuestionByQuestionNumber(examId, questionNumber).map {
