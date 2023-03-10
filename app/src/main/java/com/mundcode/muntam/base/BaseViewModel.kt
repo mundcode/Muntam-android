@@ -17,6 +17,8 @@ abstract class BaseViewModel<T> : ViewModel() {
     protected val _state = MutableStateFlow(createInitialState())
     val state: StateFlow<T> = _state
 
+    protected val stateValue: T get() = state.value
+
     protected val _toast = MutableSharedFlow<String>()
     val toast: SharedFlow<String> = _toast.asSharedFlow()
 
