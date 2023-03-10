@@ -13,6 +13,7 @@ class ExamRecordTimer(
     private val initialTime: Long = DEFAULT_INITIAL_TIME,
     private val timeLimit: Long = 0,
     private val scope: CoroutineScope,
+    private val initQuestion: List<QuestionModel>,
     private val onTick: suspend (sec: Long) -> Unit = {},
 ) {
     private var currentTime: Long = initialTime
@@ -23,6 +24,10 @@ class ExamRecordTimer(
     private var state: ExamState = ExamState.READY
 
     private val mutex = Mutex()
+
+    init {
+        initializeLapsedQuestion(initQuestion)
+    }
 
     fun start() = scope.launch {
         mutex.withLock {
@@ -45,26 +50,37 @@ class ExamRecordTimer(
         }
     }
 
+    private fun initializeLapsedQuestion(questions: List<QuestionModel>) {
+        // todo 크기 검증 문제 업데이트시 modifiedAt 넣기
+        var lastLapsedQuestion = questions.firstOrNull()
+        for (item in questions) {
+            val prev = lastLapsedQuestion?.modifiedAt
+            val cur = item.modifiedAt
+            if (prev != null && cur != null && prev < cur) {
+                lastLapsedQuestion = item
+            }
+        }
+        lastLapsedQuestion?.let {
+            laps.add(it.lapsedExamTime)
+        }
+    }
+
     // todo 초기에 이미 푼 문제 넣는 로직 추가
     fun addCompletedQuestion(question: QuestionModel): QuestionModel {
         val lastLaps = laps.lastOrNull()
         laps.add(currentTime)
 
         val prevLapsedTime = question.lapsedTime
-        val newQuestion = lastLaps?.let {
-            question.copy(
-                state = QuestionState.PAUSE,
-                lapsedTime = currentTime - it + prevLapsedTime,
-                lapsedExamTime = currentTime
-            )
-        } ?: run {
-            question.copy(
-                state = QuestionState.PAUSE,
-                lapsedTime = currentTime + prevLapsedTime,
-                lapsedExamTime = currentTime
-            )
-        }
-        return newQuestion
+
+        return question.copy(
+            state = QuestionState.PAUSE,
+            lapsedTime = if (lastLaps != null) {
+                currentTime - lastLaps + prevLapsedTime
+            } else {
+                currentTime + prevLapsedTime
+            },
+            lapsedExamTime = currentTime
+        )
     }
 
 
