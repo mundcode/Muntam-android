@@ -9,6 +9,7 @@ import com.mundcode.domain.usecase.GetExamByIdUseCase
 import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
 import com.mundcode.domain.usecase.GetSubjectByIdFlowUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
+import com.mundcode.domain.usecase.UpdateQuestionUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
 import com.mundcode.muntam.presentation.model.ExamModel
@@ -17,6 +18,7 @@ import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +30,8 @@ class ExamRecordViewModel @Inject constructor(
     private val getExamByIdUseCase: GetExamByIdUseCase,
     private val getExamByIdFlowUseCase: GetExamByIdFlowUseCase,
     private val updateExamUseCase: UpdateExamUseCase,
-    private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase
+    private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase,
+    private val updateQuestionUseCase: UpdateQuestionUseCase
 ) : BaseViewModel<ExamRecordState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[ExamRecord.subjectIdArg])
     private val examId: Int = checkNotNull(savedStateHandle[ExamRecord.examIdArg])
@@ -57,6 +60,14 @@ class ExamRecordViewModel @Inject constructor(
 
             getExamByIdFlowUseCase(examId).collectLatest {
                 updateState {
+                    when (it.state) {
+                        ExamState.RUNNING -> {
+                            timer.start()
+                        }
+                        else -> {
+                            timer.pause()
+                        }
+                    }
                     state.value.copy(examModel = it.asStateModel())
                 }
             }
@@ -71,64 +82,90 @@ class ExamRecordViewModel @Inject constructor(
         }
     }
 
-    fun onClickScreen() {
+    fun onClickScreen() = viewModelScope.launch(Dispatchers.IO) {
         when (currentState) {
             ExamState.READY -> {
-                timer.start()
+                updateExamState(newExamState = ExamState.RUNNING, lastQuestionNumber = 1)
+                updateQuestionState(1, QuestionState.RUNNING)
             }
             ExamState.PAUSE -> {
-                timer.start()
+                updateExamState(ExamState.RUNNING)
+                updateQuestionState(stateValue.examModel.lastQuestionNumber, QuestionState.RUNNING)
             }
             ExamState.RUNNING -> {
-                val currentNumber = (state.value.examModel.lastQuestionNumber ?: 1)
-                val nextNumber: Int? =
-                    if (currentNumber + 1 < state.value.subjectModel.totalQuestionNumber) {
-                        currentNumber + 1
+                val currentNumber = state.value.examModel.lastQuestionNumber
+                val currentQuestion = currentNumber?.let {
+                    stateValue.questionModels.getOrNull(it)
+                }
+                val nextQuestion: QuestionModel? =
+                    if (currentNumber != null && currentNumber + 1 < state.value.subjectModel.totalQuestionNumber) {
+                        stateValue.questionModels.getOrNull(currentNumber + 1)
                     } else {
                         val currentQuestions = state.value.questionModels
-                        currentQuestions.find { it.state != QuestionState.END }?.questionNumber?.let {
-                            it
+                        currentQuestions.find {
+                            it.state != QuestionState.END
+                                    && it.state != QuestionState.PAUSE
+                                    && it.questionNumber != currentNumber
                         }
                     }
 
-                viewModelScope.launch {
-                    nextNumber?.let {
-                        updateExamUseCase(
-                            state.value.examModel.copy(
-                                lastQuestionNumber = it
-                            ).asExternalModel()
-                        )
-                    } ?: run {
-                        updateExamUseCase(
-                            state.value.examModel.copy(
-                                state = ExamState.END
-                            ).asExternalModel()
-                        )
+                nextQuestion?.let { next ->
+                    updateExamUseCase(
+                        state.value.examModel.copy(
+                            lastQuestionNumber = next.questionNumber
+                        ).asExternalModel()
+                    )
+
+                    updateQuestionUseCase(
+                        next.copy(state = QuestionState.RUNNING).asExternalModel()
+                    )
+                    lapsAndUpdateQuestion(currentQuestion)
+                } ?: run {
+                    updateExamState(ExamState.END)
+                    lapsAndUpdateQuestion(currentQuestion)
+                    stateValue.questionModels.forEach {
+                        updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
                     }
+                    updateState { stateValue.copy(completeAllQuestion = true) }
                 }
             }
         }
     }
 
-    private fun onClickStart() {
-
-    }
-
-    fun onClickBack() {
-
+    fun onClickBack() = viewModelScope.launch {
+        updateState {
+            stateValue.copy(
+                showBackConfirmDialog = true
+            )
+        }
     }
 
     fun onClickComplete() {
-
-    }
-
-    fun onClickPause() {
-
+        updateState {
+            stateValue.copy(
+                showCompleteDialog = true
+            )
+        }
     }
 
     fun onClickJump() {
+        updateState {
+            stateValue.copy(
+                showJumpQuestionDialog = true
+            )
+        }
+    }
+
+    fun onClickPause() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamUseCase(
+            stateValue.examModel.copy(
+                state = ExamState.PAUSE
+            ).asExternalModel()
+        )
+
 
     }
+
 
     fun onSelectConfirmBackDialog() {
 
@@ -152,6 +189,40 @@ class ExamRecordViewModel @Inject constructor(
         }
     }
 
+    private suspend fun updateExamState(newExamState: ExamState, lastQuestionNumber: Int? = null) {
+        lastQuestionNumber?.let {
+            updateExamUseCase(
+                state.value.examModel.copy(
+                    state = newExamState,
+                    lastQuestionNumber = it
+                ).asExternalModel()
+            )
+        } ?: run {
+            updateExamUseCase(
+                state.value.examModel.copy(
+                    state = newExamState
+                ).asExternalModel()
+            )
+        }
+    }
+
+    private suspend fun updateQuestionState(questionNumber: Int?, newQuestionState: QuestionState) =
+        viewModelScope.launch {
+            questionNumber?.let { last ->
+                stateValue.questionModels.find { it.questionNumber == last }?.let {
+                    updateQuestionUseCase(
+                        it.copy(state = newQuestionState).asExternalModel()
+                    )
+                }
+            }
+        }
+
+    private suspend fun lapsAndUpdateQuestion(question: QuestionModel?) {
+        question?.let {
+            updateQuestionUseCase(timer.addCompletedQuestion(it).asExternalModel())
+        }
+    }
+
     override fun createInitialState(): ExamRecordState {
         return ExamRecordState()
     }
@@ -163,5 +234,6 @@ data class ExamRecordState(
     val questionModels: List<QuestionModel> = listOf(),
     val showBackConfirmDialog: Boolean = false,
     val showCompleteDialog: Boolean = false,
-    val showJumpQuestionDialog: Boolean = false
+    val showJumpQuestionDialog: Boolean = false,
+    val completeAllQuestion: Boolean = false
 )
