@@ -27,8 +27,9 @@ import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.util.spToDp
-import com.mundcode.muntam.presentation.screen.exam_record.LINE_WIDTH
-import com.mundcode.muntam.presentation.screen.exam_record.PROGRESS_ANIM_DURATION_MILLIES
+
+const val PROGRESS_ANIM_DURATION_MILLIES = 1000
+const val LINE_WIDTH = 24
 
 @Composable
 fun TimerCircularProgressBar(
@@ -38,7 +39,9 @@ fun TimerCircularProgressBar(
     prevPercentage: Float = 0f,
     newPercentage: Float,
     currentTime: String,
-    remainTime: String
+    currentTimeColor: Color = Gray900,
+    remainTime: String,
+    remainTimeColor: Color = MTRed
 ) {
     val currentPercentage = remember { Animatable(prevPercentage) }
 
@@ -74,8 +77,8 @@ fun TimerCircularProgressBar(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TimeText(description = "현재시간", timeText = currentTime, color = Gray900)
-            TimeText(description = "남은시간", timeText = remainTime, color = MTRed)
+            TimeText(description = "현재시간", timeText = currentTime, color = currentTimeColor)
+            TimeText(description = "남은시간", timeText = remainTime, color = remainTimeColor)
         }
     }
 }
