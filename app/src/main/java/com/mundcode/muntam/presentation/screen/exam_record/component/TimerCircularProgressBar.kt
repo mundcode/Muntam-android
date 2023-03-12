@@ -96,7 +96,7 @@ fun TimeText(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = description, style = MTTextStyle.text13.spToDp(), color = Gray500)
-        Text(text = timeText, style = MTTextStyle.timeTextStyle.spToDp(), color = color)
+        Text(text = timeText, style = MTTextStyle.textBold32.spToDp(), color = color)
     }
 }
 

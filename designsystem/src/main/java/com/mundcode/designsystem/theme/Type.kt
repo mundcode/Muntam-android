@@ -13,7 +13,7 @@ val MTFontFamily = FontFamily(
 )
 
 object MTTextStyle {
-    val timeTextStyle = TextStyle(
+    val textBold32 = TextStyle(
         fontSize = 32.sp,
         fontFamily = MTFontFamily,
         fontWeight = FontWeight.Bold,
