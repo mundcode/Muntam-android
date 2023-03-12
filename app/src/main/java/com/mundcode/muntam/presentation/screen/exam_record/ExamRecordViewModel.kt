@@ -148,12 +148,20 @@ class ExamRecordViewModel @Inject constructor(
         pause()
     }
 
+    fun onClickSetting() {
+        // todo Setting 추가
+    }
+
     fun onClickComplete() {
         updateState {
             stateValue.copy(
                 showCompleteDialog = true
             )
         }
+        pause()
+    }
+
+    fun onClickPause() {
         pause()
     }
 
