@@ -28,6 +28,11 @@ abstract class SubjectDao : BaseDao<SubjectEntity> {
     )
     abstract fun getSubjectById(id: Int): SubjectEntity
 
+    @Query(
+        value = """
+            SELECT * FROM subjects WHERE deleted_at IS NULL AND id = :id
+        """
+    )
     abstract fun getSubjectByIdFlow(id: Int): Flow<SubjectEntity>
 
     fun getSubjectDistinctUntilChanged(id: Int) = getSubjectByIdFlow(id).distinctUntilChanged()
