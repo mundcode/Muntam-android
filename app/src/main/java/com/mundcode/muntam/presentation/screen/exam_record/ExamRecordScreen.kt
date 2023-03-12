@@ -1,23 +1,28 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.etc.Margin
@@ -44,29 +49,43 @@ fun ExamRecordScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    // todo 리스너 달기
+
     Scaffold(
         topBar = {
             MTTitleToolbar(
                 onClickBack = viewModel::onClickBack,
-                title = state.examModel.name,
+                title = state.examModel.name.ifEmpty { "왜 시험명이 비었지" },
                 icons = listOf(
                     {
-                        Button(onClick = viewModel::onClickSetting) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_setttings_24_dp),
-                                contentDescription = null,
-                                tint = Gray900
-                            )
-                        }
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(start = 20.dp, end = 12.dp)
+                                .clickable(
+                                    onClick = viewModel::onClickSetting,
+                                    indication = null,
+                                    interactionSource = MutableInteractionSource()
+                                ),
+                            painter = painterResource(id = R.drawable.ic_setttings_24_dp),
+                            contentDescription = null,
+                            tint = Gray900
+                        )
                     },
                     {
-                        Button(onClick = viewModel::onClickComplete) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_check_24_dp),
-                                contentDescription = null,
-                                tint = Gray900
-                            )
-                        }
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(end = 20.dp)
+                                .clickable(
+                                    onClick = viewModel::onClickSetting,
+                                    indication = null,
+                                    interactionSource = MutableInteractionSource()
+                                ),
+                            painter = painterResource(id = R.drawable.ic_check_24_dp),
+                            contentDescription = null,
+                            tint = Gray900
+                        )
                     }
                 )
             )
@@ -76,7 +95,7 @@ fun ExamRecordScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .padding(bottom = 42.dp),
+                    .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 BottomButton(
@@ -128,8 +147,9 @@ fun ExamRecordScreen(
                             color = MTOrange,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
-                            maxLines = 1
+                                .padding(horizontal = 20.dp),
+                            maxLines = 1,
+                            textAlign = TextAlign.Center
                         )
                     }
                 )
@@ -270,13 +290,15 @@ fun ExamRecordTimerScreen(
     // todo 스크롤러블로 수정
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         topStateComposable()
 
         Margin(dp = 24.dp)
 
         TimerCircularProgressBar(
+            modifier = Modifier.size(296.dp),
             backgroundLineColor = backgroundLineColor,
             lineColor = lineColor,
             prevPercentage = prevPercentage,

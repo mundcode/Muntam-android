@@ -70,7 +70,7 @@ fun MTTitleToolbar(
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row {
                 icons.forEach {
                     it()
                 }

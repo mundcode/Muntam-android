@@ -8,5 +8,5 @@ import com.mundcode.designsystem.theme.MTTextStyle
 fun TopEmoji(
     emoji: String
 ) {
-    Text(text = emoji, style = MTTextStyle.textBold32)
+    Text(text = emoji, style = MTTextStyle.text20)
 }

@@ -51,7 +51,7 @@ class ExamRecordViewModel @Inject constructor(
         }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
 

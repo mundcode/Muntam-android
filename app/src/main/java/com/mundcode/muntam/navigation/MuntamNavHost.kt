@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordScreen
 import com.mundcode.muntam.presentation.screen.exams.ExamsScreen
 import com.mundcode.muntam.presentation.screen.main.MainScreen
 import com.mundcode.muntam.presentation.screen.main.navigateSingleTopTo
@@ -97,7 +98,7 @@ fun MuntamNavHost(
                 navBackStackEntry.arguments?.getInt(ExamRecord.subjectIdArg) ?: return@composable
             val examId =
                 navBackStackEntry.arguments?.getInt(ExamRecord.examIdArg) ?: return@composable
-            Dummy(screenName = "ExamRecord \n$subjectId\n$examId")
+            ExamRecordScreen()
         }
 
         composable(
