@@ -121,6 +121,8 @@ class ExamRecordViewModel @Inject constructor(
 
 
                 nextQuestion?.let { next ->// 풀 문제가 있다면
+                    lapsAndUpdateQuestion(currentQuestion) // 현재 상태 문제 수정 및 기록
+
                     updateExamUseCase( // 마지막 문제 번호 수정
                         state.value.examModel.copy(
                             lastQuestionNumber = next.questionNumber
@@ -130,14 +132,8 @@ class ExamRecordViewModel @Inject constructor(
                     updateQuestionUseCase( // 다음 문제 상태 수정
                         next.copy(state = QuestionState.RUNNING).asExternalModel()
                     )
-                    lapsAndUpdateQuestion(currentQuestion) // 현재 상태 문제 수정 및 기록
                 } ?: run { // 풀 문제가 없다면 종료
-                    updateExamState(ExamState.END)
-                    lapsAndUpdateQuestion(currentQuestion)
-                    stateValue.questionModels.forEach {
-                        updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
-                    }
-                    updateState { stateValue.copy(completeAllQuestion = true) }
+                    end()
                 }
             }
         }
@@ -170,28 +166,46 @@ class ExamRecordViewModel @Inject constructor(
         pause()
     }
 
-    fun pause() = viewModelScope.launch(Dispatchers.IO) {
-        updateExamState(newExamState = ExamState.PAUSE)
-        lapsAndUpdateQuestion(currentQuestion)
-    }
-
-
     fun onSelectConfirmBackDialog() {
         onCancelDialog()
-        // todo
+        pause()
+        updateState {
+            stateValue.copy(clickBack = true)
+        }
     }
 
     fun onSelectConfirmCompleteDialog() {
         onCancelDialog()
-        // todo
+        end()
     }
 
-    fun onSelectNumberJumpDialog() {
+    fun onSelectNumberJumpDialog(selectedNumber: Int) = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
-        // todo
+        lapsAndUpdateQuestion(currentQuestion)
+        updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber)
+        updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING)
     }
 
-    fun onCancelDialog() {
+    private fun pause() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamState(newExamState = ExamState.PAUSE)
+        lapsAndUpdateQuestion(currentQuestion)
+    }
+
+    private fun resume() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamState(newExamState = ExamState.RUNNING)
+        updateQuestionState(lastQuestionNumber, QuestionState.RUNNING)
+    }
+
+    private fun end() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamState(ExamState.END)
+        lapsAndUpdateQuestion(currentQuestion)
+        stateValue.questionModels.forEach {
+            updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
+        }
+        updateState { stateValue.copy(completeAllQuestion = true) }
+    }
+
+    private fun onCancelDialog() {
         updateState {
             state.value.copy(
                 showBackConfirmDialog = false,
@@ -244,5 +258,6 @@ data class ExamRecordState(
     val showBackConfirmDialog: Boolean = false,
     val showCompleteDialog: Boolean = false,
     val showJumpQuestionDialog: Boolean = false,
-    val completeAllQuestion: Boolean = false
+    val completeAllQuestion: Boolean = false,
+    val clickBack: Boolean = false
 )
