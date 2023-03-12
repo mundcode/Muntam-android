@@ -51,7 +51,6 @@ class ExamRecordTimer(
     }
 
     private fun initializeLapsedQuestion(questions: List<QuestionModel>) {
-        // todo 크기 검증 문제 업데이트시 modifiedAt 넣기
         var lastLapsedQuestion = questions.firstOrNull()
         for (item in questions) {
             val prev = lastLapsedQuestion?.modifiedAt
@@ -65,7 +64,6 @@ class ExamRecordTimer(
         }
     }
 
-    // todo 초기에 이미 푼 문제 넣는 로직 추가
     fun addCompletedQuestion(question: QuestionModel): QuestionModel {
         val lastLaps = laps.lastOrNull()
         laps.add(currentTime)
