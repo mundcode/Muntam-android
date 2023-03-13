@@ -151,7 +151,8 @@ fun ExamRecordScreen(
                             maxLines = 1,
                             textAlign = TextAlign.Center
                         )
-                    }
+                    },
+                    onClickScreen = viewModel::onClickScreen
                 )
             }
             ExamState.RUNNING -> {
@@ -191,7 +192,8 @@ fun ExamRecordScreen(
                             }
                         )
                     },
-                    bottomStateComposable = {}
+                    bottomStateComposable = {},
+                    onClickScreen = viewModel::onClickScreen
                 )
             }
             ExamState.PAUSE -> {
@@ -226,7 +228,8 @@ fun ExamRecordScreen(
                                 .padding(20.dp),
                             maxLines = 1
                         )
-                    }
+                    },
+                    onClickScreen = viewModel::onClickScreen
                 )
             }
             ExamState.END -> {
@@ -266,7 +269,8 @@ fun ExamRecordScreen(
                                 .padding(20.dp),
                             maxLines = 1
                         )
-                    }
+                    },
+                    onClickScreen = viewModel::onClickScreen
                 )
             }
         }
@@ -284,12 +288,13 @@ fun ExamRecordTimerScreen(
     currentTimeColor: Color = Gray900,
     remainTime: String,
     remainTimeColor: Color = MTRed,
+    onClickScreen: () -> Unit,
     topStateComposable: @Composable () -> Unit = {},
     bottomStateComposable: @Composable () -> Unit = {}
 ) {
     // todo 스크롤러블로 수정
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClickScreen),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
