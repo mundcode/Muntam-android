@@ -55,7 +55,7 @@ fun ExamRecordScreen(
         topBar = {
             MTTitleToolbar(
                 onClickBack = viewModel::onClickBack,
-                title = state.examModel.name.ifEmpty { "왜 시험명이 비었지" },
+                title = state.examModel.name,
                 icons = listOf(
                     {
                         Icon(
@@ -166,9 +166,9 @@ fun ExamRecordScreen(
                     (state.examModel.lastAt
                         ?.div(state.subjectModel.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
-                    currentTime = state.examModel.currentExamTimeText,
+                    currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,
-                    remainTime = state.examModel.remainExamTimeText,
+                    remainTime = state.remainExamTimeText,
                     remainTimeColor = MTRed,
                     topStateComposable = {
                         TopExamState(
@@ -206,9 +206,9 @@ fun ExamRecordScreen(
                     newPercentage = (state.examModel.lastAt
                         ?.div(state.subjectModel.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
-                    currentTime = state.examModel.currentExamTimeText,
+                    currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,
-                    remainTime = state.examModel.remainExamTimeText,
+                    remainTime = state.remainExamTimeText,
                     remainTimeColor = MTRed,
                     topStateComposable = {
                         TopExamState(
@@ -243,9 +243,9 @@ fun ExamRecordScreen(
                     (state.examModel.lastAt
                         ?.div(state.subjectModel.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
-                    currentTime = state.examModel.currentExamTimeText,
+                    currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,
-                    remainTime = state.examModel.remainExamTimeText,
+                    remainTime = state.remainExamTimeText,
                     remainTimeColor = Gray300,
                     topStateComposable = {
                         TopExamState(

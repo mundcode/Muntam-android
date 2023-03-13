@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exams
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.mundcode.designsystem.state.ToastState
@@ -128,6 +129,7 @@ class ExamsViewModel @Inject constructor(
             createdAt = Clock.System.now()
         )
         val examId = insertExamUseCase(exam.asExternalModel())
+        Log.d("SR-N", "examId $examId")
 
         val questions = (1..subject.totalQuestionNumber).map {
             QuestionModel(
