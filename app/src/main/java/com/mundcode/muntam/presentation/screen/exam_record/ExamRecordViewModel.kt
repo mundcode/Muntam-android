@@ -3,6 +3,8 @@ package com.mundcode.muntam.presentation.screen.exam_record
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.mundcode.designsystem.model.SelectableNumber
+import com.mundcode.designsystem.model.SelectableTextState
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.model.enums.QuestionState
 import com.mundcode.domain.usecase.GetExamByIdFlowUseCase
@@ -16,7 +18,6 @@ import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.QuestionModel
-import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
@@ -57,9 +58,7 @@ class ExamRecordViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit ?: throw Exception()
             val initExam = getExamByIdUseCase(examId).asStateModel()
-            Log.d("SR-N", "ExamRecordViewModel init exam : $initExam")
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
-            Log.d("SR-N", "ExamRecordViewModel init questions : $initQuestions")
 
             updateState {
                 stateValue.copy(
@@ -85,9 +84,16 @@ class ExamRecordViewModel @Inject constructor(
 
             launch {
                 getExamByIdFlowUseCase(examId).collectLatest {
-                    Log.e("SR-N", "exam\nstate ${it.state} / lastQuestionNumber $lastQuestionNumber ")
+                    Log.e(
+                        "SR-N",
+                        "exam\nstate ${it.state} / lastQuestionNumber $lastQuestionNumber"
+                    )
+
                     updateState {
                         state.value.copy(examModel = it.asStateModel())
+                    }
+                    currentQuestion?.let { newQuestion ->
+                        timer.setCurrentQuestion(newQuestion)
                     }
                 }
             }
@@ -95,7 +101,10 @@ class ExamRecordViewModel @Inject constructor(
 
             launch {
                 getQuestionsByExamIdFlowUseCase(examId).collectLatest {
-                    Log.e("SR-N", "getQuestionsByExamIdFlowUseCase collectLatest ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}")
+                    Log.e(
+                        "SR-N",
+                        "currentQuestionNumber = ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}"
+                    )
 
                     updateState {
                         state.value.copy(
@@ -112,36 +121,44 @@ class ExamRecordViewModel @Inject constructor(
         when (currentState) {
             ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
-                timer.start()
+                updateQuestionState(
+                    questionNumber = 1,
+                    newQuestionState = QuestionState.RUNNING
+                )
                 updateExamState(
                     newExamState = ExamState.RUNNING,
                     lastQuestionNumber = 1,
                     lastAt = timer.getCurrentTime()
                 )
-                updateQuestionState(1, QuestionState.RUNNING)
+                timer.start()
             }
             ExamState.PAUSE -> {
-                timer.start()
                 Log.d("SR-N", "onClickScreen PAUSE")
-
-                updateExamState(newExamState = ExamState.RUNNING, lastAt = timer.getCurrentTime())
-                updateQuestionState(stateValue.examModel.lastQuestionNumber, QuestionState.RUNNING)
+                updateQuestionState(
+                    questionNumber = lastQuestionNumber,
+                    newQuestionState = QuestionState.RUNNING
+                )
+                updateExamState(
+                    newExamState = ExamState.RUNNING,
+                    lastAt = timer.getCurrentTime()
+                )
+                timer.start()
             }
             ExamState.RUNNING -> {
                 Log.d("SR-N", "onClickScreen RUNNING")
 
-                val currentNumber = lastQuestionNumber ?: 1
+                val currentNumber = lastQuestionNumber
+                    ?: throw Exception("RUNNING 상태에서 lastQuestionNumber 이 null 일 수 없음.")
                 val currentQuestion = currentQuestion
+                    ?: throw Exception("RUNNING 상태에서 currentQuestion 이 null 일 수 없음.")
                 val currentQuestions = state.value.questionModels
 
                 val nextQuestion: QuestionModel? = currentQuestions.find {
-                    it.state != QuestionState.END
-                            && it.state != QuestionState.PAUSE
-                            && it.questionNumber > currentNumber // 현재번호보다 큰 번호 먼저
+                    // 현재번호보다 큰 번호 먼저
+                    it.state == QuestionState.READY && it.questionNumber > currentNumber
                 } ?: currentQuestions.find {
-                    it.state != QuestionState.END
-                            && it.state != QuestionState.PAUSE
-                            && it.questionNumber != currentNumber // 없으면 다른 것중 가장 앞
+                    // 없으면 다른 것중 가장 앞
+                    it.state == QuestionState.READY && it.questionNumber != currentNumber
                 }
 
 
@@ -221,7 +238,7 @@ class ExamRecordViewModel @Inject constructor(
 
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {
         timer.pause()
-        updateExamState(newExamState = ExamState.PAUSE)
+        updateExamState(newExamState = ExamState.PAUSE, lastAt = timer.getCurrentTime())
         lapsAndUpdateQuestion(currentQuestion)
     }
 
@@ -233,7 +250,7 @@ class ExamRecordViewModel @Inject constructor(
 
     private fun end() = viewModelScope.launch(Dispatchers.IO) {
         timer.end()
-        updateExamState(ExamState.END)
+        updateExamState(newExamState = ExamState.END, lastAt = timer.getCurrentTime())
         lapsAndUpdateQuestion(currentQuestion)
         stateValue.questionModels.forEach {
             updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
@@ -241,7 +258,7 @@ class ExamRecordViewModel @Inject constructor(
         updateState { stateValue.copy(completeAllQuestion = true) }
     }
 
-    private fun onCancelDialog() {
+    fun onCancelDialog() {
         updateState {
             state.value.copy(
                 showBackConfirmDialog = false,
@@ -249,6 +266,7 @@ class ExamRecordViewModel @Inject constructor(
                 showJumpQuestionDialog = false
             )
         }
+        resume()
     }
 
     private suspend fun updateExamState(
@@ -277,9 +295,9 @@ class ExamRecordViewModel @Inject constructor(
             }
         }
 
-    private suspend fun lapsAndUpdateQuestion(question: QuestionModel?) {
-        question?.let {
-            updateQuestionUseCase(timer.addCompletedQuestion(it).asExternalModel())
+    private suspend fun lapsAndUpdateQuestion(current: QuestionModel?) {
+        current?.let {
+            updateQuestionUseCase(timer.addCompletedQuestion(current).asExternalModel())
         }
     }
 
@@ -305,4 +323,15 @@ data class ExamRecordState(
     val showJumpQuestionDialog: Boolean = false,
     val completeAllQuestion: Boolean = false,
     val clickBack: Boolean = false
-)
+) {
+    val selectableNumbers = questionModels.map {
+        SelectableNumber(
+            number = it.questionNumber,
+            state = when(it.state) {
+                QuestionState.READY -> SelectableTextState.SELECTABLE
+                QuestionState.RUNNING -> SelectableTextState.SELECTED
+                else -> SelectableTextState.UNSELECTABLE
+            }
+        )
+    }
+}

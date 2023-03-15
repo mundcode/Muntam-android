@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.dialogs.JumpNumberPickerDialog
+import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.Gray100
@@ -55,8 +57,6 @@ fun ExamRecordScreen(
     val state by viewModel.state.collectAsState()
 
     val examState = state.examModel.state
-
-    // todo 리스너 달기
 
     Scaffold(
         topBar = {
@@ -256,6 +256,41 @@ fun ExamRecordScreen(
             },
             onClickScreen = viewModel::onClickScreen
         )
+    }
+
+    if (state.showCompleteDialog) {
+        AlertDialog(
+            title = "문제풀이가 끝나셨나요?",
+            subtitle = "현재 상태로 최종 시간이 기록됩니다.\n앞으로는 문제 기록 조회만 가능합니다.",
+            cancelText = "아니요",
+            confirmText = "네, 완료입니다",
+            confirmPrimary = true,
+            onClickCancel = viewModel::onCancelDialog,
+            onClickConfirm = viewModel::onSelectConfirmCompleteDialog
+        )
+    }
+
+    if (state.showBackConfirmDialog) {
+        AlertDialog(
+            title = "기록 종료",
+            subtitle = "정말 종료하시겠습니까?\n다음에 이어서 기록할 수 있어요.",
+            cancelText = "아니요",
+            confirmText = "네, 종료할게요",
+            confirmPrimary = true,
+            onClickCancel = viewModel::onCancelDialog,
+            onClickConfirm = viewModel::onSelectConfirmCompleteDialog
+        )
+    }
+
+    if (state.showJumpQuestionDialog) {
+        state.examModel.lastQuestionNumber?.let { currentQuestionNumber ->
+            JumpNumberPickerDialog(
+                selectableNumbers = state.selectableNumbers,
+                currentNumber = currentQuestionNumber,
+                onCancel = viewModel::onCancelDialog,
+                onSelect = viewModel::onSelectNumberJumpDialog
+            )
+        }
     }
 }
 

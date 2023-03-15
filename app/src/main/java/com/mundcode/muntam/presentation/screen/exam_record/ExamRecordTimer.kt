@@ -24,8 +24,6 @@ class ExamRecordTimer(
     private var remainTime: Long = (timeLimit / 1000) - initialTime
     private var currentQuestionTime: Long = getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
 
-    private var laps = mutableListOf<Long>()
-
     private var state: ExamState = ExamState.READY
 
     private val mutex = Mutex()
@@ -33,14 +31,11 @@ class ExamRecordTimer(
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private var job: Job? = null
 
-
-    init {
-        initializeLapsedQuestion(initQuestion)
-    }
-
     fun start() {
         job = coroutineScope.launch {
-            state = ExamState.RUNNING
+            mutex.withLock {
+                state = ExamState.RUNNING
+            }
 
             while (state == ExamState.RUNNING && job?.isActive == true) {
                 delay(1000L)
@@ -70,13 +65,6 @@ class ExamRecordTimer(
         coroutineScope.cancel()
     }
 
-    private fun initializeLapsedQuestion(questions: List<QuestionModel>) {
-        val lastLapsedQuestion = getLastQuestion(questions)
-        lastLapsedQuestion?.let {
-            laps.add(it.lapsedExamTime)
-        }
-    }
-
     private fun getLastQuestion(questions: List<QuestionModel>): QuestionModel? {
         Log.d("SR-N", "initializeLapsedQuestion size = ${questions.size}")
         var lastLapsedQuestion = questions.firstOrNull()
@@ -87,25 +75,30 @@ class ExamRecordTimer(
                 lastLapsedQuestion = item
             }
         }
-        Log.d("SR-N", "initializeLapsedQuestion questionNumber = ${lastLapsedQuestion?.questionNumber}")
+        Log.d(
+            "SR-N",
+            "initializeLapsedQuestion questionNumber = ${lastLapsedQuestion?.questionNumber}"
+        )
         return lastLapsedQuestion
     }
 
-    fun addCompletedQuestion(question: QuestionModel): QuestionModel {
-        val lastLaps = laps.lastOrNull()
-        laps.add(currentTime)
-
-        val prevLapsedTime = question.lapsedTime
-
-        return question.copy(
+    suspend fun addCompletedQuestion(question: QuestionModel): QuestionModel {
+        val newQuestion = question.copy(
             state = QuestionState.PAUSE,
-            lapsedTime = if (lastLaps != null) {
-                currentTime - lastLaps + prevLapsedTime
-            } else {
-                currentTime + prevLapsedTime
-            },
+            lapsedTime = currentQuestionTime,
             lapsedExamTime = currentTime
         )
+        mutex.withLock {
+            currentQuestionTime = 0
+        }
+
+        return newQuestion
+    }
+
+    suspend fun setCurrentQuestion(question: QuestionModel) {
+        mutex.withLock {
+            currentQuestionTime = question.lapsedTime
+        }
     }
 
     fun getCurrentTime() = currentTime
