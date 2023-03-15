@@ -164,7 +164,7 @@ fun ExamRecordScreen(
                     lineColor = MTOrange,
                     newPercentage =
                     (state.examModel.lastAt
-                        ?.div(state.subjectModel.timeLimit.toFloat()))
+                        ?.div(state.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
                     currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,
@@ -204,7 +204,7 @@ fun ExamRecordScreen(
                     backgroundLineColor = Gray100,
                     lineColor = Gray300,
                     newPercentage = (state.examModel.lastAt
-                        ?.div(state.subjectModel.timeLimit.toFloat()))
+                        ?.div(state.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
                     currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,
@@ -241,7 +241,7 @@ fun ExamRecordScreen(
                     lineColor = MTOrange,
                     newPercentage =
                     (state.examModel.lastAt
-                        ?.div(state.subjectModel.timeLimit.toFloat()))
+                        ?.div(state.timeLimit.toFloat()))
                         ?.times(100) ?: 0f,
                     currentTime = state.currentExamTimeText,
                     currentTimeColor = Gray900,

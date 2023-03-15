@@ -22,6 +22,7 @@ import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,6 +54,7 @@ class ExamRecordViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit ?: throw Exception()
             val initExam = getExamByIdUseCase(examId).asStateModel()
             Log.d("SR-N", "ExamRecordViewModel init exam : $initExam")
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
@@ -70,7 +72,6 @@ class ExamRecordViewModel @Inject constructor(
                 timeLimit = initExam.timeLimit,
                 initQuestion = initQuestions,
             ) { current, remain ->
-                Log.d("SR-N", "onTick : $current, $remain")
                 updateState {
                     stateValue.copy(
                         currentExamTimeText = current,
@@ -80,18 +81,8 @@ class ExamRecordViewModel @Inject constructor(
             }
 
             launch {
-                getSubjectByIdFlowUseCase(subjectId).collectLatest {
-                    Log.e("SR-N", "getSubjectByIdFlowUseCase collectLatest $it")
-                    updateState {
-                        state.value.copy(subjectModel = it.asStateModel())
-                    }
-                }
-            }
-
-
-            launch {
                 getExamByIdFlowUseCase(examId).collectLatest {
-                    Log.e("SR-N", "getExamByIdFlowUseCase collectLatest $it")
+                    Log.e("SR-N", "exam\nstate ${it.state} / lastQuestionNumber $lastQuestionNumber ")
                     updateState {
                         state.value.copy(examModel = it.asStateModel())
                     }
@@ -101,6 +92,8 @@ class ExamRecordViewModel @Inject constructor(
 
             launch {
                 getQuestionsByExamIdFlowUseCase(examId).collectLatest {
+                    Log.e("SR-N", "getQuestionsByExamIdFlowUseCase collectLatest size ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}")
+
                     updateState {
                         state.value.copy(
                             questionModels = it.map { it.asStateModel() }
@@ -298,7 +291,7 @@ class ExamRecordViewModel @Inject constructor(
 }
 
 data class ExamRecordState(
-    val subjectModel: SubjectModel = SubjectModel(),
+    val timeLimit: Long = 0,
     val examModel: ExamModel = ExamModel(),
     val currentExamTimeText: String = "",
     val remainExamTimeText: String = "",

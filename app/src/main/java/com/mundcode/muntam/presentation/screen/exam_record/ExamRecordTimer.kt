@@ -44,7 +44,6 @@ class ExamRecordTimer(
             while (state == ExamState.RUNNING && job?.isActive == true) {
                 delay(1000L)
                 mutex.withLock {
-                    Log.d("SR-N", "currentTime $currentTime / remainTime $remainTime")
                     currentTime += 1
                     remainTime -= 1
                     onTick(
