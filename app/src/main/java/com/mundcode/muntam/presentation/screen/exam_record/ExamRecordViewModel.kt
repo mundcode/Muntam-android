@@ -86,14 +86,19 @@ class ExamRecordViewModel @Inject constructor(
                 getExamByIdFlowUseCase(examId).collectLatest {
                     Log.e(
                         "SR-N",
-                        "exam\nstate ${it.state} / lastQuestionNumber $lastQuestionNumber"
+                        "exam = state ${it.state} / lastQuestionNumber ${it.lastQuestionNumber}"
                     )
 
                     updateState {
                         state.value.copy(examModel = it.asStateModel())
                     }
-                    currentQuestion?.let { newQuestion ->
-                        timer.setCurrentQuestion(newQuestion)
+
+                    val lastQuestionNumber = it.lastQuestionNumber
+                    val newQuestion = stateValue.questionModels.find { q ->
+                        q.questionNumber == lastQuestionNumber
+                    }
+                    newQuestion?.let { new ->
+                        timer.setCurrentQuestion(new)
                     }
                 }
             }
@@ -117,7 +122,7 @@ class ExamRecordViewModel @Inject constructor(
     }
 
     fun onClickScreen() = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("SR-N", "examModel : ${stateValue.examModel}")
+        Log.d("SR-N", "onClickScreen 시점의 examModel : state ${stateValue.examModel.state} / lastQuestionNumber ${stateValue.examModel.lastQuestionNumber}")
         when (currentState) {
             ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
@@ -274,7 +279,6 @@ class ExamRecordViewModel @Inject constructor(
         lastQuestionNumber: Int? = null,
         lastAt: Long? = null
     ) {
-        Log.d("SR-N", "updateExamState newExamState : $newExamState")
         updateExamUseCase(
             stateValue.examModel.copy(
                 state = newExamState,
