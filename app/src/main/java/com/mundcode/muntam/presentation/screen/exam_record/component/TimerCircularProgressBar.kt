@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.Gray900
@@ -92,10 +93,10 @@ fun TimeText(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = description, style = MTTextStyle.text13.spToDp(), color = Gray500)
+        Margin(dp = 8.dp)
         Text(text = timeText, style = MTTextStyle.textBold32.spToDp(), color = color)
     }
 }

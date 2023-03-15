@@ -41,7 +41,7 @@ fun NameEditorDialog(
     }
 }
 
-@Preview
+@Preview(widthDp = 500)
 @Composable
 fun NameEditorDialogPreview() {
     NameEditorDialog(onClickCancel = {}, onClickConfirm = {})

@@ -19,6 +19,7 @@ import com.mundcode.muntam.presentation.model.QuestionModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -62,20 +63,22 @@ class ExamRecordViewModel @Inject constructor(
 
             updateState {
                 stateValue.copy(
+                    timeLimit = timeLimit,
                     examModel = initExam,
                     questionModels = initQuestions
                 )
             }
 
             timer = ExamRecordTimer(
-                initialTime = initExam.lastAt ?: 0,
+                initialTime = initExam.lastAt ?: DEFAULT_INITIAL_TIME,
                 timeLimit = initExam.timeLimit,
                 initQuestion = initQuestions,
-            ) { current, remain ->
+            ) { current, remain, question ->
                 updateState {
                     stateValue.copy(
                         currentExamTimeText = current,
-                        remainExamTimeText = remain
+                        remainExamTimeText = remain,
+                        currentQuestionTimeText = question
                     )
                 }
             }
@@ -92,7 +95,7 @@ class ExamRecordViewModel @Inject constructor(
 
             launch {
                 getQuestionsByExamIdFlowUseCase(examId).collectLatest {
-                    Log.e("SR-N", "getQuestionsByExamIdFlowUseCase collectLatest size ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}")
+                    Log.e("SR-N", "getQuestionsByExamIdFlowUseCase collectLatest ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}")
 
                     updateState {
                         state.value.copy(
@@ -293,8 +296,9 @@ class ExamRecordViewModel @Inject constructor(
 data class ExamRecordState(
     val timeLimit: Long = 0,
     val examModel: ExamModel = ExamModel(),
-    val currentExamTimeText: String = "",
-    val remainExamTimeText: String = "",
+    val currentExamTimeText: String = "00:00:00",
+    val remainExamTimeText: String = "00:00:00",
+    val currentQuestionTimeText: String = "00:00:00",
     val questionModels: List<QuestionModel> = listOf(),
     val showBackConfirmDialog: Boolean = false,
     val showCompleteDialog: Boolean = false,

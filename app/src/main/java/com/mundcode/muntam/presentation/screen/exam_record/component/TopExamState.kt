@@ -21,7 +21,7 @@ fun TopExamState(
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopEmoji(emoji = emoji)
+//        TopEmoji(emoji = emoji)
         stateContent()
     }
 }

@@ -18,10 +18,11 @@ class ExamRecordTimer(
     private val initialTime: Long = DEFAULT_INITIAL_TIME,
     private val timeLimit: Long = 0,
     private val initQuestion: List<QuestionModel>,
-    private val onTick: suspend (current: String, remain: String) -> Unit,
+    private val onTick: suspend (current: String, remain: String, currentQuestionTime: String) -> Unit,
 ) {
     private var currentTime: Long = initialTime
-    private var remainTime: Long = timeLimit / 1000
+    private var remainTime: Long = (timeLimit / 1000) - initialTime
+    private var currentQuestionTime: Long = getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
 
     private var laps = mutableListOf<Long>()
 
@@ -45,10 +46,12 @@ class ExamRecordTimer(
                 delay(1000L)
                 mutex.withLock {
                     currentTime += 1
+                    currentQuestionTime += 1
                     remainTime -= 1
                     onTick(
                         currentTime.asCurrentTimerText(),
-                        remainTime.asCurrentTimerText()
+                        remainTime.asCurrentTimerText(),
+                        currentQuestionTime.asCurrentTimerText()
                     )
                 }
             }
@@ -68,6 +71,14 @@ class ExamRecordTimer(
     }
 
     private fun initializeLapsedQuestion(questions: List<QuestionModel>) {
+        val lastLapsedQuestion = getLastQuestion(questions)
+        lastLapsedQuestion?.let {
+            laps.add(it.lapsedExamTime)
+        }
+    }
+
+    private fun getLastQuestion(questions: List<QuestionModel>): QuestionModel? {
+        Log.d("SR-N", "initializeLapsedQuestion size = ${questions.size}")
         var lastLapsedQuestion = questions.firstOrNull()
         for (item in questions) {
             val prev = lastLapsedQuestion?.modifiedAt
@@ -76,9 +87,8 @@ class ExamRecordTimer(
                 lastLapsedQuestion = item
             }
         }
-        lastLapsedQuestion?.let {
-            laps.add(it.lapsedExamTime)
-        }
+        Log.d("SR-N", "initializeLapsedQuestion questionNumber = ${lastLapsedQuestion?.questionNumber}")
+        return lastLapsedQuestion
     }
 
     fun addCompletedQuestion(question: QuestionModel): QuestionModel {
