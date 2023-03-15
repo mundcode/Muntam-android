@@ -183,6 +183,9 @@ class ExamRecordViewModel @Inject constructor(
                     end()
                 }
             }
+            ExamState.END -> {
+                // todo 동영상광고 보여주고, 문제리스트 화면으로 넘겨주기
+            }
         }
     }
 
@@ -338,4 +341,6 @@ data class ExamRecordState(
             }
         )
     }
+
+    val percent: Float = ((examModel.lastAt?.toFloat() ?: 0f) / timeLimit.toFloat())
 }

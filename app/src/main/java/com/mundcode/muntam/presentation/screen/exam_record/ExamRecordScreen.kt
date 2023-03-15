@@ -49,7 +49,13 @@ import com.mundcode.muntam.presentation.screen.exam_record.component.BottomButto
 import com.mundcode.muntam.presentation.screen.exam_record.component.TimerCircularProgressBar
 import com.mundcode.muntam.presentation.screen.exam_record.component.TopExamState
 import com.mundcode.muntam.util.hiltViewModel
-
+// todo 타이머 시간 텍스트 고정너비로 덜컹거리지 않게 수정
+// todo READY -> RUNNING 에서 덜컹거리지 않게 수정
+// todo 다이얼로그 wrap content 로 수정
+// todo 끝내는 로직 추가
+// todo 텍스트 spToDp 적용
+// todo 중단하고 처음 들어왔을 때 버그 수정
+// todo 퍼센트에 따라 원형 프로그레스 바 업데이트 버그 수정
 @Composable
 fun ExamRecordScreen(
     viewModel: ExamRecordViewModel = hiltViewModel(),
@@ -137,9 +143,7 @@ fun ExamRecordScreen(
                 ExamState.PAUSE -> Gray300
                 else -> MTOrange
             },
-            newPercentage = (state.examModel.lastAt
-                ?.div(state.timeLimit.toFloat()))
-                ?.times(100) ?: 0f,
+            newPercentage = state.percent,
             currentTime = state.currentExamTimeText,
             currentTimeColor = when (examState) {
                 ExamState.READY -> Gray500
@@ -242,7 +246,7 @@ fun ExamRecordScreen(
                     }
                     ExamState.END -> {
                         Text(
-                            text = "시험 종료",
+                            text = "시험 종료! 결과를 확인해보세요!",
                             style = MTTextStyle.textBold16,
                             color = Gray700,
                             modifier = Modifier
@@ -334,7 +338,7 @@ fun ExamRecordTimerScreen(
                 remainTimeColor = remainTimeColor
             )
 
-            Margin(dp = 24.dp)
+            Margin(dp = 12.dp)
 
             bottomStateComposable()
         }

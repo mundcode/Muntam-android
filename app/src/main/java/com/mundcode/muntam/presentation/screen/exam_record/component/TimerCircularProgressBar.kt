@@ -68,7 +68,7 @@ fun TimerCircularProgressBar(
             drawArc(
                 color = lineColor,
                 startAngle = -90f,
-                sweepAngle = 360f * currentPercentage.value,
+                sweepAngle = 360f * newPercentage,
                 useCenter = false,
                 style = Stroke(width = LINE_WIDTH.dp.toPx(), cap = StrokeCap.Round)
             )
