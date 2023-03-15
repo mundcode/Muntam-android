@@ -278,7 +278,7 @@ fun ExamRecordScreen(
             confirmText = "네, 종료할게요",
             confirmPrimary = true,
             onClickCancel = viewModel::onCancelDialog,
-            onClickConfirm = viewModel::onSelectConfirmCompleteDialog
+            onClickConfirm = viewModel::onSelectConfirmBackDialog
         )
     }
 
