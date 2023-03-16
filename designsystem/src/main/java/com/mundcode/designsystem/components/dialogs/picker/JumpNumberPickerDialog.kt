@@ -3,6 +3,7 @@ package com.mundcode.designsystem.components.dialogs
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -40,8 +41,8 @@ fun JumpNumberPickerDialog(
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
             modifier = Modifier
-                .heightIn(0.dp, 280.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .heightIn(0.dp, 280.dp),
             flingBehavior = ScrollableDefaults.flingBehavior()
         ) {
             items(selectableNumbers) { number ->
