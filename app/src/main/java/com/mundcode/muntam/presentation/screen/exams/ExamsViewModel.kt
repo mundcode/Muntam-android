@@ -42,9 +42,6 @@ class ExamsViewModel @Inject constructor(
 ) : BaseViewModel<ExamsState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[SubjectModify.subjectIdArg])
 
-    private val _navigationEvent = MutableSharedFlow<String>()
-    val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
-
     init {
         loadExams()
         loadSubject()
