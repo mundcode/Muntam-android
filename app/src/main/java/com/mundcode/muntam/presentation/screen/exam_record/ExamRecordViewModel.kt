@@ -57,6 +57,7 @@ class ExamRecordViewModel @Inject constructor(
         }
 
     init {
+        // todo READY -> START 일 때 간헐적으로 타이머 작동안하는 버그 수정
         viewModelScope.launch(Dispatchers.IO) {
             // 초기 정보 가져오기
             val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit ?: throw Exception()
@@ -335,10 +336,18 @@ class ExamRecordViewModel @Inject constructor(
         return ExamRecordState()
     }
 
+    // todo 비정상종료, 강제종료 등등이 일어났을 때 마지막 상태 어떻게 기록할 것인가? ->
+    fun onDispose() {
+        Log.d("SR-N", "onDispose")
+        if (currentExamState == ExamState.RUNNING) {
+            Log.d("SR-N", "onDispose on RUNNING")
+            pause()
+        }
+    }
+
     override fun onCleared() {
-        super.onCleared()
-        pause()
         timer.end()
+        super.onCleared()
     }
 }
 

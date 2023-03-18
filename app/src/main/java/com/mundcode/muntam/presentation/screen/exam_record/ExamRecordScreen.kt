@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -35,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import com.mundcode.designsystem.components.dialogs.JumpNumberPickerDialog
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.etc.Margin
@@ -54,6 +54,7 @@ import com.mundcode.muntam.R
 import com.mundcode.muntam.presentation.screen.exam_record.component.BottomButton
 import com.mundcode.muntam.presentation.screen.exam_record.component.TimerCircularProgressBar
 import com.mundcode.muntam.presentation.screen.exam_record.component.TopExamState
+import com.mundcode.muntam.util.ActivityLifecycle
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -70,6 +71,14 @@ fun ExamRecordScreen(
 
     val prevPercentage by remember {
         mutableStateOf(0f)
+    }
+
+    ActivityLifecycle { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_STOP -> {
+                viewModel.onDispose()
+            }
+        }
     }
 
     LaunchedEffect(key1 = true) {
@@ -288,7 +297,7 @@ fun ExamRecordScreen(
             subtitle = "정말 종료하시겠습니까?\n다음에 이어서 기록할 수 있어요.",
             cancelText = "아니요",
             confirmText = "네, 종료할게요",
-            confirmPrimary = true,
+            confirmPrimary = false,
             onClickCancel = viewModel::onCancelDialog,
             onClickConfirm = viewModel::onSelectConfirmBackDialog
         )
@@ -353,6 +362,4 @@ fun ExamRecordTimerScreen(
             bottomStateComposable()
         }
     }
-
 }
-
