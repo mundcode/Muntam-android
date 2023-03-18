@@ -54,7 +54,6 @@ fun TimerCircularProgressBar(
         )
     }
 
-
     Box(
         modifier = modifier.padding((LINE_WIDTH / 2).dp), contentAlignment = Alignment.Center
     ) {

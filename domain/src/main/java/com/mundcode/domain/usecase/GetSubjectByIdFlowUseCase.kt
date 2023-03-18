@@ -2,9 +2,9 @@ package com.mundcode.domain.usecase
 
 import com.mundcode.domain.model.Subject
 import com.mundcode.domain.repository.SubjectRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
 
 @Singleton
 class GetSubjectByIdFlowUseCase @Inject constructor(

@@ -168,7 +168,6 @@ fun ExamRecordScreen(
             remainTimeColor = when (examState) {
                 ExamState.READY, ExamState.END -> Gray300
                 else -> MTRed
-
             },
             topStateComposable = {
                 TopExamState(

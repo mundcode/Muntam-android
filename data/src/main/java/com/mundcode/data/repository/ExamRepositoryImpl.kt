@@ -32,7 +32,6 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun updateExam(exam: Exam) {
         examDao.updateExam(exam.asEntity())
     }

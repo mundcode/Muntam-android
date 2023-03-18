@@ -18,11 +18,16 @@ class ExamRecordTimer(
     private val timeLimit: Long = 0,
     private val initQuestion: List<QuestionModel>,
     private val initExamState: ExamState,
-    private val onTick: suspend (current: String, remain: String, currentQuestionTime: String) -> Unit,
+    private val onTick: suspend (
+        current: String,
+        remain: String,
+        currentQuestionTime: String
+    ) -> Unit,
 ) {
     private var currentTime: Long = initialTime
     private var remainTime: Long = (timeLimit / 1000) - initialTime
-    private var currentQuestionTime: Long = getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
+    private var currentQuestionTime: Long =
+        getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
     private var currentQuestion: QuestionModel? = null
 
     private var state: ExamState = initExamState

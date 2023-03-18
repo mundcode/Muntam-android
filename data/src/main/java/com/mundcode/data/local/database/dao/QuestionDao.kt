@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
 import com.mundcode.data.local.database.model.QuestionEntity
-import com.mundcode.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -23,12 +23,12 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
@@ -57,10 +57,10 @@ class ExamRecordViewModel @Inject constructor(
         }
 
     init {
-        // todo READY -> START 일 때 간헐적으로 타이머 작동안하는 버그 수정
         viewModelScope.launch(Dispatchers.IO) {
             // 초기 정보 가져오기
-            val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit ?: throw Exception()
+            val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit
+                ?: throw Exception()
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
 
@@ -100,7 +100,6 @@ class ExamRecordViewModel @Inject constructor(
 
                 val exam = examEntity.asStateModel()
                 val questions = questionsEntity.map { it.asStateModel() }
-
 
                 val lastQuestionNumber = exam.lastQuestionNumber
                 val newQuestion = questions.find { q ->
@@ -167,8 +166,7 @@ class ExamRecordViewModel @Inject constructor(
                     it.state == QuestionState.READY && it.questionNumber != currentNumber
                 }
 
-
-                nextQuestion?.let { next ->// 풀 문제가 있다면
+                nextQuestion?.let { next -> // 풀 문제가 있다면
                     lapsAndPauseQuestion(currentQuestion) // 현재 상태 문제 수정 및 기록
 
                     updateExamState(
