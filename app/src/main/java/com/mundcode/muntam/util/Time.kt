@@ -3,6 +3,7 @@ package com.mundcode.muntam.util
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.math.absoluteValue
 
 // todo 테스트
 fun Instant.asMTDateText(): String {
@@ -25,11 +26,13 @@ fun Long.asTimeLimitText(): String {
 }
 
 fun Long.asCurrentTimerText(): String {
-    val totalSec = this
+    val sign = if (this < 0) "-" else ""
+
+    val totalSec = this.absoluteValue
     val sec = totalSec % 60
     val totalMin = totalSec / 60
     val min = totalMin % 60
     val hour = totalMin / 60
-    return "%02d:%02d:%02d".format(hour, min, sec)
+    return "$sign%02d:%02d:%02d".format(hour, min, sec)
 }
 
