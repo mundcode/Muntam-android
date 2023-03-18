@@ -181,6 +181,10 @@ class ExamRecordViewModel @Inject constructor(
                     end()
                 }
             }
+            ExamState.END -> {
+                // todo 광고 로직 삽입
+                _navigationEvent.emit(Questions.route)
+            }
         }
     }
 
@@ -267,17 +271,17 @@ class ExamRecordViewModel @Inject constructor(
     private fun end() = viewModelScope.launch(Dispatchers.IO) {
         // todo loading 상태 넣기?
 
-        updateExamState(
-            newExamState = ExamState.END,
-            lastAt = timer.getCurrentTime()
-        )
+
         lapsAndPauseQuestion(currentQuestion)
 
         stateValue.questionModels.forEach {
             updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
         }
 
-        _navigationEvent.emit(Questions.route)
+        updateExamState(
+            newExamState = ExamState.END,
+            lastAt = timer.getCurrentTime()
+        )
     }
 
     fun onCancelDialog() {
