@@ -16,6 +16,7 @@ import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
+import com.mundcode.muntam.navigation.Questions
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.QuestionModel
 import com.mundcode.muntam.presentation.model.asExternalModel
@@ -24,6 +25,7 @@ import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Compa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,7 +46,7 @@ class ExamRecordViewModel @Inject constructor(
 
     lateinit var timer: ExamRecordTimer
 
-    private val currentState: ExamState get() = state.value.examModel.state
+    private val currentExamState: ExamState get() = state.value.examModel.state
     private val lastQuestionNumber: Int? get() = stateValue.examModel.lastQuestionNumber
     private val currentQuestion: QuestionModel?
         get() {
@@ -72,6 +74,7 @@ class ExamRecordViewModel @Inject constructor(
                 initialTime = initExam.lastAt ?: DEFAULT_INITIAL_TIME,
                 timeLimit = initExam.timeLimit,
                 initQuestion = initQuestions,
+                initExamState = initExam.state
             ) { current, remain, question ->
                 updateState {
                     stateValue.copy(
@@ -82,50 +85,46 @@ class ExamRecordViewModel @Inject constructor(
                 }
             }
 
-            launch {
-                getExamByIdFlowUseCase(examId).collectLatest {
-                    Log.e(
-                        "SR-N",
-                        "exam = state ${it.state} / lastQuestionNumber ${it.lastQuestionNumber}"
-                    )
-
-                    updateState {
-                        state.value.copy(examModel = it.asStateModel())
-                    }
-
-                    val lastQuestionNumber = it.lastQuestionNumber
-                    val newQuestion = stateValue.questionModels.find { q ->
-                        q.questionNumber == lastQuestionNumber
-                    }
-                    newQuestion?.let { new ->
-                        timer.setCurrentQuestion(new)
-                    }
-                }
+            if (initExam.state == ExamState.PAUSE) {
+                timer.start()
             }
 
-
-            launch {
-                getQuestionsByExamIdFlowUseCase(examId).collectLatest {
-                    Log.e(
-                        "SR-N",
-                        "currentQuestionNumber = ${it.getOrNull((lastQuestionNumber ?: 1) - 1)?.questionNumber}"
+            combine(
+                getExamByIdFlowUseCase(examId),
+                getQuestionsByExamIdFlowUseCase(examId),
+                ::Pair
+            ).collectLatest { (examEntity, questionsEntity) ->
+                Log.e(
+                    "SR-N",
+                    "exam = state ${examEntity.state} / lastQuestionNumber ${examEntity.lastQuestionNumber}"
+                )
+                val exam = examEntity.asStateModel()
+                val questions = questionsEntity.map { it.asStateModel() }
+                updateState {
+                    state.value.copy(
+                        examModel = exam,
+                        questionModels = questions
                     )
+                }
 
-                    updateState {
-                        state.value.copy(
-                            questionModels = it.map { it.asStateModel() }
-                        )
-                    }
+                val lastQuestionNumber = exam.lastQuestionNumber
+                val newQuestion = questions.find { q ->
+                    q.questionNumber == lastQuestionNumber
+                }
+                Log.e("SR-N", "newQuestion = ${newQuestion?.questionNumber}")
+
+                newQuestion?.let { new ->
+                    timer.setCurrentQuestion(new)
                 }
             }
         }
     }
 
     fun onClickScreen() = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("SR-N", "onClickScreen 시점의 examModel : state ${stateValue.examModel.state} / lastQuestionNumber ${stateValue.examModel.lastQuestionNumber}")
-        when (currentState) {
+        when (currentExamState) {
             ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
+                timer.start()
                 updateQuestionState(
                     questionNumber = 1,
                     newQuestionState = QuestionState.RUNNING
@@ -135,19 +134,10 @@ class ExamRecordViewModel @Inject constructor(
                     lastQuestionNumber = 1,
                     lastAt = timer.getCurrentTime()
                 )
-                timer.start()
             }
             ExamState.PAUSE -> {
                 Log.d("SR-N", "onClickScreen PAUSE")
-                updateQuestionState(
-                    questionNumber = lastQuestionNumber,
-                    newQuestionState = QuestionState.RUNNING
-                )
-                updateExamState(
-                    newExamState = ExamState.RUNNING,
-                    lastAt = timer.getCurrentTime()
-                )
-                timer.start()
+                resume()
             }
             ExamState.RUNNING -> {
                 Log.d("SR-N", "onClickScreen RUNNING")
@@ -168,7 +158,7 @@ class ExamRecordViewModel @Inject constructor(
 
 
                 nextQuestion?.let { next ->// 풀 문제가 있다면
-                    lapsAndUpdateQuestion(currentQuestion) // 현재 상태 문제 수정 및 기록
+                    lapsAndPauseQuestion(currentQuestion) // 현재 상태 문제 수정 및 기록
 
                     updateExamState(
                         newExamState = ExamState.RUNNING,
@@ -184,7 +174,8 @@ class ExamRecordViewModel @Inject constructor(
                 }
             }
             ExamState.END -> {
-                // todo 동영상광고 보여주고, 문제리스트 화면으로 넘겨주기
+                // todo 동영상광고 보여주는 로직 추가
+                _navigationEvent.emit(Questions.route)
             }
         }
     }
@@ -196,10 +187,6 @@ class ExamRecordViewModel @Inject constructor(
             )
         }
         pause()
-    }
-
-    fun onClickSetting() {
-        // todo Setting 추가
     }
 
     fun onClickComplete() {
@@ -224,11 +211,13 @@ class ExamRecordViewModel @Inject constructor(
         pause()
     }
 
+    /** 여기 까지 체크 완료 **/
+
     fun onSelectConfirmBackDialog() {
         onCancelDialog()
         pause()
         updateState {
-            stateValue.copy(clickBack = true)
+            stateValue.copy(confirmBack = true)
         }
     }
 
@@ -239,17 +228,21 @@ class ExamRecordViewModel @Inject constructor(
 
     fun onSelectNumberJumpDialog(selectedNumber: Int) = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
-        lapsAndUpdateQuestion(currentQuestion)
+        lapsAndPauseQuestion(currentQuestion)
         updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber)
         updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING)
     }
 
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {
         timer.pause()
-        updateExamState(newExamState = ExamState.PAUSE, lastAt = timer.getCurrentTime())
-        lapsAndUpdateQuestion(currentQuestion)
+        updateExamState(
+            newExamState = ExamState.PAUSE,
+            lastAt = timer.getCurrentTime()
+        )
+        lapsAndPauseQuestion(currentQuestion)
     }
 
+    // 문제번호랑 경과시간은 그대로, 상태랑 타이머만 바꾸기
     private fun resume() = viewModelScope.launch(Dispatchers.IO) {
         timer.start()
         updateExamState(newExamState = ExamState.RUNNING)
@@ -258,11 +251,16 @@ class ExamRecordViewModel @Inject constructor(
 
     private fun end() = viewModelScope.launch(Dispatchers.IO) {
         timer.end()
-        updateExamState(newExamState = ExamState.END, lastAt = timer.getCurrentTime())
-        lapsAndUpdateQuestion(currentQuestion)
+        updateExamState(
+            newExamState = ExamState.END,
+            lastAt = timer.getCurrentTime()
+        )
+        lapsAndPauseQuestion(currentQuestion)
+
         stateValue.questionModels.forEach {
             updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
         }
+
         updateState { stateValue.copy(completeAllQuestion = true) }
     }
 
@@ -294,7 +292,9 @@ class ExamRecordViewModel @Inject constructor(
     private suspend fun updateQuestionState(questionNumber: Int?, newQuestionState: QuestionState) =
         viewModelScope.launch {
             questionNumber?.let { last ->
-                stateValue.questionModels.find { it.questionNumber == last }?.let {
+                stateValue.questionModels.find {
+                    it.questionNumber == last
+                }?.let {
                     updateQuestionUseCase(
                         it.copy(state = newQuestionState).asExternalModel()
                     )
@@ -302,7 +302,8 @@ class ExamRecordViewModel @Inject constructor(
             }
         }
 
-    private suspend fun lapsAndUpdateQuestion(current: QuestionModel?) {
+    private suspend fun lapsAndPauseQuestion(current: QuestionModel?) {
+        Log.d("SR-N", "laps ${current?.questionNumber}")
         current?.let {
             updateQuestionUseCase(timer.addCompletedQuestion(current).asExternalModel())
         }
@@ -314,6 +315,7 @@ class ExamRecordViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
+        pause()
         timer.end()
     }
 }
@@ -329,7 +331,7 @@ data class ExamRecordState(
     val showCompleteDialog: Boolean = false,
     val showJumpQuestionDialog: Boolean = false,
     val completeAllQuestion: Boolean = false,
-    val clickBack: Boolean = false
+    val confirmBack: Boolean = false
 ) {
     val selectableNumbers = questionModels.map {
         SelectableNumber(

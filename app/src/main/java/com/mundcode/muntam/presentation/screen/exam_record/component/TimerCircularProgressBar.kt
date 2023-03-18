@@ -93,10 +93,10 @@ fun TimeText(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = description, style = MTTextStyle.text13.spToDp(), color = Gray500)
-        Margin(dp = 8.dp)
         Text(text = timeText, style = MTTextStyle.textBold32.spToDp(), color = color)
     }
 }

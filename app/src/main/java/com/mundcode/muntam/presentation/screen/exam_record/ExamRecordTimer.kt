@@ -18,13 +18,14 @@ class ExamRecordTimer(
     private val initialTime: Long = DEFAULT_INITIAL_TIME,
     private val timeLimit: Long = 0,
     private val initQuestion: List<QuestionModel>,
+    private val initExamState: ExamState,
     private val onTick: suspend (current: String, remain: String, currentQuestionTime: String) -> Unit,
 ) {
     private var currentTime: Long = initialTime
     private var remainTime: Long = (timeLimit / 1000) - initialTime
     private var currentQuestionTime: Long = getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
 
-    private var state: ExamState = ExamState.READY
+    private var state: ExamState = initExamState
 
     private val mutex = Mutex()
 
@@ -98,6 +99,11 @@ class ExamRecordTimer(
     suspend fun setCurrentQuestion(question: QuestionModel) {
         mutex.withLock {
             currentQuestionTime = question.lapsedTime
+            onTick(
+                currentTime.asCurrentTimerText(),
+                remainTime.asCurrentTimerText(),
+                currentQuestionTime.asCurrentTimerText()
+            )
         }
     }
 

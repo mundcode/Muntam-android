@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,64 +45,64 @@ import com.mundcode.designsystem.theme.MTLightOrange
 import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.designsystem.theme.MTTextStyle
+import com.mundcode.designsystem.util.spToDp
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.R
 import com.mundcode.muntam.presentation.screen.exam_record.component.BottomButton
 import com.mundcode.muntam.presentation.screen.exam_record.component.TimerCircularProgressBar
 import com.mundcode.muntam.presentation.screen.exam_record.component.TopExamState
 import com.mundcode.muntam.util.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+
 // todo 타이머 시간 텍스트 고정너비로 덜컹거리지 않게 수정
 // todo READY -> RUNNING 에서 덜컹거리지 않게 수정
-// todo 다이얼로그 wrap content 로 수정
-// todo 끝내는 로직 추가
-// todo 텍스트 spToDp 적용
 // todo 중단하고 처음 들어왔을 때 버그 수정
 // todo 퍼센트에 따라 원형 프로그레스 바 업데이트 버그 수정
+// todo 시스템 버튼으로 뒤로가기, 또는 종료해도 상태 PAUSE 로 만들고 마지막 상태 저장
 @Composable
 fun ExamRecordScreen(
     viewModel: ExamRecordViewModel = hiltViewModel(),
+    onNavEvent: (String) -> Unit,
+    onClickBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
     val examState = state.examModel.state
+
+    LaunchedEffect(key1 = true) {
+        viewModel.navigationEvent.collectLatest { route ->
+            onNavEvent(route)
+        }
+    }
+
+    BackHandler {
+        viewModel.onClickBack()
+    }
+
+    if (state.confirmBack) {
+        onClickBack()
+    }
 
     Scaffold(
         topBar = {
             MTTitleToolbar(
                 onClickBack = viewModel::onClickBack,
                 title = state.examModel.name,
-                icons = listOf(
-                    {
-                        Icon(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(start = 20.dp, end = 12.dp)
-                                .clickable(
-                                    onClick = viewModel::onClickSetting,
-                                    indication = null,
-                                    interactionSource = MutableInteractionSource()
-                                ),
-                            painter = painterResource(id = R.drawable.ic_setttings_24_dp),
-                            contentDescription = null,
-                            tint = Gray900
-                        )
-                    },
-                    {
-                        Icon(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(end = 20.dp)
-                                .clickable(
-                                    onClick = viewModel::onClickComplete,
-                                    indication = null,
-                                    interactionSource = MutableInteractionSource()
-                                ),
-                            painter = painterResource(id = R.drawable.ic_check_24_dp),
-                            contentDescription = null,
-                            tint = Gray900
-                        )
-                    }
-                )
+                icons = listOf {
+                    Icon(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(end = 20.dp)
+                            .clickable(
+                                onClick = viewModel::onClickComplete,
+                                indication = null,
+                                interactionSource = MutableInteractionSource()
+                            ),
+                        painter = painterResource(id = R.drawable.ic_check_24_dp),
+                        contentDescription = null,
+                        tint = Gray900
+                    )
+                }
             )
         },
         bottomBar = {
@@ -167,7 +169,7 @@ fun ExamRecordScreen(
                             ExamState.READY -> {
                                 Text(
                                     text = "시작 대기 중",
-                                    style = MTTextStyle.textBold20,
+                                    style = MTTextStyle.textBold20.spToDp(),
                                     color = Gray700
                                 )
                             }
@@ -184,21 +186,21 @@ fun ExamRecordScreen(
                                 }
                                 Text(
                                     text = annotatedText,
-                                    style = MTTextStyle.text20,
+                                    style = MTTextStyle.text20.spToDp(),
                                     color = Gray900
                                 )
                             }
                             ExamState.PAUSE -> {
                                 Text(
                                     text = "일시 정지 중",
-                                    style = MTTextStyle.textBold20,
+                                    style = MTTextStyle.textBold20.spToDp(),
                                     color = Gray700
                                 )
                             }
                             ExamState.END -> {
                                 Text(
                                     text = "문제풀이 완료",
-                                    style = MTTextStyle.textBold20,
+                                    style = MTTextStyle.textBold20.spToDp(),
                                     color = MTOrange
                                 )
                             }
@@ -211,7 +213,7 @@ fun ExamRecordScreen(
                     ExamState.READY -> {
                         Text(
                             text = "화면을 터치하면 기록이 시작됩니다.",
-                            style = MTTextStyle.textBold16,
+                            style = MTTextStyle.textBold16.spToDp(),
                             color = MTOrange,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -223,7 +225,7 @@ fun ExamRecordScreen(
                     ExamState.RUNNING -> {
                         Text(
                             text = state.currentQuestionTimeText,
-                            style = MTTextStyle.textBold16,
+                            style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -235,7 +237,7 @@ fun ExamRecordScreen(
                     ExamState.PAUSE -> {
                         Text(
                             text = "화면을 터치하면 다시 시작됩니다.",
-                            style = MTTextStyle.textBold16,
+                            style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -247,7 +249,7 @@ fun ExamRecordScreen(
                     ExamState.END -> {
                         Text(
                             text = "시험 종료! 결과를 확인해보세요!",
-                            style = MTTextStyle.textBold16,
+                            style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
