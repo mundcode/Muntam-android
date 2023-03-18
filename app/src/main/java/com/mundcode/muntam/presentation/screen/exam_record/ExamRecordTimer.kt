@@ -42,7 +42,7 @@ class ExamRecordTimer(
                 state = ExamState.RUNNING
             }
 
-            while (state == ExamState.RUNNING && job?.isActive == true) {
+            while (state == ExamState.RUNNING || job?.isActive == true) {
                 delay(1000L)
                 mutex.withLock {
                     currentTime += 1

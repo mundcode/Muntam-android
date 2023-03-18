@@ -56,7 +56,6 @@ import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 // todo 타이머 시간 텍스트 고정너비로 덜컹거리지 않게 수정
-// todo READY -> RUNNING 에서 덜컹거리지 않게 수정
 // todo 중단하고 처음 들어왔을 때 버그 수정
 // todo 퍼센트에 따라 원형 프로그레스 바 업데이트 버그 수정
 // todo 시스템 버튼으로 뒤로가기, 또는 종료해도 상태 PAUSE 로 만들고 마지막 상태 저장
@@ -231,7 +230,7 @@ fun ExamRecordScreen(
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = 20.dp),
                             maxLines = 1,
                             textAlign = TextAlign.Center
                         )
@@ -243,19 +242,19 @@ fun ExamRecordScreen(
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = 20.dp),
                             maxLines = 1,
                             textAlign = TextAlign.Center
                         )
                     }
                     ExamState.END -> {
                         Text(
-                            text = "시험 종료! 결과를 확인해보세요!",
+                            text = "시험 종료! 한 번 더 터치하고 결과를 확인해보세요!",
                             style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = 20.dp),
                             maxLines = 1,
                             textAlign = TextAlign.Center
                         )
@@ -342,7 +341,7 @@ fun ExamRecordTimerScreen(
                 remainTimeColor = remainTimeColor
             )
 
-            Margin(dp = 12.dp)
+            Margin(dp = 24.dp)
 
             bottomStateComposable()
         }
