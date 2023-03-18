@@ -7,7 +7,9 @@ import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable
 fun QuestionScreen(
-    viewModel: QuestionViewModel = sharedActivityViewModel()
+    viewModel: QuestionViewModel = sharedActivityViewModel(),
+    onBackEvent: () -> Unit,
+    onNavEvent: () -> Unit
 ) {
     val list = viewModel.questions.collectAsState(listOf())
     LazyColumn() {

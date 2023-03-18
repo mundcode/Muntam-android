@@ -2,6 +2,8 @@ package com.mundcode.muntam.presentation.model
 
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionState
+import com.mundcode.muntam.util.asCurrentTimerText
+import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.datetime.Instant
 
 data class QuestionModel(
@@ -17,7 +19,10 @@ data class QuestionModel(
     val modifiedAt: Instant? = null,
     val deletedAt: Instant? = null,
     val state: QuestionState = QuestionState.READY
-)
+) {
+    val lapsedExamTimeText = lapsedExamTime.asCurrentTimerText()
+    val lapsedTimeText = lapsedTime.asTimeLimitText()
+}
 
 fun QuestionModel.asExternalModel() = Question(
     id = id,
