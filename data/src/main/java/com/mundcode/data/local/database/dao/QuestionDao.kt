@@ -13,7 +13,14 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
-    abstract fun getQuestionsByExamId(examId: Int): Flow<List<QuestionEntity>>
+    abstract fun getQuestionsByExamIdFlow(examId: Int): Flow<List<QuestionEntity>>
+
+    @Query(
+        value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
+        """
+    )
+    abstract fun getQuestionByExamId(examId: Int): List<QuestionEntity>
 
     @Query(
         value = """

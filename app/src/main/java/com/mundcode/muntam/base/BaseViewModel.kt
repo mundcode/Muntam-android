@@ -14,11 +14,16 @@ import kotlinx.coroutines.sync.withLock
 
 abstract class BaseViewModel<T> : ViewModel() {
 
-    protected val _state = MutableStateFlow(createInitialState())
+    private val _state = MutableStateFlow(createInitialState())
     val state: StateFlow<T> = _state
+
+    protected val stateValue: T get() = state.value
 
     protected val _toast = MutableSharedFlow<String>()
     val toast: SharedFlow<String> = _toast.asSharedFlow()
+
+    protected val _navigationEvent = MutableSharedFlow<String>()
+    val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
 
     val toastState = rememberToastState()
 

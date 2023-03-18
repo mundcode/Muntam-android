@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.R
 import com.mundcode.designsystem.components.etc.Margin
@@ -42,7 +43,9 @@ fun MTTitleToolbar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (showBack) {
@@ -66,11 +69,16 @@ fun MTTitleToolbar(
                 Text(
                     text = title,
                     style = MTTextStyle.textBold20,
-                    color = Gray900
+                    color = Gray900,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Margin(dp = 20.dp)
+
+            Row {
                 icons.forEach {
                     it()
                 }

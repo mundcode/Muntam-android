@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exams
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.mundcode.designsystem.state.ToastState
@@ -22,9 +23,6 @@ import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -40,9 +38,6 @@ class ExamsViewModel @Inject constructor(
     private val updateExamUseCase: UpdateExamUseCase
 ) : BaseViewModel<ExamsState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[SubjectModify.subjectIdArg])
-
-    private val _navigationEvent = MutableSharedFlow<String>()
-    val navigationEvent: SharedFlow<String> = _navigationEvent.asSharedFlow()
 
     init {
         loadExams()
@@ -123,11 +118,12 @@ class ExamsViewModel @Inject constructor(
         val subject = getSubjectByIdUseCase(subjectId)
         val exam = ExamModel(
             subjectId = subjectId,
-            name = name,
+            name = name.trim(),
             timeLimit = subject.timeLimit,
             createdAt = Clock.System.now()
         )
         val examId = insertExamUseCase(exam.asExternalModel())
+        Log.d("SR-N", "examId $examId")
 
         val questions = (1..subject.totalQuestionNumber).map {
             QuestionModel(

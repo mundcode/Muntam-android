@@ -2,7 +2,7 @@ package com.mundcode.muntam.presentation.screen.questions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
+import com.mundcode.domain.usecase.GetQuestionsByExamIdFlowUseCase
 import com.mundcode.domain.usecase.InsertQuestionsExamUseCase
 import com.mundcode.muntam.presentation.model.QuestionModel
 import com.mundcode.muntam.presentation.model.asStateModel
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
     private val insertQuestionsExamUseCase: InsertQuestionsExamUseCase,
-    private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase,
+    private val getQuestionsByExamIdFlowUseCase: GetQuestionsByExamIdFlowUseCase,
 ) : ViewModel() {
     // todo 여러 UseCase 모아서 화면에 필요한 모든 데이터 가져오는 상태모델 정의하고 교체
     private val _questions = MutableSharedFlow<List<QuestionModel>>()
@@ -28,7 +28,7 @@ class QuestionViewModel @Inject constructor(
     }
 
     fun getQuestions(examId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        getQuestionsByExamIdUseCase(examId).collectLatest {
+        getQuestionsByExamIdFlowUseCase(examId).collectLatest {
             _questions.emit(it.map { it.asStateModel() })
         }
     }

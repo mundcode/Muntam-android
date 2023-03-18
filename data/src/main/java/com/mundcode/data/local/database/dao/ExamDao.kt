@@ -6,6 +6,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.mundcode.data.local.database.model.ExamEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.datetime.Instant
 
 @Dao
@@ -22,14 +23,16 @@ abstract class ExamDao : BaseDao<ExamEntity> {
             SELECT * FROM exams WHERE deleted_at IS NULL AND id = :examId
         """
     )
-    abstract suspend fun getExam(examId: Int): ExamEntity
+    abstract suspend fun getExamById(examId: Int): ExamEntity
 
     @Query(
         value = """
             SELECT * FROM exams WHERE deleted_at IS NULL AND id = :id
         """
     )
-    abstract fun getExamById(id: Int): Flow<ExamEntity>
+    abstract fun getExamByIdFlow(id: Int): Flow<ExamEntity>
+
+    fun getExamByIdDistinctUntilChanged(id: Int) = getExamByIdFlow(id).distinctUntilChanged()
 
     @Query(
         value = """

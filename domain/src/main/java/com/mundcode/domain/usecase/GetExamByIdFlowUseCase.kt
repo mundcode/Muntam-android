@@ -3,9 +3,12 @@ package com.mundcode.domain.usecase
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.repository.ExamRepository
 import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
 
-class GetExamUseCase @Inject constructor(
+@Singleton
+class GetExamByIdFlowUseCase @Inject constructor(
     private val examRepository: ExamRepository
 ) {
-    suspend operator fun invoke(examId: Int): Exam = examRepository.getExam(examId)
+    operator fun invoke(id: Int): Flow<Exam> = examRepository.getExamByIdFlow(id)
 }

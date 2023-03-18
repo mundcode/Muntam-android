@@ -22,7 +22,7 @@ import com.mundcode.designsystem.model.SelectableTextState
 fun JumpNumberPickerDialog(
     selectableNumbers: List<SelectableNumber>,
     currentNumber: Int,
-    onResult: (Int) -> Unit = {},
+    onSelect: (Int) -> Unit = {},
     onCancel: () -> Unit = {}
 ) {
     var selectedNumber by remember {
@@ -34,14 +34,14 @@ fun JumpNumberPickerDialog(
         onClickClose = onCancel,
         onClickCancel = onCancel,
         onClickConfirm = {
-            onResult(selectedNumber)
+            onSelect(selectedNumber)
         }
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
             modifier = Modifier
-                .heightIn(0.dp, 280.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .heightIn(0.dp, 280.dp),
             flingBehavior = ScrollableDefaults.flingBehavior()
         ) {
             items(selectableNumbers) { number ->

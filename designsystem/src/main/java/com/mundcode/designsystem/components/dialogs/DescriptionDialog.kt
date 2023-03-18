@@ -3,6 +3,7 @@ package com.mundcode.designsystem.components.dialogs
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ fun DescriptionDialog(
     ) {
         Column(
             modifier = Modifier
+                .width(312.dp)
                 .background(
                     color = MaterialTheme.colors.background,
                     shape = CornerRadius16

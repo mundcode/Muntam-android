@@ -18,7 +18,7 @@ class SubjectRepositoryImpl @Inject constructor(
         subjectDao.insert(subject.asEntity())
     }
 
-    override fun getSubjects(): Flow<List<Subject>> {
+    override fun getSubjectsFlow(): Flow<List<Subject>> {
         return subjectDao.getSubjectsDistinctUntilChanged().map { list ->
             list.map(SubjectEntity::asExternalModel)
         }
@@ -26,6 +26,10 @@ class SubjectRepositoryImpl @Inject constructor(
 
     override suspend fun getSubjectById(id: Int): Subject {
         return subjectDao.getSubjectById(id).asExternalModel()
+    }
+
+    override suspend fun getSubjectByIdFlow(id: Int): Flow<Subject> {
+        return subjectDao.getSubjectDistinctUntilChanged(id).map { it.asExternalModel() }
     }
 
     override suspend fun updateSubject(subject: Subject) {

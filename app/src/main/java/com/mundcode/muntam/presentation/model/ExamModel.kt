@@ -5,9 +5,13 @@ import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
+import com.mundcode.muntam.util.asCurrentTimerText
 import com.mundcode.muntam.util.asMTDateText
+import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+
+const val FIRST_QUESTION_NUMBER = 1
 
 data class ExamModel( // todo 수정
     var id: Int = 0,
@@ -15,11 +19,11 @@ data class ExamModel( // todo 수정
     val name: String = "",
     val isFavorite: Boolean = false,
     val timeLimit: Long = 0,
-    val lastAt: Long? = null, // (시험 종료이든 또는 중간에 나갔든) 마지막으로 기록된 시험진행 시간
     val createdAt: Instant = Clock.System.now(),
-    val endAt: Instant? = null, // 시험이 끝났을 때 시간
     val lastQuestionNumber: Int? = null, // 시험 기록 중 마지막으로 푼 문제
     val deletedAt: Instant? = null, // 소프트 딜리트 용도
+    val lastAt: Long? = null, // (시험 종료이든 또는 중간에 나갔든) 마지막으로 기록된 시험진행 시간
+    val endAt: Instant? = null, // 시험이 끝났을 때 시간
     val state: ExamState = ExamState.READY
 ) : Comparable<ExamModel> {
     val createdAtText: String = createdAt.asMTDateText()
@@ -37,8 +41,11 @@ data class ExamModel( // todo 수정
         val min = (diff / 1000 / 60) % 60
         val hour = (diff / 1000 / 60 / 60) % 24
 
-        return "%02d.%02d.%02d"
+        return "%02d.%02d.%02d".format(hour, min, sec)
     }
+
+    val currentExamTimeText = (lastAt ?: 0).asCurrentTimerText()
+    val remainExamTimeText = (timeLimit - (lastAt ?: 0)).asTimeLimitText()
 
     private fun obtainExpiredTimeTextColor(): Color {
         return when {

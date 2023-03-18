@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mundcode.designsystem.components.buttons.AlertMTButton
+import com.mundcode.designsystem.components.buttons.PrimaryMTButton
 import com.mundcode.designsystem.components.buttons.SecondaryMTButton
 import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.CornerRadius16
@@ -29,6 +31,7 @@ fun AlertDialog(
     subtitle: String,
     cancelText: String = "취소",
     confirmText: String,
+    confirmPrimary: Boolean = false,
     onClickCancel: () -> Unit = {},
     onClickConfirm: () -> Unit = {}
 ) {
@@ -41,6 +44,7 @@ fun AlertDialog(
     ) {
         Column(
             modifier = Modifier
+                .width(312.dp)
                 .background(
                     color = MaterialTheme.colors.background,
                     shape = CornerRadius16
@@ -75,11 +79,19 @@ fun AlertDialog(
                     onClick = onClickCancel,
                     modifier = Modifier.weight(1f)
                 )
-                AlertMTButton(
-                    text = confirmText,
-                    onClick = onClickConfirm,
-                    modifier = Modifier.weight(1f)
-                )
+                if (confirmPrimary) {
+                    PrimaryMTButton(
+                        text = confirmText,
+                        onClick = onClickConfirm,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    AlertMTButton(
+                        text = confirmText,
+                        onClick = onClickConfirm,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }

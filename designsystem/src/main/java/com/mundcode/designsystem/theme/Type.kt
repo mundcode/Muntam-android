@@ -13,6 +13,14 @@ val MTFontFamily = FontFamily(
 )
 
 object MTTextStyle {
+    val textBold32 = TextStyle(
+        fontSize = 32.sp,
+        fontFamily = MTFontFamily,
+        fontWeight = FontWeight.Bold,
+        lineHeight = 24.sp,
+        letterSpacing = (-0.03).sp
+    )
+
     val textBold20 = TextStyle(
         fontSize = 20.sp,
         fontFamily = MTFontFamily,
