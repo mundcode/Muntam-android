@@ -214,20 +214,35 @@ class ExamRecordViewModel @Inject constructor(
     /** 여기 까지 체크 완료 **/
 
     fun onSelectConfirmBackDialog() {
-        onCancelDialog()
-        pause()
         updateState {
-            stateValue.copy(confirmBack = true)
+            stateValue.copy(
+                showBackConfirmDialog = false,
+                showCompleteDialog = false,
+                showJumpQuestionDialog = false,
+                confirmBack = true
+            )
         }
     }
 
     fun onSelectConfirmCompleteDialog() {
-        onCancelDialog()
+        updateState {
+            state.value.copy(
+                showBackConfirmDialog = false,
+                showCompleteDialog = false,
+                showJumpQuestionDialog = false
+            )
+        }
         end()
     }
 
     fun onSelectNumberJumpDialog(selectedNumber: Int) = viewModelScope.launch(Dispatchers.IO) {
-        onCancelDialog()
+        updateState {
+            state.value.copy(
+                showBackConfirmDialog = false,
+                showCompleteDialog = false,
+                showJumpQuestionDialog = false
+            )
+        }
         lapsAndPauseQuestion(currentQuestion)
         updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber)
         updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING)
