@@ -34,7 +34,7 @@ class ExamRecordTimer(
     private var job: Job? = null
 
     fun start() {
-        if (state == ExamState.RUNNING || job?.isActive == true) return
+        if (state == ExamState.RUNNING && job?.isActive == true) return
 
         job = coroutineScope.launch {
             mutex.withLock {
