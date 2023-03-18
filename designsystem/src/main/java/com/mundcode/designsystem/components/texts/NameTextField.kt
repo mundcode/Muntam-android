@@ -46,7 +46,8 @@ fun NameTextField(
             cursorColor = Gray900,
             focusedIndicatorColor = Transparent,
             unfocusedIndicatorColor = Transparent
-        )
+        ),
+        maxLines = 1
     )
 }
 

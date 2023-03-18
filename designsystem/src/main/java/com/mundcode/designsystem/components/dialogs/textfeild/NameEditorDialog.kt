@@ -27,13 +27,15 @@ fun NameEditorDialog(
         onClickClose = onClickCancel,
         onClickCancel = onClickCancel,
         onClickConfirm = {
-            onClickConfirm(value)
+            onClickConfirm(value.trim())
         }
     ) {
         NameTextField(
             value = value,
             onValueChange = {
-                value = it
+                if (value.isNotEmpty() || it != " ") {
+                    value = it
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             placeholderText = hint

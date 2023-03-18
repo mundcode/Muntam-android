@@ -121,7 +121,7 @@ class ExamsViewModel @Inject constructor(
         val subject = getSubjectByIdUseCase(subjectId)
         val exam = ExamModel(
             subjectId = subjectId,
-            name = name,
+            name = name.trim(),
             timeLimit = subject.timeLimit,
             createdAt = Clock.System.now()
         )
