@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
-import android.util.Log
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.model.enums.QuestionState
 import com.mundcode.muntam.presentation.model.QuestionModel
@@ -74,7 +73,6 @@ class ExamRecordTimer(
     }
 
     private fun getLastQuestion(questions: List<QuestionModel>): QuestionModel? {
-        Log.d("SR-N", "initializeLapsedQuestion size = ${questions.size}")
         var lastLapsedQuestion = questions.firstOrNull()
         for (item in questions) {
             val prev = lastLapsedQuestion?.modifiedAt
@@ -83,10 +81,6 @@ class ExamRecordTimer(
                 lastLapsedQuestion = item
             }
         }
-        Log.d(
-            "SR-N",
-            "initializeLapsedQuestion questionNumber = ${lastLapsedQuestion?.questionNumber}"
-        )
         return lastLapsedQuestion
     }
 

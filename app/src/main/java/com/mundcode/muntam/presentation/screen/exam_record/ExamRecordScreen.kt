@@ -58,7 +58,6 @@ import com.mundcode.muntam.util.ActivityLifecycle
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 
-// todo 타이머 시간 텍스트 고정너비로 덜컹거리지 않게 수정
 @Composable
 fun ExamRecordScreen(
     viewModel: ExamRecordViewModel = hiltViewModel(),

@@ -273,8 +273,6 @@ class ExamRecordViewModel @Inject constructor(
 
     private fun end() = viewModelScope.launch(Dispatchers.IO) {
         // todo loading 상태 넣기?
-
-
         lapsAndPauseQuestion(currentQuestion)
 
         stateValue.questionModels.forEach {
@@ -326,7 +324,6 @@ class ExamRecordViewModel @Inject constructor(
         }
 
     private suspend fun lapsAndPauseQuestion(current: QuestionModel?) {
-        Log.d("SR-N", "laps ${current?.questionNumber}")
         current?.let {
             updateQuestionUseCase(timer.addCompletedQuestion(current).asExternalModel())
         }
@@ -336,11 +333,8 @@ class ExamRecordViewModel @Inject constructor(
         return ExamRecordState()
     }
 
-    // todo 비정상종료, 강제종료 등등이 일어났을 때 마지막 상태 어떻게 기록할 것인가? ->
     fun onDispose() {
-        Log.d("SR-N", "onDispose")
         if (currentExamState == ExamState.RUNNING) {
-            Log.d("SR-N", "onDispose on RUNNING")
             pause()
         }
     }
