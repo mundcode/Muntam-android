@@ -101,10 +101,9 @@ fun MuntamNavHost(
             ExamRecordScreen(
                 onNavEvent = { route ->
                     navController.navigate(route) {
-                        popUpTo(route) {
-                            saveState = true
+                        popUpTo(ExamRecord.routeWithArgs) {
+                            inclusive = true
                         }
-                        restoreState = true
                     }
                 },
                 onClickBack = {

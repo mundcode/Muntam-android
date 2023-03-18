@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -71,6 +72,7 @@ fun ExamRecordScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.navigationEvent.collectLatest { route ->
+            Log.d("SR-N", "navigationEvent $route")
             onNavEvent(route)
         }
     }

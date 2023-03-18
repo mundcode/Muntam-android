@@ -58,10 +58,12 @@ class ExamRecordViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            // 초기 정보 가져오기
             val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit ?: throw Exception()
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
 
+            // 초기 정보로 상태 업데이트
             updateState {
                 stateValue.copy(
                     timeLimit = timeLimit,
@@ -70,6 +72,7 @@ class ExamRecordViewModel @Inject constructor(
                 )
             }
 
+            // 초기 정보로 타이머 초기화
             timer = ExamRecordTimer(
                 initialTime = initExam.lastAt ?: DEFAULT_INITIAL_TIME,
                 timeLimit = initExam.timeLimit,
@@ -85,36 +88,42 @@ class ExamRecordViewModel @Inject constructor(
                 }
             }
 
-            if (initExam.state == ExamState.PAUSE) {
-                timer.start()
-            }
-
+            // 시험, 문제 리스트 데이터 변화 구독
             combine(
                 getExamByIdFlowUseCase(examId),
                 getQuestionsByExamIdFlowUseCase(examId),
                 ::Pair
             ).collectLatest { (examEntity, questionsEntity) ->
-                Log.e(
-                    "SR-N",
-                    "exam = state ${examEntity.state} / lastQuestionNumber ${examEntity.lastQuestionNumber}"
-                )
+
                 val exam = examEntity.asStateModel()
                 val questions = questionsEntity.map { it.asStateModel() }
-                updateState {
-                    state.value.copy(
-                        examModel = exam,
-                        questionModels = questions
-                    )
-                }
+
 
                 val lastQuestionNumber = exam.lastQuestionNumber
                 val newQuestion = questions.find { q ->
                     q.questionNumber == lastQuestionNumber
                 }
-                Log.e("SR-N", "newQuestion = ${newQuestion?.questionNumber}")
+
+                Log.e("SR-N", "state ${examEntity.state} / curQ ${examEntity.lastQuestionNumber}")
 
                 newQuestion?.let { new ->
                     timer.setCurrentQuestion(new)
+                }
+
+                when (exam.state) {
+                    ExamState.PAUSE -> {
+                        timer.pause()
+                    }
+                    ExamState.RUNNING -> {
+                        timer.start()
+                    }
+                }
+
+                updateState {
+                    state.value.copy(
+                        examModel = exam,
+                        questionModels = questions
+                    )
                 }
             }
         }
@@ -124,7 +133,6 @@ class ExamRecordViewModel @Inject constructor(
         when (currentExamState) {
             ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
-                timer.start()
                 updateQuestionState(
                     questionNumber = 1,
                     newQuestionState = QuestionState.RUNNING
@@ -173,10 +181,6 @@ class ExamRecordViewModel @Inject constructor(
                     end()
                 }
             }
-            ExamState.END -> {
-                // todo 동영상광고 보여주는 로직 추가
-                _navigationEvent.emit(Questions.route)
-            }
         }
     }
 
@@ -211,8 +215,6 @@ class ExamRecordViewModel @Inject constructor(
         pause()
     }
 
-    /** 여기 까지 체크 완료 **/
-
     fun onSelectConfirmBackDialog() {
         updateState {
             stateValue.copy(
@@ -243,13 +245,12 @@ class ExamRecordViewModel @Inject constructor(
                 showJumpQuestionDialog = false
             )
         }
-        lapsAndPauseQuestion(currentQuestion)
-        updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber)
-        updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING)
+        lapsAndPauseQuestion(currentQuestion) // 기존 문제 PAUSE 시키고 기록하기
+        updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber) // 타이머 리스타트
+        updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING) // 선택문제 스타트
     }
 
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {
-        timer.pause()
         updateExamState(
             newExamState = ExamState.PAUSE,
             lastAt = timer.getCurrentTime()
@@ -259,13 +260,13 @@ class ExamRecordViewModel @Inject constructor(
 
     // 문제번호랑 경과시간은 그대로, 상태랑 타이머만 바꾸기
     private fun resume() = viewModelScope.launch(Dispatchers.IO) {
-        timer.start()
         updateExamState(newExamState = ExamState.RUNNING)
         updateQuestionState(lastQuestionNumber, QuestionState.RUNNING)
     }
 
     private fun end() = viewModelScope.launch(Dispatchers.IO) {
-        timer.end()
+        // todo loading 상태 넣기?
+
         updateExamState(
             newExamState = ExamState.END,
             lastAt = timer.getCurrentTime()
@@ -276,7 +277,7 @@ class ExamRecordViewModel @Inject constructor(
             updateQuestionUseCase(it.copy(state = QuestionState.END).asExternalModel())
         }
 
-        updateState { stateValue.copy(completeAllQuestion = true) }
+        _navigationEvent.emit(Questions.route)
     }
 
     fun onCancelDialog() {
@@ -345,7 +346,6 @@ data class ExamRecordState(
     val showBackConfirmDialog: Boolean = false,
     val showCompleteDialog: Boolean = false,
     val showJumpQuestionDialog: Boolean = false,
-    val completeAllQuestion: Boolean = false,
     val confirmBack: Boolean = false
 ) {
     val selectableNumbers = questionModels.map {

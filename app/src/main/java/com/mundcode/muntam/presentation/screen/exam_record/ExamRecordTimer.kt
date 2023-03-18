@@ -1,6 +1,7 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
 import android.util.Log
+import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.model.enums.QuestionState
 import com.mundcode.muntam.presentation.model.QuestionModel
@@ -24,6 +25,7 @@ class ExamRecordTimer(
     private var currentTime: Long = initialTime
     private var remainTime: Long = (timeLimit / 1000) - initialTime
     private var currentQuestionTime: Long = getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
+    private var currentQuestion: QuestionModel? = null
 
     private var state: ExamState = initExamState
 
@@ -33,6 +35,8 @@ class ExamRecordTimer(
     private var job: Job? = null
 
     fun start() {
+        if (state == ExamState.RUNNING || job?.isActive == true) return
+
         job = coroutineScope.launch {
             mutex.withLock {
                 state = ExamState.RUNNING
@@ -55,6 +59,8 @@ class ExamRecordTimer(
     }
 
     fun pause() = coroutineScope.launch {
+        if (state == ExamState.PAUSE) return@launch
+
         job?.cancel()
         mutex.withLock {
             state = ExamState.PAUSE
@@ -62,6 +68,8 @@ class ExamRecordTimer(
     }
 
     fun end() {
+        if (state == ExamState.END) return
+
         job?.cancel()
         coroutineScope.cancel()
     }
@@ -97,6 +105,8 @@ class ExamRecordTimer(
     }
 
     suspend fun setCurrentQuestion(question: QuestionModel) {
+        if (currentQuestion == question) return
+
         mutex.withLock {
             currentQuestionTime = question.lapsedTime
             onTick(
