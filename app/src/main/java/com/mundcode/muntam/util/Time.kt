@@ -35,4 +35,3 @@ fun Long.asCurrentTimerText(): String {
     val hour = totalMin / 60
     return "$sign%02d:%02d:%02d".format(hour, min, sec)
 }
-

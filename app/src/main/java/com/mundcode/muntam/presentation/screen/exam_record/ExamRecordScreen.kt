@@ -56,9 +56,6 @@ import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 // todo 타이머 시간 텍스트 고정너비로 덜컹거리지 않게 수정
-// todo 중단하고 처음 들어왔을 때 버그 수정
-// todo 퍼센트에 따라 원형 프로그레스 바 업데이트 버그 수정
-// todo 시스템 버튼으로 뒤로가기, 또는 종료해도 상태 PAUSE 로 만들고 마지막 상태 저장
 @Composable
 fun ExamRecordScreen(
     viewModel: ExamRecordViewModel = hiltViewModel(),
@@ -71,7 +68,6 @@ fun ExamRecordScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.navigationEvent.collectLatest { route ->
-            Log.d("SR-N", "navigationEvent $route")
             onNavEvent(route)
         }
     }

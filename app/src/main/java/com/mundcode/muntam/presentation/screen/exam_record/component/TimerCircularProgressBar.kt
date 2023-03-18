@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -18,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.Gray900
@@ -78,8 +79,18 @@ fun TimerCircularProgressBar(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TimeText(description = "현재시간", timeText = currentTime, color = currentTimeColor)
-            TimeText(description = "남은시간", timeText = remainTime, color = remainTimeColor)
+            TimeText(
+                description = "현재시간",
+                timeText = currentTime,
+                color = currentTimeColor,
+                modifier = Modifier.fillMaxWidth()
+            )
+            TimeText(
+                description = "남은시간",
+                timeText = remainTime,
+                color = remainTimeColor,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
@@ -96,8 +107,18 @@ fun TimeText(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = description, style = MTTextStyle.text13.spToDp(), color = Gray500)
-        Text(text = timeText, style = MTTextStyle.textBold32.spToDp(), color = color)
+        Text(
+            text = description,
+            style = MTTextStyle.text13.spToDp(),
+            color = Gray500,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = timeText,
+            style = MTTextStyle.textBold32.spToDp(),
+            color = color,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

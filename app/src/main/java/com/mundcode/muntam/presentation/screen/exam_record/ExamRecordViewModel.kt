@@ -83,7 +83,8 @@ class ExamRecordViewModel @Inject constructor(
                     stateValue.copy(
                         currentExamTimeText = current,
                         remainExamTimeText = remain,
-                        currentQuestionTimeText = question
+                        currentQuestionTimeText = question,
+                        percent = (timer.getCurrentTime() / (timeLimit / 1000).toFloat())
                     )
                 }
             }
@@ -343,6 +344,8 @@ class ExamRecordViewModel @Inject constructor(
 data class ExamRecordState(
     val timeLimit: Long = 0,
     val examModel: ExamModel = ExamModel(),
+    val percent: Float = 0f,
+    val expired: Boolean = false,
     val currentExamTimeText: String = "00:00:00",
     val remainExamTimeText: String = "00:00:00",
     val currentQuestionTimeText: String = "00:00:00",
@@ -355,13 +358,11 @@ data class ExamRecordState(
     val selectableNumbers = questionModels.map {
         SelectableNumber(
             number = it.questionNumber,
-            state = when(it.state) {
+            state = when (it.state) {
                 QuestionState.READY -> SelectableTextState.SELECTABLE
                 QuestionState.RUNNING -> SelectableTextState.SELECTED
                 else -> SelectableTextState.UNSELECTABLE
             }
         )
     }
-
-    val percent: Float = ((examModel.lastAt?.toFloat() ?: 0f) / timeLimit.toFloat())
 }

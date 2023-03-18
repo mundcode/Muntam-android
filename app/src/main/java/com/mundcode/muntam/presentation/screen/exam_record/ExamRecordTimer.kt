@@ -1,7 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
 import android.util.Log
-import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.model.enums.QuestionState
 import com.mundcode.muntam.presentation.model.QuestionModel
