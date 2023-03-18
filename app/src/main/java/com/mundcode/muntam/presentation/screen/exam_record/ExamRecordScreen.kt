@@ -22,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -65,6 +67,10 @@ fun ExamRecordScreen(
     val state by viewModel.state.collectAsState()
 
     val examState = state.examModel.state
+
+    val prevPercentage by remember {
+        mutableStateOf(0f)
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.navigationEvent.collectLatest { route ->
@@ -138,10 +144,12 @@ fun ExamRecordScreen(
                 ExamState.PAUSE -> Gray100
                 else -> MTLightOrange
             },
-            lineColor = when (examState) {
-                ExamState.PAUSE -> Gray300
+            lineColor = when {
+                examState == ExamState.PAUSE -> Gray300
+                state.expired -> MTRed
                 else -> MTOrange
             },
+            prevPercentage = prevPercentage,
             newPercentage = state.percent,
             currentTime = state.currentExamTimeText,
             currentTimeColor = when (examState) {
@@ -257,6 +265,7 @@ fun ExamRecordScreen(
                     }
                 }
             },
+            expired = state.expired,
             onClickScreen = viewModel::onClickScreen
         )
     }
@@ -309,6 +318,7 @@ fun ExamRecordTimerScreen(
     remainTime: String,
     remainTimeColor: Color = MTRed,
     onClickScreen: () -> Unit,
+    expired: Boolean,
     topStateComposable: @Composable () -> Unit = {},
     bottomStateComposable: @Composable () -> Unit = {}
 ) {
@@ -334,7 +344,8 @@ fun ExamRecordTimerScreen(
                 currentTime = currentTime,
                 currentTimeColor = currentTimeColor,
                 remainTime = remainTime,
-                remainTimeColor = remainTimeColor
+                remainTimeColor = remainTimeColor,
+                expired = expired
             )
 
             Margin(dp = 24.dp)

@@ -84,6 +84,7 @@ class ExamRecordViewModel @Inject constructor(
                         currentExamTimeText = current,
                         remainExamTimeText = remain,
                         currentQuestionTimeText = question,
+                        expired = timer.getCurrentTime() > timeLimit / 1000,
                         percent = (timer.getCurrentTime() / (timeLimit / 1000).toFloat())
                     )
                 }

@@ -25,6 +25,7 @@ import com.mundcode.designsystem.theme.MTGreen
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.Transparent
 import com.mundcode.designsystem.theme.White
+import com.mundcode.designsystem.util.spToDp
 
 @Composable
 fun TimeRecordButton(
@@ -53,7 +54,7 @@ fun TimeRecordButton(
             Margin(dp = 12.dp)
             Text(
                 text = stringResource(id = R.string.title_record_time),
-                style = MTTextStyle.textBold16,
+                style = MTTextStyle.textBold16.spToDp(),
                 color = White,
             )
         }

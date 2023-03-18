@@ -43,7 +43,8 @@ fun TimerCircularProgressBar(
     currentTime: String,
     currentTimeColor: Color = Gray900,
     remainTime: String,
-    remainTimeColor: Color = MTRed
+    remainTimeColor: Color = MTRed,
+    expired: Boolean
 ) {
     val currentPercentage = remember { Animatable(prevPercentage) }
 
@@ -69,7 +70,7 @@ fun TimerCircularProgressBar(
             drawArc(
                 color = lineColor,
                 startAngle = -90f,
-                sweepAngle = 360f * newPercentage,
+                sweepAngle = 360f * currentPercentage.value,
                 useCenter = false,
                 style = Stroke(width = LINE_WIDTH.dp.toPx(), cap = StrokeCap.Round)
             )
@@ -86,7 +87,7 @@ fun TimerCircularProgressBar(
                 modifier = Modifier.fillMaxWidth()
             )
             TimeText(
-                description = "남은시간",
+                description = if (expired) "초과시간" else "남은시간",
                 timeText = remainTime,
                 color = remainTimeColor,
                 modifier = Modifier.fillMaxWidth()
@@ -131,7 +132,8 @@ fun TimerCircularProgressBarPreview() {
         newPercentage = 0.8f,
         modifier = Modifier.size(296.dp),
         currentTime = "02:23:11",
-        remainTime = "00:37:49"
+        remainTime = "00:37:49",
+        expired = false
     )
 }
 
@@ -145,6 +147,7 @@ fun TimerCircularProgressBarPreview2() {
         newPercentage = 0.8f,
         modifier = Modifier.size(296.dp),
         currentTime = "02:23:11",
-        remainTime = "00:37:49"
+        remainTime = "00:37:49",
+        expired = false
     )
 }
