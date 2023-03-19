@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTTextStyle
@@ -16,7 +17,7 @@ import com.mundcode.designsystem.util.spToDp
 import com.mundcode.muntam.R
 
 @Composable
-fun EmptyItem(
+fun FavoriteEmptyItem(
     modifier: Modifier
 ) {
     Row(
@@ -24,7 +25,7 @@ fun EmptyItem(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "즐겨찾기한 시험이 없어요", style = MTTextStyle.text20.spToDp(), color = Gray800)
+        Text(text = "즐겨찾기한 시험이 없어요", style = MTTextStyle.textBold16.spToDp(), color = Gray600)
 
         Icon(
             painter = painterResource(id = R.drawable.ic_save_on_24_dp),
