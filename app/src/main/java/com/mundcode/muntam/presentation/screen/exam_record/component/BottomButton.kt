@@ -22,20 +22,20 @@ import com.mundcode.designsystem.util.spToDp
 fun BottomButton(
     resId: Int,
     text: String,
-    enable: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .clip(CornerRadius4)
-            .clickable(onClick = onClick, enabled = enable),
+            .clickable(onClick = onClick, enabled = enabled),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             painter = painterResource(id = resId),
             contentDescription = null,
-            tint = if (enable) MTOrange else Gray300
+            tint = if (enabled) MTOrange else Gray300
         )
         Text(text = text, style = MTTextStyle.text13.spToDp(), color = Gray500)
     }

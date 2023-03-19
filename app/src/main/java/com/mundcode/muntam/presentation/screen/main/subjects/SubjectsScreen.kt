@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,12 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.toolbars.MTLogoToolbar
+import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray900
-import com.mundcode.designsystem.theme.MTScreenBackground
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.muntam.navigation.Exams
 import com.mundcode.muntam.navigation.SubjectAdd
 import com.mundcode.muntam.navigation.SubjectModify
+import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.SubjectAddItem
 import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectItem
@@ -40,7 +43,7 @@ fun SubjectsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MTScreenBackground)
+            .background(color = Gray100)
     ) {
         MTLogoToolbar()
 
@@ -50,7 +53,7 @@ fun SubjectsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(20.dp),
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
         ) {
             item(
                 span = { GridItemSpan(2) }
@@ -89,7 +92,12 @@ fun SubjectsScreen(
             }
         }
 
-        // todo 애드몹 네이티브 추가
+        AdmobBanner(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 16.dp, top = 8.dp)
+        )
     }
 
     if (state.showDeleteConfirmDialog) {

@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.subject_add
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,13 +29,17 @@ import com.mundcode.designsystem.components.dialogs.textfeild.NameEditorDialog
 import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.components.tags.SubjectNameTag
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
+import com.mundcode.designsystem.theme.AdmobBannerVerticalPadding
 import com.mundcode.designsystem.theme.CornerRadius12
+import com.mundcode.designsystem.theme.DefaultHorizontalPadding
+import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray300
 import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.Gray600
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.muntam.R
+import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.util.hiltViewModel
 
 @Composable
@@ -56,13 +61,16 @@ fun SubjectAddScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 24.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
+                Margin(dp = 24.dp)
+
                 SubjectNameSection(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = DefaultHorizontalPadding),
                     value = state.subjectName,
                     emoji = state.emoji,
                     onClickName = viewModel::onClickSubjectName,
@@ -72,7 +80,9 @@ fun SubjectAddScreen(
                 Margin(dp = 32.dp)
 
                 ReadOnlyOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = DefaultHorizontalPadding),
                     value = state.timeLimitText,
                     placeholder = "제한 시간",
                     emoji = "⏰",
@@ -82,7 +92,9 @@ fun SubjectAddScreen(
                 Margin(dp = 12.dp)
 
                 ReadOnlyOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = DefaultHorizontalPadding),
                     value = if (state.totalQuestionNumber != 0) {
                         "${state.totalQuestionNumber}개"
                     } else {
@@ -93,13 +105,42 @@ fun SubjectAddScreen(
                     onClick = viewModel::onClickTotalQuestionNumber
                 )
 
-                SubjectAddDescriptionText(desc = "완료 후 변경이 불가합니다.")
+                Margin(dp = 8.dp)
+
+                SubjectAddDescriptionText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = DefaultHorizontalPadding),
+                    desc = "완료 후 변경이 불가합니다."
+                )
             }
 
-            if (state.enableButton) {
-                PrimaryMTButton(text = "완료", onClick = viewModel::onClickCompleteButton)
-            } else {
-                DisableMTButton(text = "완료")
+            Column {
+                if (state.enableButton) {
+                    PrimaryMTButton(
+                        text = "완료",
+                        onClick = viewModel::onClickCompleteButton,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = DefaultHorizontalPadding, vertical = 16.dp)
+                    )
+                } else {
+                    DisableMTButton(
+                        text = "완료",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = DefaultHorizontalPadding, vertical = 16.dp)
+                    )
+                }
+
+                AdmobBanner(
+                    modifier = Modifier
+                        .background(Gray100)
+                        .padding(
+                            horizontal = DefaultHorizontalPadding,
+                            vertical = AdmobBannerVerticalPadding
+                        )
+                )
             }
         }
 
@@ -181,7 +222,12 @@ fun SubjectNameSection(
             }
         }
 
-        SubjectAddDescriptionText(desc = "과목 카테고리 생성 후 다음 안내 사항")
+        Margin(dp = 8.dp)
+
+        SubjectAddDescriptionText(
+            modifier = Modifier.fillMaxWidth(),
+            desc = "과목 카테고리 생성 후 다음 안내 사항"
+        )
     }
 }
 
@@ -237,8 +283,6 @@ fun SubjectAddDescriptionText(
         style = MTTextStyle.text13,
         color = Gray500,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp)
     )
 }
 

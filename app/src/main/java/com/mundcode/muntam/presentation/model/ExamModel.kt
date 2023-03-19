@@ -5,9 +5,7 @@ import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
-import com.mundcode.muntam.util.asCurrentTimerText
 import com.mundcode.muntam.util.asMTDateText
-import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -19,6 +17,7 @@ data class ExamModel( // todo 수정
     val name: String = "",
     val isFavorite: Boolean = false,
     val timeLimit: Long = 0,
+    val completeAd: Boolean = false,
     val createdAt: Instant = Clock.System.now(),
     val lastQuestionNumber: Int? = null, // 시험 기록 중 마지막으로 푼 문제
     val deletedAt: Instant? = null, // 소프트 딜리트 용도
@@ -43,9 +42,6 @@ data class ExamModel( // todo 수정
 
         return "%02d.%02d.%02d".format(hour, min, sec)
     }
-
-    val currentExamTimeText = (lastAt ?: 0).asCurrentTimerText()
-    val remainExamTimeText = (timeLimit - (lastAt ?: 0)).asTimeLimitText()
 
     private fun obtainExpiredTimeTextColor(): Color {
         return when {
@@ -82,6 +78,7 @@ fun Exam.asStateModel() = ExamModel( // todo 수정
     name = name,
     isFavorite = isFavorite,
     timeLimit = timeLimit,
+    completeAd = completeAd,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
@@ -96,6 +93,7 @@ fun ExamModel.asExternalModel(): Exam = Exam( // todo 수정
     name = name,
     isFavorite = isFavorite,
     timeLimit = timeLimit,
+    completeAd = completeAd,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
@@ -116,11 +114,13 @@ fun createExamModels(
 
 fun createExamModel(
     id: Int,
-    subjectId: Int
+    subjectId: Int,
+    completeAd: Boolean = false
 ) = ExamModel(
     id = id,
     subjectId = subjectId,
     name = "테스트 시험 이름 : $id",
     createdAt = Clock.System.now(),
-    timeLimit = id * 100000L
+    timeLimit = id * 100000L,
+    completeAd = completeAd
 )
