@@ -21,12 +21,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteExamViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getFavoriteExamsUseCase: GetFavoriteExamsUseCase,
     private val updateExamUseCase: UpdateExamUseCase,
     private val deleteExamUseCase: DeleteExamUseCase
 ) : BaseViewModel<FavoriteExamState>() {
-    private val subjectId: Int = checkNotNull(savedStateHandle[SubjectModify.subjectIdArg])
 
     init {
         loadExams()
@@ -46,7 +44,7 @@ class FavoriteExamViewModel @Inject constructor(
         if (examModel.state == ExamState.END && examModel.completeAd) {
             _navigationEvent.emit(Questions.route)
         } else {
-            _navigationEvent.emit(ExamRecord.getRouteWithArgs(subjectId, examModel.id))
+            _navigationEvent.emit(ExamRecord.getRouteWithArgs(examModel.subjectId, examModel.id))
         }
     }
 
@@ -58,11 +56,10 @@ class FavoriteExamViewModel @Inject constructor(
         )
     }
 
-    fun onClickMore(examModel: ExamModel) {
+    fun onClickOption(examModel: ExamModel) {
         updateState {
             stateValue.copy(
-                focusedExam = examModel,
-                showOptionBottomSheet = true
+                focusedExam = examModel
             )
         }
     }
@@ -70,7 +67,6 @@ class FavoriteExamViewModel @Inject constructor(
     fun onSelectDeleteFromBottomSheet() {
         updateState {
             stateValue.copy(
-                showOptionBottomSheet = false,
                 showDeleteConfirmDialog = true
             )
         }
@@ -79,32 +75,32 @@ class FavoriteExamViewModel @Inject constructor(
     fun onSelectModifyFromBottomSheet() {
         updateState {
             stateValue.copy(
-                showOptionBottomSheet = false,
                 showModifyDialog = true
             )
         }
     }
 
     fun onSelectDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
-        onClearDialog()
+        onCancelDialog()
         stateValue.focusedExam?.let {
             deleteExamUseCase(it.id)
         }
     }
 
     fun onModifyExamName(name: String) = viewModelScope.launch(Dispatchers.IO) {
-        onClearDialog()
+        onCancelDialog()
         stateValue.focusedExam?.let {
             updateExamUseCase(it.asExternalModel())
         }
     }
 
 
-    fun onClearDialog() {
+    fun onCancelDialog() {
         updateState {
             state.value.copy(
                 focusedExam = null,
-                showOptionBottomSheet = false
+                showModifyDialog = false,
+                showDeleteConfirmDialog = false
             )
         }
     }
@@ -117,7 +113,6 @@ class FavoriteExamViewModel @Inject constructor(
 data class FavoriteExamState(
     val exams: Map<String, List<ExamModel>> = mapOf(),
     val focusedExam: ExamModel? = null,
-    val showOptionBottomSheet: Boolean = false,
     val showModifyDialog: Boolean = false,
     val showDeleteConfirmDialog: Boolean = false
 )
