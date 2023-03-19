@@ -23,6 +23,7 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(

@@ -101,7 +101,7 @@ fun SubjectModifyScreen(
                     emoji = "✍️",
                     onClick = {}
                 )
-                
+
                 Margin(dp = 8.dp)
 
                 SubjectModifyDescriptionText(

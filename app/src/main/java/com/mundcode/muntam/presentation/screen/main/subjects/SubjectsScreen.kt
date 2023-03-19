@@ -92,7 +92,6 @@ fun SubjectsScreen(
             }
         }
 
-
         AdmobBanner(
             modifier = Modifier
                 .fillMaxWidth()

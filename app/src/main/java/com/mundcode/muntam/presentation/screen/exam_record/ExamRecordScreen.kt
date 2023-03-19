@@ -305,7 +305,11 @@ fun ExamRecordScreen(
                     }
                     ExamState.END -> {
                         Text(
-                            text = if (state.examModel.completeAd) "한 번 더 터치하고 시험 결과를 확인해보세요!" else "수고했어요\n한 번 더 터치해서 광고를 보며 머리를 식히고,\n시험결과를 확인하세요!",
+                            text = if (state.examModel.completeAd) {
+                                "한 번 더 터치하고 시험 결과를 확인해보세요!"
+                            } else {
+                                "수고했어요\n한 번 더 터치해서 광고를 보며 머리를 식히고,\n시험결과를 확인하세요!"
+                            },
                             style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
@@ -372,7 +376,8 @@ private fun loadAdRequest(
             override fun onAdLoaded(ad: RewardedAd) {
                 onRewardedCallback(ad)
             }
-        })
+        }
+    )
 }
 
 @Composable

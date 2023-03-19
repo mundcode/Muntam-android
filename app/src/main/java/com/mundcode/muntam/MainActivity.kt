@@ -20,7 +20,6 @@ import com.mundcode.designsystem.theme.LightColorPalette
 import com.mundcode.muntam.navigation.MuntamNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -40,7 +39,6 @@ class MainActivity : ComponentActivity() {
         MobileAds.initialize(this) {}
     }
 }
-
 
 @Composable
 fun MuntamApp() {

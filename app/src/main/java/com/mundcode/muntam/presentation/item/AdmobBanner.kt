@@ -25,7 +25,6 @@ fun AdmobBanner(
         if (event == Lifecycle.Event.ON_DESTROY) {
             isDestroyed = true
         }
-
     }
     AndroidViewBinding(
         factory = AdmobBannerViewBinding::inflate,

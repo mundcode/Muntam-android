@@ -5,9 +5,7 @@ import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
-import com.mundcode.muntam.util.asCurrentTimerText
 import com.mundcode.muntam.util.asMTDateText
-import com.mundcode.muntam.util.asTimeLimitText
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
