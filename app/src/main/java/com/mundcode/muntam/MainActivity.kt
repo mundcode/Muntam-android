@@ -29,13 +29,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        MobileAds.initialize(this) {}
+        initializeAdmob()
 
         setContent {
             MuntamApp()
         }
     }
+
+    private fun initializeAdmob() {
+        MobileAds.initialize(this) {}
+    }
 }
+
 
 @Composable
 fun MuntamApp() {

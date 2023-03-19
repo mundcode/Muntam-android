@@ -23,12 +23,15 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
@@ -45,6 +48,9 @@ class ExamRecordViewModel @Inject constructor(
     private val examId: Int = checkNotNull(savedStateHandle[ExamRecord.examIdArg])
 
     lateinit var timer: ExamRecordTimer
+
+    private val _showAdEvent = MutableSharedFlow<Unit>()
+    val showAdEvent: SharedFlow<Unit> = _showAdEvent.asSharedFlow()
 
     private val currentExamState: ExamState get() = state.value.examModel.state
     private val lastQuestionNumber: Int? get() = stateValue.examModel.lastQuestionNumber
@@ -183,10 +189,13 @@ class ExamRecordViewModel @Inject constructor(
                 }
             }
             ExamState.END -> {
-                // todo 광고 로직 삽입
-                _navigationEvent.emit(Questions.route)
+                _showAdEvent.emit(Unit)
             }
         }
+    }
+
+    fun navToQuestions() = viewModelScope.launch {
+        _navigationEvent.emit(Questions.route)
     }
 
     fun onClickBack() = viewModelScope.launch {
