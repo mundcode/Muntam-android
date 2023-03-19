@@ -31,6 +31,7 @@ fun MTTitleToolbar(
     modifier: Modifier = Modifier,
     showBack: Boolean = true,
     onClickBack: () -> Unit = {},
+    backEnabled: Boolean = true,
     title: String = "",
     icons: List<@Composable () -> Unit> = listOf()
 ) {
@@ -59,7 +60,8 @@ fun MTTitleToolbar(
                             .clickable(
                                 onClick = onClickBack,
                                 indication = null,
-                                interactionSource = MutableInteractionSource()
+                                interactionSource = MutableInteractionSource(),
+                                enabled = backEnabled
                             )
                             .padding(start = 20.dp)
                     )
