@@ -54,6 +54,7 @@ class FavoriteExamViewModel @Inject constructor(
                 isFavorite = examModel.isFavorite.not()
             ).asExternalModel()
         )
+        _toast.emit("즐겨찾기가 해제되었습니다.")
     }
 
     fun onClickOption(examModel: ExamModel) {
