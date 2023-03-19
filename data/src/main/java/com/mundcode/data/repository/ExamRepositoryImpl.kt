@@ -32,6 +32,12 @@ class ExamRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getFavoriteExams(): Flow<List<Exam>> {
+        return examDao.getFavoriteExams().map { list ->
+            list.map(ExamEntity::asExternalModel)
+        }
+    }
+
     override suspend fun updateExam(exam: Exam) {
         examDao.updateExam(exam.asEntity())
     }
