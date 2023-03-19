@@ -106,7 +106,7 @@ fun MuntamNavHost(
                         }
                     }
                 },
-                onClickBack = {
+                onBackEvent = {
                     navController.popBackStack(
                         route = ExamRecord.routeWithArgs,
                         inclusive = true,

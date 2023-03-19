@@ -25,6 +25,9 @@ import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Compa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -45,6 +48,9 @@ class ExamRecordViewModel @Inject constructor(
     private val examId: Int = checkNotNull(savedStateHandle[ExamRecord.examIdArg])
 
     lateinit var timer: ExamRecordTimer
+
+    private val _showAdEvent = MutableSharedFlow<Unit>()
+    val showAdEvent: SharedFlow<Unit> = _showAdEvent.asSharedFlow()
 
     private val currentExamState: ExamState get() = state.value.examModel.state
     private val lastQuestionNumber: Int? get() = stateValue.examModel.lastQuestionNumber
@@ -119,6 +125,9 @@ class ExamRecordViewModel @Inject constructor(
                     ExamState.RUNNING -> {
                         timer.start()
                     }
+                    ExamState.END -> {
+                        timer.end()
+                    }
                 }
 
                 updateState {
@@ -132,8 +141,8 @@ class ExamRecordViewModel @Inject constructor(
     }
 
     fun onClickScreen() = viewModelScope.launch(Dispatchers.IO) {
-        when (currentExamState) {
-            ExamState.READY -> {
+        when {
+            currentExamState == ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
                 updateQuestionState(
                     questionNumber = 1,
@@ -145,11 +154,11 @@ class ExamRecordViewModel @Inject constructor(
                     lastAt = timer.getCurrentTime()
                 )
             }
-            ExamState.PAUSE -> {
+            currentExamState == ExamState.PAUSE -> {
                 Log.d("SR-N", "onClickScreen PAUSE")
                 resume()
             }
-            ExamState.RUNNING -> {
+            currentExamState == ExamState.RUNNING -> {
                 Log.d("SR-N", "onClickScreen RUNNING")
 
                 val currentNumber = lastQuestionNumber
@@ -182,8 +191,10 @@ class ExamRecordViewModel @Inject constructor(
                     end()
                 }
             }
-            ExamState.END -> {
-                // todo 광고 로직 삽입
+            currentExamState == ExamState.END && stateValue.examModel.completeAd.not() -> {
+                _showAdEvent.emit(Unit)
+            }
+            currentExamState == ExamState.END && stateValue.examModel.completeAd -> {
                 _navigationEvent.emit(Questions.route)
             }
         }
@@ -253,6 +264,10 @@ class ExamRecordViewModel @Inject constructor(
         lapsAndPauseQuestion(currentQuestion) // 기존 문제 PAUSE 시키고 기록하기
         updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber) // 타이머 리스타트
         updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING) // 선택문제 스타트
+    }
+
+    fun onCompleteAdmob() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamUseCase(stateValue.examModel.copy(completeAd = true).asExternalModel())
     }
 
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {

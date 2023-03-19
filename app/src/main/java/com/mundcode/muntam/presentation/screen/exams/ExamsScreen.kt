@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exams
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,9 @@ import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.dialogs.textfeild.NameEditorDialog
 import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
+import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray200
+import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.ExamItem
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -100,11 +103,18 @@ fun ExamsScreen(
                 Column {
                     TimeRecordButton(
                         onClick = { viewModel.onClickMakeExamRecordButton() },
-                        modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .padding(vertical = 16.dp)
                     )
                 }
             }
-            // todo 광고 뷰 추가
+
+            AdmobBanner(
+                modifier = Modifier
+                    .background(Gray100)
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+            )
         }
     }
 

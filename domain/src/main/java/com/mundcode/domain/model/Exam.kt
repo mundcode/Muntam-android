@@ -9,6 +9,7 @@ data class Exam(
     val name: String,
     val isFavorite: Boolean,
     val timeLimit: Long,
+    val completeAd: Boolean,
     val createdAt: Instant,
     val endAt: Instant? = null, // 시험이 끝났을 때 시간
     val lastAt: Long? = null, // 시험 종료 또는 중간에 나갈 때 마지막으로 기록된 시험진행 시간
