@@ -67,7 +67,10 @@ fun ExamsScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.BottomCenter
+            ) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -99,7 +102,6 @@ fun ExamsScreen(
                 MTToast(
                     toastState = viewModel.toastState,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
                         .padding(horizontal = 20.dp)
                 )
             }
