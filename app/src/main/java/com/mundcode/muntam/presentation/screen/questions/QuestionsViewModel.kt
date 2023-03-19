@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class QuestionViewModel @Inject constructor(
+class QuestionsViewModel @Inject constructor(
     private val insertQuestionsExamUseCase: InsertQuestionsExamUseCase,
     private val getQuestionsByExamIdFlowUseCase: GetQuestionsByExamIdFlowUseCase,
 ) : ViewModel() {

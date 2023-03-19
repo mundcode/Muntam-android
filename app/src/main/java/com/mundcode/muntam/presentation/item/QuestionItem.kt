@@ -1,6 +1,7 @@
 package com.mundcode.muntam.presentation.item
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,8 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +25,10 @@ import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.data.local.database.model.createQuestionEntity
 import com.mundcode.designsystem.components.etc.Margin
 import com.mundcode.designsystem.theme.Gray500
+import com.mundcode.designsystem.theme.Gray700
 import com.mundcode.designsystem.theme.Gray900
+import com.mundcode.designsystem.theme.MTLightOrange
+import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.util.spToDp
@@ -35,6 +39,8 @@ import com.mundcode.muntam.presentation.model.asStateModel
 fun QuestionItem(
     modifier: Modifier = Modifier,
     questionModel: QuestionModel,
+    onClickCorrect: () -> Unit = {},
+    onClickAlarm: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -59,13 +65,14 @@ fun QuestionItem(
                 tint = if (questionModel.isCorrect) Gray500 else MTRed,
                 modifier = Modifier
                     .width(IntrinsicSize.Max)
-                    .clickable {
-                        // todo 토글 리스너
-                    }
+                    .height(IntrinsicSize.Max)
+                    .clickable(
+                        onClick = onClickCorrect,
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    )
             )
         }
-
-
 
         Margin(dp = 16.dp)
 
@@ -76,28 +83,43 @@ fun QuestionItem(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "걸린 시간 - ${questionModel.lapsedTimeText} ",
-                style = MTTextStyle.text16.spToDp(),
+                text = "${questionModel.lapsedTimeText} ",
+                style = MTTextStyle.textBold16.spToDp(),
                 color = Gray900
             )
 
             Margin(dp = 8.dp)
 
             Text(
-                text = "이 때의 시험 시간 - ${questionModel.lapsedExamTimeText}",
-                style = MTTextStyle.text14.spToDp(),
-                color = Gray900
+                text = "이 때의 시험 시간 : ${questionModel.lapsedExamTimeText}",
+                style = MTTextStyle.textBold14.spToDp(),
+                color = Gray700
             )
         }
 
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
-            contentDescription = null,
-            tint = Gray900,
+        Column(
             modifier = Modifier
+                .height(IntrinsicSize.Max)
                 .align(Alignment.CenterVertically)
-        )
-
+                .clickable(
+                    onClick = onClickAlarm,
+                    interactionSource = MutableInteractionSource(),
+                    indication = null
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = null,
+                tint = if (questionModel.isAlarm) MTOrange else MTLightOrange,
+            )
+            Text(
+                text = if (questionModel.isAlarm) "알림 ON" else "알람 OFF",
+                style = MTTextStyle.text10,
+                color = if (questionModel.isAlarm) MTOrange else MTLightOrange
+            )
+        }
     }
 }
 
@@ -108,11 +130,11 @@ fun QuestionItemPreview() {
 
         QuestionItem(
             questionModel = createQuestionEntity(1, 1, 1).asExternalModel().asStateModel()
-                .copy(isCorrect = false)
+                .copy(isCorrect = false, isAlarm = false)
         )
         QuestionItem(
             questionModel = createQuestionEntity(1, 1, 1).asExternalModel().asStateModel()
-                .copy(isCorrect = true)
+                .copy(isCorrect = true, isAlarm = true)
         )
     }
 }

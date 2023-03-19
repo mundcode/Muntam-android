@@ -7,7 +7,7 @@ import com.mundcode.muntam.util.sharedActivityViewModel
 
 @Composable
 fun QuestionScreen(
-    viewModel: QuestionViewModel = sharedActivityViewModel(),
+    viewModel: QuestionsViewModel = sharedActivityViewModel(),
     onBackEvent: () -> Unit,
     onNavEvent: () -> Unit
 ) {
