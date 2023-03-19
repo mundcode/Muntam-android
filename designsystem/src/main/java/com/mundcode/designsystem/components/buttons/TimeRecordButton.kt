@@ -39,7 +39,7 @@ fun TimeRecordButton(
             .background(color = MTGreen, shape = CornerRadius12)
             .clip(CornerRadius12)
             .clickable(onClick = onClick)
-            .padding(20.dp),
+            .padding(horizontal = 20.dp).padding(vertical = 18.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

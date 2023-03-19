@@ -103,7 +103,9 @@ fun ExamsScreen(
                 Column {
                     TimeRecordButton(
                         onClick = { viewModel.onClickMakeExamRecordButton() },
-                        modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .padding(vertical = 16.dp)
                     )
                 }
             }

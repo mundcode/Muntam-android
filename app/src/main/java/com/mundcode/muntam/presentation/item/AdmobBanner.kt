@@ -38,7 +38,7 @@ fun AdmobBanner(
             adView.iconView = imgLogo
         }
 
-        // Request Ad todo id 교체
+        // todo id 교체
         val adLoader = AdLoader.Builder(adView.context, "ca-app-pub-3940256099942544/2247696110")
             .forNativeAd { nativeAd ->
                 if (isDestroyed) {
