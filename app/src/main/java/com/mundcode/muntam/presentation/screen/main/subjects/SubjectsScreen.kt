@@ -97,7 +97,7 @@ fun SubjectsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp, top = 8.dp)
         )
     }
 

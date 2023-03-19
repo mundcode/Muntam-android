@@ -113,7 +113,7 @@ fun ExamsScreen(
             AdmobBanner(
                 modifier = Modifier
                     .background(Gray100)
-                    .padding(horizontal = 20.dp, vertical = 8.dp)
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
             )
         }
     }
