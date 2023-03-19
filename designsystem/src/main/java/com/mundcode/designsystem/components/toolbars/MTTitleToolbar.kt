@@ -67,6 +67,10 @@ fun MTTitleToolbar(
                     )
                     Margin(dp = 12.dp)
                 }
+                
+                if (!showBack) {
+                    Margin(dp = 20.dp)
+                }
 
                 Text(
                     text = title,
