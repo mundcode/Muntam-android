@@ -125,6 +125,9 @@ class ExamRecordViewModel @Inject constructor(
                     ExamState.RUNNING -> {
                         timer.start()
                     }
+                    ExamState.END -> {
+                        timer.end()
+                    }
                 }
 
                 updateState {
@@ -138,8 +141,8 @@ class ExamRecordViewModel @Inject constructor(
     }
 
     fun onClickScreen() = viewModelScope.launch(Dispatchers.IO) {
-        when (currentExamState) {
-            ExamState.READY -> {
+        when {
+            currentExamState == ExamState.READY -> {
                 Log.d("SR-N", "onClickScreen READY")
                 updateQuestionState(
                     questionNumber = 1,
@@ -151,11 +154,11 @@ class ExamRecordViewModel @Inject constructor(
                     lastAt = timer.getCurrentTime()
                 )
             }
-            ExamState.PAUSE -> {
+            currentExamState == ExamState.PAUSE -> {
                 Log.d("SR-N", "onClickScreen PAUSE")
                 resume()
             }
-            ExamState.RUNNING -> {
+            currentExamState == ExamState.RUNNING -> {
                 Log.d("SR-N", "onClickScreen RUNNING")
 
                 val currentNumber = lastQuestionNumber
@@ -188,14 +191,13 @@ class ExamRecordViewModel @Inject constructor(
                     end()
                 }
             }
-            ExamState.END -> {
+            currentExamState == ExamState.END && stateValue.examModel.completeAd.not() -> {
                 _showAdEvent.emit(Unit)
             }
+            currentExamState == ExamState.END && stateValue.examModel.completeAd -> {
+                _navigationEvent.emit(Questions.route)
+            }
         }
-    }
-
-    fun navToQuestions() = viewModelScope.launch {
-        _navigationEvent.emit(Questions.route)
     }
 
     fun onClickBack() = viewModelScope.launch {
@@ -262,6 +264,10 @@ class ExamRecordViewModel @Inject constructor(
         lapsAndPauseQuestion(currentQuestion) // 기존 문제 PAUSE 시키고 기록하기
         updateExamState(ExamState.RUNNING, lastQuestionNumber = selectedNumber) // 타이머 리스타트
         updateQuestionState(selectedNumber, newQuestionState = QuestionState.RUNNING) // 선택문제 스타트
+    }
+
+    fun onCompleteAdmob() = viewModelScope.launch(Dispatchers.IO) {
+        updateExamUseCase(stateValue.examModel.copy(completeAd = true).asExternalModel())
     }
 
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {

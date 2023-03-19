@@ -70,11 +70,15 @@ class ExamRecordTimer(
         }
     }
 
-    fun end() {
-        if (state == ExamState.END) return
+    fun end() = coroutineScope.launch {
+        if (state == ExamState.END) return@launch
 
         job?.cancel()
         coroutineScope.cancel()
+
+        mutex.withLock {
+            state = ExamState.END
+        }
     }
 
     private fun getLastQuestion(questions: List<QuestionModel>): QuestionModel? {
