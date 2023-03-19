@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.main.favorites
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.usecase.DeleteExamUseCase
@@ -9,15 +8,14 @@ import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
 import com.mundcode.muntam.navigation.Questions
-import com.mundcode.muntam.navigation.SubjectModify
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteExamViewModel @Inject constructor(
@@ -94,7 +92,6 @@ class FavoriteExamViewModel @Inject constructor(
             updateExamUseCase(it.copy(name = name).asExternalModel())
         }
     }
-
 
     fun onCancelDialog() {
         updateState {

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.theme.Gray600
-import com.mundcode.designsystem.theme.Gray800
 import com.mundcode.designsystem.theme.MTOrange
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.util.spToDp
@@ -33,5 +32,4 @@ fun FavoriteEmptyItem(
             tint = MTOrange
         )
     }
-
 }

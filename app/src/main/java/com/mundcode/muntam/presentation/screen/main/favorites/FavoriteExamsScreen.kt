@@ -31,8 +31,8 @@ import com.mundcode.designsystem.theme.MTLightOrange
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.presentation.item.AdmobBanner
-import com.mundcode.muntam.presentation.item.FavoriteEmptyItem
 import com.mundcode.muntam.presentation.item.ExamItem
+import com.mundcode.muntam.presentation.item.FavoriteEmptyItem
 import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -72,9 +72,11 @@ fun FavoriteExamsScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             if (state.exams.isEmpty()) {
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) {
                     FavoriteEmptyItem(modifier = Modifier.align(Alignment.Center))
                 }
             } else {
@@ -98,7 +100,6 @@ fun FavoriteExamsScreen(
                                     )
                                     Divider(modifier = Modifier.fillMaxWidth(), color = Gray200)
                                 }
-
                             }
 
                             itemsIndexed(exams) { index, item ->
@@ -127,7 +128,10 @@ fun FavoriteExamsScreen(
                                         }
                                     )
 
-                                    if (entryIndex != state.exams.size - 1 || index != exams.lastIndex) {
+                                    if (
+                                        entryIndex != state.exams.size - 1 ||
+                                        index != exams.lastIndex
+                                    ) {
                                         Divider(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -140,7 +144,11 @@ fun FavoriteExamsScreen(
                                                     }
                                                 ),
 
-                                            color = if (index == exams.lastIndex) Gray200 else Gray100
+                                            color = if (index == exams.lastIndex) {
+                                                Gray200
+                                            } else {
+                                                Gray100
+                                            }
                                         )
                                     }
                                 }
@@ -170,7 +178,6 @@ fun FavoriteExamsScreen(
                 onClickConfirm = viewModel::onModifyExamName
             )
         }
-
 
         if (state.showDeleteConfirmDialog) {
             AlertDialog(
