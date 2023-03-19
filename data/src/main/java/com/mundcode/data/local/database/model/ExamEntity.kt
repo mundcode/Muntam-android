@@ -29,6 +29,8 @@ data class ExamEntity(
     val isFavorite: Boolean = false,
     @ColumnInfo(name = "time_limit")
     val timeLimit: Long,
+    @ColumnInfo(name = "complete_ad")
+    val completeAd: Boolean = false,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
     @ColumnInfo(name = "end_at")
@@ -48,6 +50,7 @@ fun ExamEntity.asExternalModel(): Exam = Exam(
     name = name,
     isFavorite = isFavorite,
     timeLimit = timeLimit,
+    completeAd = completeAd,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
@@ -62,6 +65,7 @@ fun Exam.asEntity(): ExamEntity = ExamEntity(
     name = name,
     isFavorite = isFavorite,
     timeLimit = timeLimit,
+    completeAd = completeAd,
     createdAt = createdAt,
     endAt = endAt,
     lastAt = lastAt,
