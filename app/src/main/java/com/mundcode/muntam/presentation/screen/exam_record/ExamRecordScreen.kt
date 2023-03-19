@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -73,11 +72,12 @@ import kotlinx.coroutines.launch
 fun ExamRecordScreen(
     viewModel: ExamRecordViewModel = hiltViewModel(),
     onNavEvent: (String) -> Unit,
-    onClickBack: () -> Unit
+    onBackEvent: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
     val examState = state.examModel.state
+    val isNotEnd = state.examModel.state != ExamState.END
 
     val activity = getActivity()
 
@@ -99,20 +99,15 @@ fun ExamRecordScreen(
 
     LaunchedEffect(key1 = true) {
         launch(Dispatchers.Main) {
-            Log.d("SR-N", "start loadAd")
             loadAdRequest(activity) {
-                Log.d("SR-N", "complete loadAd")
                 rewardedAd = it
             }
         }
 
         launch(Dispatchers.Main) {
             viewModel.showAdEvent.collectLatest {
-                Log.d("SR-N", "start showAd")
                 rewardedAd?.show(activity) {
-                    Log.d("SR-N", "rewarded")
-                    // todo 광고봤다는 필드만 업데이트
-//                    viewModel.navToQuestions()
+                    viewModel.onCompleteAdmob()
                 }
             }
         }
@@ -131,17 +126,22 @@ fun ExamRecordScreen(
     }
 
     BackHandler {
-        viewModel.onClickBack()
+        if (isNotEnd) {
+            viewModel.onClickBack()
+        }
     }
 
     if (state.confirmBack) {
-        onClickBack()
+        if (isNotEnd) {
+            onBackEvent()
+        }
     }
 
     Scaffold(
         topBar = {
             MTTitleToolbar(
                 onClickBack = viewModel::onClickBack,
+                backEnabled = isNotEnd,
                 title = state.examModel.name,
                 icons = listOf {
                     Icon(
@@ -151,7 +151,8 @@ fun ExamRecordScreen(
                             .clickable(
                                 onClick = viewModel::onClickComplete,
                                 indication = null,
-                                interactionSource = MutableInteractionSource()
+                                interactionSource = MutableInteractionSource(),
+                                enabled = isNotEnd
                             ),
                         painter = painterResource(id = R.drawable.ic_check_24_dp),
                         contentDescription = null,
@@ -171,14 +172,14 @@ fun ExamRecordScreen(
                 BottomButton(
                     resId = R.drawable.ic_pause_off_56_dp,
                     text = "일시 정지",
-                    enable = state.examModel.state == ExamState.RUNNING,
-                    onClick = viewModel::onClickPause
+                    enabled = state.examModel.state == ExamState.RUNNING && isNotEnd,
+                    onClick = viewModel::onClickPause,
                 )
 
                 BottomButton(
                     resId = R.drawable.ic_skip_56_dp,
                     text = "문제 건너뛰기",
-                    enable = state.examModel.state == ExamState.RUNNING,
+                    enabled = state.examModel.state == ExamState.RUNNING && isNotEnd,
                     onClick = viewModel::onClickJump
                 )
             }
@@ -304,13 +305,12 @@ fun ExamRecordScreen(
                     }
                     ExamState.END -> {
                         Text(
-                            text = "시험 종료! 한 번 더 터치하고 결과를 확인해보세요!",
+                            text = if (state.examModel.completeAd) "한 번 더 터치하고 시험 결과를 확인해보세요!" else "수고했어요\n한 번 더 터치해서 광고를 보며 머리를 식히고,\n시험결과를 확인하세요!",
                             style = MTTextStyle.textBold16.spToDp(),
                             color = Gray700,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp),
-                            maxLines = 1,
                             textAlign = TextAlign.Center
                         )
                     }
