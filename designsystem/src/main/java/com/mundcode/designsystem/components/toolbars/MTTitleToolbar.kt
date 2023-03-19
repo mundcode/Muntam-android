@@ -32,6 +32,7 @@ fun MTTitleToolbar(
     showBack: Boolean = true,
     onClickBack: () -> Unit = {},
     backEnabled: Boolean = true,
+    showBottomDivider: Boolean = true,
     title: String = "",
     icons: List<@Composable () -> Unit> = listOf()
 ) {
@@ -68,6 +69,10 @@ fun MTTitleToolbar(
                     Margin(dp = 12.dp)
                 }
 
+                if (!showBack) {
+                    Margin(dp = 20.dp)
+                }
+
                 Text(
                     text = title,
                     style = MTTextStyle.textBold20,
@@ -87,6 +92,8 @@ fun MTTitleToolbar(
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth(), color = Gray200)
+        if (showBottomDivider) {
+            Divider(modifier = Modifier.fillMaxWidth(), color = Gray200)
+        }
     }
 }
