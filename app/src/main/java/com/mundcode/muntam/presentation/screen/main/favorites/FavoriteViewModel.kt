@@ -90,7 +90,7 @@ class FavoriteExamViewModel @Inject constructor(
     fun onModifyExamName(name: String) = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
         stateValue.focusedExam?.let {
-            updateExamUseCase(it.asExternalModel())
+            updateExamUseCase(it.copy(name = name).asExternalModel())
         }
     }
 
