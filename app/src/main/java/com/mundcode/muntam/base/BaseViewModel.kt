@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -27,13 +28,11 @@ abstract class BaseViewModel<T> : ViewModel() {
 
     val toastState = rememberToastState()
 
-    protected val mutex = Mutex()
-
     abstract fun createInitialState(): T
 
     open fun updateState(newState: () -> T) = viewModelScope.launch {
-        mutex.withLock {
-            _state.value = newState()
+        _state.update {
+            newState.invoke()
         }
     }
 }
