@@ -1,35 +1,100 @@
 package com.mundcode.muntam.presentation.screen.questions
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.mundcode.domain.model.Question
+import com.mundcode.domain.model.enums.QuestionSort
+import com.mundcode.domain.usecase.GetExamByIdFlowUseCase
 import com.mundcode.domain.usecase.GetQuestionsByExamIdFlowUseCase
-import com.mundcode.domain.usecase.InsertQuestionsExamUseCase
+import com.mundcode.domain.usecase.GetQuestionsByExamIdWithSortFlowUseCase
+import com.mundcode.domain.usecase.UpdateQuestionUseCase
+import com.mundcode.muntam.base.BaseViewModel
+import com.mundcode.muntam.navigation.Questions
+import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.QuestionModel
+import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class QuestionsViewModel @Inject constructor(
-    private val insertQuestionsExamUseCase: InsertQuestionsExamUseCase,
-    private val getQuestionsByExamIdFlowUseCase: GetQuestionsByExamIdFlowUseCase,
-) : ViewModel() {
-    // todo 여러 UseCase 모아서 화면에 필요한 모든 데이터 가져오는 상태모델 정의하고 교체
-    private val _questions = MutableSharedFlow<List<QuestionModel>>()
-    val questions: SharedFlow<List<QuestionModel>> = _questions
+    savedStateHandle: SavedStateHandle,
+    private val getQuestionsByExamIdWithSortFlowUseCase: GetQuestionsByExamIdWithSortFlowUseCase,
+    private val getExamByIdFlowUseCase: GetExamByIdFlowUseCase,
+    private val updateQuestionUseCase: UpdateQuestionUseCase
+) : BaseViewModel<QuestionsState>() {
+    private val examId: Int = checkNotNull(savedStateHandle[Questions.examIdArg])
 
-    fun insertQuestions(examId: Int, questionSize: Int) = viewModelScope.launch(Dispatchers.IO) {
-        insertQuestionsExamUseCase(listOf())
+    private val _currentSort = MutableStateFlow(QuestionSort.DEFAULT)
+    val currentSort: StateFlow<QuestionSort> = _currentSort.asStateFlow()
+
+    init {
+        getExam()
+        getQuestions()
+
     }
 
-    fun getQuestions(examId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        getQuestionsByExamIdFlowUseCase(examId).collectLatest {
-            _questions.emit(it.map { it.asStateModel() })
+    @OptIn(FlowPreview::class)
+    private fun getQuestions() = viewModelScope.launch(Dispatchers.IO) {
+        currentSort.flatMapMerge { sort ->
+            getQuestionsByExamIdWithSortFlowUseCase(examId, sort)
+        }.collectLatest { questions ->
+            updateState {
+                stateValue.copy(questions = questions.map { it.asStateModel() })
+            }
         }
     }
+
+    private fun getExam() = viewModelScope.launch(Dispatchers.IO) {
+        getExamByIdFlowUseCase.invoke(examId).collectLatest {
+            updateState {
+                stateValue.copy(
+                    exam = it.asStateModel()
+                )
+            }
+        }
+    }
+
+    fun onClickAlarm(questionsModel: QuestionModel) {
+        // todo 워크 매니저 -> 에빙하우스 이론에 따라 보내기
+    }
+
+    fun onClickCorrect(questionsModel: QuestionModel) = viewModelScope.launch(Dispatchers.IO) {
+        updateQuestionUseCase(
+            questionsModel.copy(isCorrect = questionsModel.isCorrect.not()).asExternalModel()
+        )
+    }
+
+    fun onClickSortLapsDesc() {
+        _currentSort.value = QuestionSort.LAPS_DESC
+    }
+
+    fun onClickSortWrongFirst() {
+        _currentSort.value = QuestionSort.WRONG_FIRST
+    }
+
+    fun onClickSortNumberAsc() {
+        _currentSort.value = QuestionSort.DEFAULT
+    }
+
+    override fun createInitialState(): QuestionsState {
+        return QuestionsState()
+    }
 }
+
+data class QuestionsState(
+    val exam: ExamModel = ExamModel(),
+    val selectedSort: QuestionSort = QuestionSort.DEFAULT,
+    val questions: List<QuestionModel> = listOf()
+)
