@@ -1,14 +1,10 @@
 package com.mundcode.muntam.presentation.screen.questions
 
-import android.util.Log
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,20 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.DefaultHorizontalPadding
@@ -44,9 +34,6 @@ import com.mundcode.domain.model.enums.QuestionSort
 import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.QuestionItem
 import com.mundcode.muntam.util.hiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.datetime.serializers.TimeBasedDateTimeUnitSerializer
 
 @Composable
 fun QuestionScreen(
@@ -61,9 +48,10 @@ fun QuestionScreen(
             onClickBack = onBackEvent
         )
     }) { paddingValues ->
-        Column(modifier = Modifier
-            .padding(paddingValues)
-            ) {
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -87,7 +75,8 @@ fun QuestionScreen(
                 Divider(
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
-                        .width(1.dp), color = Gray100
+                        .width(1.dp),
+                    color = Gray100
                 )
 
                 SortText(
@@ -107,7 +96,8 @@ fun QuestionScreen(
                 Divider(
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
-                        .width(1.dp), color = Gray100
+                        .width(1.dp),
+                    color = Gray100
                 )
 
                 SortText(
@@ -142,7 +132,8 @@ fun QuestionScreen(
                     Divider(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = DefaultHorizontalPadding), color = Gray100
+                            .padding(horizontal = DefaultHorizontalPadding),
+                        color = Gray100
                     )
                 }
             }

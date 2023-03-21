@@ -2,10 +2,8 @@ package com.mundcode.muntam.presentation.screen.questions
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionSort
 import com.mundcode.domain.usecase.GetExamByIdFlowUseCase
-import com.mundcode.domain.usecase.GetQuestionsByExamIdFlowUseCase
 import com.mundcode.domain.usecase.GetQuestionsByExamIdWithSortFlowUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
 import com.mundcode.muntam.base.BaseViewModel
@@ -18,8 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,7 +38,6 @@ class QuestionsViewModel @Inject constructor(
     init {
         getExam()
         getQuestions()
-
     }
 
     @OptIn(FlowPreview::class)

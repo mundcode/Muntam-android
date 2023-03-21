@@ -3,8 +3,8 @@ package com.mundcode.domain.usecase
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.model.enums.QuestionSort
 import com.mundcode.domain.repository.QuestionRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class GetQuestionsByExamIdWithSortFlowUseCase @Inject constructor(
     private val questionRepository: QuestionRepository
