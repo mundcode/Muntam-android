@@ -195,7 +195,7 @@ class ExamRecordViewModel @Inject constructor(
                 _showAdEvent.emit(Unit)
             }
             currentExamState == ExamState.END && stateValue.examModel.completeAd -> {
-                _navigationEvent.emit(Questions.route)
+                _navigationEvent.emit(Questions.getRouteWithArgs(examId = examId))
             }
         }
     }

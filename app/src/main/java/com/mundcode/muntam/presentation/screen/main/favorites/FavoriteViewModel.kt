@@ -12,10 +12,10 @@ import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteExamViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class FavoriteExamViewModel @Inject constructor(
 
     fun onClickExam(examModel: ExamModel) = viewModelScope.launch {
         if (examModel.state == ExamState.END && examModel.completeAd) {
-            _navigationEvent.emit(Questions.route)
+            _navigationEvent.emit(Questions.getRouteWithArgs(examId = examModel.id))
         } else {
             _navigationEvent.emit(ExamRecord.getRouteWithArgs(examModel.subjectId, examModel.id))
         }
