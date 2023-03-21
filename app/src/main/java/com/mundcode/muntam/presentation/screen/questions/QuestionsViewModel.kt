@@ -77,14 +77,23 @@ class QuestionsViewModel @Inject constructor(
     }
 
     fun onClickSortLapsDesc() {
+        updateState {
+            stateValue.copy(selectedSort = QuestionSort.LAPS_DESC)
+        }
         _currentSort.value = QuestionSort.LAPS_DESC
     }
 
     fun onClickSortWrongFirst() {
+        updateState {
+            stateValue.copy(selectedSort = QuestionSort.WRONG_FIRST)
+        }
         _currentSort.value = QuestionSort.WRONG_FIRST
     }
 
     fun onClickSortNumberAsc() {
+        updateState {
+            stateValue.copy(selectedSort = QuestionSort.DEFAULT)
+        }
         _currentSort.value = QuestionSort.DEFAULT
     }
 
