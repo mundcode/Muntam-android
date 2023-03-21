@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface ExamRepository {
     fun getExams(subjectId: Int): Flow<List<Exam>>
 
+    fun getFavoriteExams(): Flow<List<Exam>>
+
     suspend fun getExamById(examId: Int): Exam
 
     fun getExamByIdFlow(id: Int): Flow<Exam>

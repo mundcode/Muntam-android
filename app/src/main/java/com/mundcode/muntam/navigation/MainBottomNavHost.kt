@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mundcode.muntam.presentation.model.BottomSheetModel
-import com.mundcode.muntam.presentation.screen.main.favorites.FavoriteQuestionsScreen
+import com.mundcode.muntam.presentation.screen.main.favorites.FavoriteExamsScreen
 import com.mundcode.muntam.presentation.screen.main.settings.SettingsScreen
 import com.mundcode.muntam.presentation.screen.main.subjects.SubjectsScreen
 
@@ -37,7 +37,12 @@ fun MainBottomNavHost(
         composable(
             route = FavoriteQuestions.route
         ) {
-            FavoriteQuestionsScreen()
+            FavoriteExamsScreen(
+                onNavOutEvent = { route ->
+                    onNavOutEvent(route)
+                },
+                onBottomSheetEvent = onBottomSheetEvent
+            )
         }
 
         composable(

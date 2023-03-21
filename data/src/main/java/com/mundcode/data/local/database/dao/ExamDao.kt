@@ -20,7 +20,14 @@ abstract class ExamDao : BaseDao<ExamEntity> {
 
     @Query(
         value = """
-            SELECT * FROM exams WHERE deleted_at IS NULL AND id = :examId
+            SELECT * FROM exams WHERE deleted_at IS NULL AND is_favorite
+        """
+    )
+    abstract fun getFavoriteExams(): Flow<List<ExamEntity>>
+
+    @Query(
+        value = """
+            SELECT * FROM exams WHERE deleted_at IS NULL AND id = :examId 
         """
     )
     abstract suspend fun getExamById(examId: Int): ExamEntity

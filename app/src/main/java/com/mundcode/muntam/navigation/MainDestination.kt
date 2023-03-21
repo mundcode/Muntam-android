@@ -17,8 +17,8 @@ object Main : MuntamDestination {
 
     val screens = listOf(
         Subjects,
-        FavoriteQuestions,
-        Settings
+        FavoriteQuestions
+        // todo 설정화면 추가
     )
 }
 

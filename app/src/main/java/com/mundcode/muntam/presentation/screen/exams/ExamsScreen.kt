@@ -30,6 +30,7 @@ import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.ExamItem
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExamsScreen(
@@ -40,12 +41,16 @@ fun ExamsScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.navigationEvent.collectLatest { route ->
-            onNavEvent(route)
+        launch {
+            viewModel.navigationEvent.collectLatest { route ->
+                onNavEvent(route)
+            }
         }
 
-        viewModel.toast.collectLatest { text ->
-            viewModel.toastState.showToast(text)
+        launch {
+            viewModel.toast.collectLatest { text ->
+                viewModel.toastState.showToast(text)
+            }
         }
     }
 
@@ -62,7 +67,10 @@ fun ExamsScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.BottomCenter
+            ) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -94,7 +102,6 @@ fun ExamsScreen(
                 MTToast(
                     toastState = viewModel.toastState,
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
                         .padding(horizontal = 20.dp)
                 )
             }

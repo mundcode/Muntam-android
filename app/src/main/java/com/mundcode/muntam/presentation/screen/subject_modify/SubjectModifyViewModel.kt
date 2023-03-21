@@ -11,10 +11,9 @@ import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.withLock
+import javax.inject.Inject
 
 @HiltViewModel
 class SubjectModifyViewModel @Inject constructor(
@@ -77,19 +76,17 @@ class SubjectModifyViewModel @Inject constructor(
     }
 
     fun onClickComplete() = viewModelScope.launch(Dispatchers.IO) {
-        mutex.withLock {
-            updateSubjectUseCase.invoke(
-                state.value.subjectModel.copy(
-                    subjectTitle = state.value.changedName,
-                    emoji = state.value.changedEmoji
-                ).asExternalModel()
-            )
+        updateSubjectUseCase.invoke(
+            state.value.subjectModel.copy(
+                subjectTitle = state.value.changedName,
+                emoji = state.value.changedEmoji
+            ).asExternalModel()
+        )
 
-            updateState {
-                state.value.copy(
-                    onCompleteUpdate = true
-                )
-            }
+        updateState {
+            state.value.copy(
+                onCompleteUpdate = true
+            )
         }
     }
 
