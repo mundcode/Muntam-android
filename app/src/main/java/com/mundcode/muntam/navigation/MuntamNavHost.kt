@@ -111,15 +111,14 @@ fun MuntamNavHost(
         composable(
             route = Questions.routeWithArgs,
             arguments = Questions.arguments
-        ) { navBackStackEntry ->
-            val examId =
-                navBackStackEntry.arguments?.getInt(Questions.examIdArg) ?: return@composable
+        ) {
             QuestionScreen(
-                onNavEvent = {
-
-                },
                 onBackEvent = {
-
+                    navController.popBackStack(
+                        route = Questions.routeWithArgs,
+                        inclusive = true,
+                        saveState = false
+                    )
                 }
             )
         }
