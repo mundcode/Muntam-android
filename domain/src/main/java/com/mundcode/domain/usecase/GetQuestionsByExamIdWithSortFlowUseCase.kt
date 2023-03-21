@@ -17,5 +17,8 @@ class GetQuestionsByExamIdWithSortFlowUseCase @Inject constructor(
             QuestionSort.WRONG_FIRST -> {
                 questionRepository.getQuestionByExamIdWrongFirst(examId)
             }
+            QuestionSort.DEFAULT -> {
+                questionRepository.getQuestionsByExamIdFlow(examId)
+            }
         }
 }
