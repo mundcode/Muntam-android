@@ -1,6 +1,8 @@
 package com.mundcode.muntam.presentation.screen.main.subjects
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.mundcode.domain.model.Subject
 import com.mundcode.domain.usecase.DeleteSubjectUseCase
 import com.mundcode.domain.usecase.GetSubjectsFlowUseCase
@@ -20,6 +22,7 @@ class SubjectViewModel @Inject constructor(
 ) : BaseViewModel<SubjectsState>() {
     init {
         loadSubjects()
+        checkNoticeDialog()
     }
 
     private fun loadSubjects() = viewModelScope.launch(Dispatchers.IO) {
@@ -28,6 +31,21 @@ class SubjectViewModel @Inject constructor(
                 state.value.copy(
                     subjects = list.map(Subject::asStateModel)
                 )
+            }
+        }
+    }
+
+    private fun checkNoticeDialog() = viewModelScope.launch(Dispatchers.IO) {
+        // todo data 레이어로 이동
+        Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener {
+            val notice = Firebase.remoteConfig.getString("notice")
+            if (notice.isNotEmpty()) {
+                updateState {
+                    stateValue.copy(
+                        showNoticeDialog = true,
+                        noticeText = notice
+                    )
+                }
             }
         }
     }
@@ -59,7 +77,8 @@ class SubjectViewModel @Inject constructor(
 
     fun onCancelDialog() = updateState {
         state.value.copy(
-            showDeleteConfirmDialog = false
+            showDeleteConfirmDialog = false,
+            showNoticeDialog = false
         )
     }
 
@@ -71,5 +90,7 @@ class SubjectViewModel @Inject constructor(
 data class SubjectsState(
     val subjects: List<SubjectModel> = listOf(),
     val selectedModel: SubjectModel? = null,
-    val showDeleteConfirmDialog: Boolean = false
+    val showDeleteConfirmDialog: Boolean = false,
+    val showNoticeDialog: Boolean = false,
+    val noticeText: String = ""
 )

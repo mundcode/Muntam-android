@@ -1,6 +1,5 @@
 package com.mundcode.designsystem.components.dialogs.picker
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,8 +48,6 @@ fun TimeLimitPickerDialog(
         onClickClose = onCancel,
         onClickCancel = onCancel,
         onClickConfirm = {
-            Log.d("SR-N", "${hourState.currentPage} / ${minState.currentPage} / ${secState.currentPage}")
-
             onResult(
                 hourState.currentPage % Unit24,
                 minState.currentPage % Unit60,

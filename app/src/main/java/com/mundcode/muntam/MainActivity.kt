@@ -3,7 +3,6 @@ package com.mundcode.muntam
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -15,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.mundcode.designsystem.theme.DarkColorPalette
 import com.mundcode.designsystem.theme.LightColorPalette
 import com.mundcode.muntam.navigation.MuntamNavHost
@@ -23,11 +24,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sendOpenEvent()
         initializeAdmob()
 
         setContent {
@@ -37,6 +37,11 @@ class MainActivity : ComponentActivity() {
 
     private fun initializeAdmob() {
         MobileAds.initialize(this) {}
+    }
+
+    // todo 리팩토링 필요
+    private fun sendOpenEvent() {
+        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.APP_OPEN) {}
     }
 }
 
