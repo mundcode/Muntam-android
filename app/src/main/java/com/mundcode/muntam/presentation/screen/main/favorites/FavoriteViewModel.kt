@@ -40,7 +40,7 @@ class FavoriteExamViewModel @Inject constructor(
 
     fun onClickExam(examModel: ExamModel) = viewModelScope.launch {
         if (examModel.state == ExamState.END && examModel.completeAd) {
-            _navigationEvent.emit(Questions.route)
+            _navigationEvent.emit(Questions.getRouteWithArgs(examId = examModel.id))
         } else {
             _navigationEvent.emit(ExamRecord.getRouteWithArgs(examModel.subjectId, examModel.id))
         }

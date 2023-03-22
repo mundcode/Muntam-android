@@ -10,6 +10,7 @@ data class Question(
     val questionNumber: Int,
     val isCorrect: Boolean = false,
     val isFavorite: Boolean = false,
+    val isAlarm: Boolean = false,
     val lapsedTime: Long = 0,
     val lapsedExamTime: Long = 0,
     val createdAt: Instant,

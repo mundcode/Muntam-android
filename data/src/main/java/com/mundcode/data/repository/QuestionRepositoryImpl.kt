@@ -25,10 +25,29 @@ class QuestionRepositoryImpl @Inject constructor(
             }
         }
 
+    override fun getQuestionsByExamIdDescFlow(examId: Int): Flow<List<Question>> {
+        return questionDao.getQuestionsByExamIdDescFlow(examId).map { questions ->
+            questions.map { question ->
+                question.asExternalModel()
+            }
+        }
+    }
+
+    override fun getQuestionByExamIdWrongFirst(examId: Int): Flow<List<Question>> {
+        return questionDao.getQuestionByExamIdWrongFirst(examId).map { questions ->
+            questions.map { question ->
+                question.asExternalModel()
+            }
+        }
+    }
+
     override fun getQuestionByExamId(examId: Int): List<Question> =
         questionDao.getQuestionByExamId(examId).map { it.asExternalModel() }
 
-    override fun getQuestionByQuestionId(examId: Int, questionNumber: Int): Flow<Question> =
+    override suspend fun getQuestionByQuestionId(questionId: Int): Question =
+        questionDao.getQuestionByQuestionId(questionId).asExternalModel()
+
+    override fun getQuestionByQuestionNumberFlow(examId: Int, questionNumber: Int): Flow<Question> =
         questionDao.getQuestionByQuestionNumber(examId, questionNumber).map {
             it.asExternalModel()
         }

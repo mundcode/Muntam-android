@@ -63,7 +63,7 @@ class ExamsViewModel @Inject constructor(
 
     fun onClickExam(exam: ExamModel) = viewModelScope.launch {
         if (exam.state == ExamState.END && exam.completeAd) {
-            _navigationEvent.emit(Questions.route)
+            _navigationEvent.emit(Questions.getRouteWithArgs(examId = exam.id))
         } else {
             _navigationEvent.emit(ExamRecord.getRouteWithArgs(subjectId, exam.id))
         }

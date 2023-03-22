@@ -25,6 +25,15 @@ fun Long.asTimeLimitText(): String {
     return "%d시간 %02d분 %02d초".format(hour, min, sec)
 }
 
+fun Long.asLapsedTimeText(): String {
+    val totalSec = this
+    val sec = totalSec % 60
+    val totalMin = totalSec / 60
+    val min = totalMin % 60
+    val hour = totalMin / 60
+    return "%d시간 %02d분 %02d초".format(hour, min, sec)
+}
+
 fun Long.asCurrentTimerText(): String {
     val sign = if (this < 0) "-" else ""
 

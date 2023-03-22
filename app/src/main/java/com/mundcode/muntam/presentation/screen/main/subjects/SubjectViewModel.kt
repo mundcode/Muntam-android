@@ -25,7 +25,6 @@ class SubjectViewModel @Inject constructor(
     private fun loadSubjects() = viewModelScope.launch(Dispatchers.IO) {
         getSubjectsFlowUseCase().collectLatest { list ->
             updateState {
-                // todo favorite 정렬
                 state.value.copy(
                     subjects = list.map(Subject::asStateModel)
                 )

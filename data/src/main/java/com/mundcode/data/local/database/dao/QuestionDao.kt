@@ -17,10 +17,31 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
 
     @Query(
         value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId ORDER BY lapsed_time DESC
+        """
+    )
+    abstract fun getQuestionsByExamIdDescFlow(examId: Int): Flow<List<QuestionEntity>>
+
+    @Query(
+        value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId ORDER BY is_correct
+        """
+    )
+    abstract fun getQuestionByExamIdWrongFirst(examId: Int): Flow<List<QuestionEntity>>
+
+    @Query(
+        value = """
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
     abstract fun getQuestionByExamId(examId: Int): List<QuestionEntity>
+
+    @Query(
+        value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND id = :id
+        """
+    )
+    abstract fun getQuestionByQuestionId(id: Int): QuestionEntity
 
     @Query(
         value = """
