@@ -14,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.mundcode.designsystem.theme.DarkColorPalette
 import com.mundcode.designsystem.theme.LightColorPalette
 import com.mundcode.muntam.navigation.MuntamNavHost
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sendOpenEvent()
         initializeAdmob()
 
         setContent {
@@ -34,6 +37,11 @@ class MainActivity : ComponentActivity() {
 
     private fun initializeAdmob() {
         MobileAds.initialize(this) {}
+    }
+
+    // todo 리팩토링 필요
+    private fun sendOpenEvent() {
+        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.APP_OPEN) {}
     }
 }
 
