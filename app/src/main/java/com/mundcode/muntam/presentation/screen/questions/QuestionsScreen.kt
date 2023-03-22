@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +18,15 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkManager
+import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.DefaultHorizontalPadding
 import com.mundcode.designsystem.theme.Gray100
@@ -34,6 +39,8 @@ import com.mundcode.domain.model.enums.QuestionSort
 import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.QuestionItem
 import com.mundcode.muntam.util.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun QuestionScreen(
@@ -41,6 +48,28 @@ fun QuestionScreen(
     onBackEvent: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        launch {
+            viewModel.alarmRequestEvent.collectLatest {
+                WorkManager.getInstance(context).enqueue(it)
+            }
+        }
+
+        launch {
+            viewModel.alarmCancelEvent.collectLatest {
+                WorkManager.getInstance(context).cancelAllWorkByTag(it)
+            }
+        }
+
+        launch {
+            viewModel.toast.collectLatest {
+                viewModel.toastState.showToast(it)
+            }
+        }
+    }
 
     Scaffold(topBar = {
         MTTitleToolbar(
@@ -117,26 +146,35 @@ fun QuestionScreen(
 
             Divider(modifier = Modifier.fillMaxWidth(), color = Gray100)
 
-            LazyColumn(modifier = Modifier.weight(1f)) {
-                items(state.questions) { item ->
-                    QuestionItem(
-                        questionModel = item,
-                        onClickAlarm = {
-                            viewModel.onClickAlarm(item)
-                        },
-                        onClickCorrect = {
-                            viewModel.onClickCorrect(item)
-                        }
-                    )
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomCenter) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.questions) { item ->
+                        QuestionItem(
+                            questionModel = item,
+                            onClickAlarm = {
+                                viewModel.onClickAlarm(item)
+                            },
+                            onClickCorrect = {
+                                viewModel.onClickCorrect(item)
+                            }
+                        )
 
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = DefaultHorizontalPadding),
-                        color = Gray100
-                    )
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = DefaultHorizontalPadding),
+                            color = Gray100
+                        )
+                    }
                 }
+
+                MTToast(
+                    toastState = viewModel.toastState,
+                    modifier = Modifier
+                        .padding(horizontal = DefaultHorizontalPadding)
+                )
             }
+
 
             AdmobBanner(
                 modifier = Modifier
