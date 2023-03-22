@@ -49,8 +49,6 @@ fun TimeLimitPickerDialog(
         onClickClose = onCancel,
         onClickCancel = onCancel,
         onClickConfirm = {
-            Log.d("SR-N", "${hourState.currentPage} / ${minState.currentPage} / ${secState.currentPage}")
-
             onResult(
                 hourState.currentPage % Unit24,
                 minState.currentPage % Unit60,

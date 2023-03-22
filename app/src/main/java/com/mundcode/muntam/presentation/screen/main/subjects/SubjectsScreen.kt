@@ -12,11 +12,14 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mundcode.designsystem.components.dialogs.DescriptionDialog
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.toolbars.MTLogoToolbar
 import com.mundcode.designsystem.theme.Gray100
@@ -112,6 +115,14 @@ fun SubjectsScreen(
             onClickConfirm = {
                 viewModel.onClickDeleteSubjectConfirm()
             }
+        )
+    }
+
+    if (state.showNoticeDialog) {
+        DescriptionDialog(
+            title = "긴급 공지 \uD83D\uDCE2",
+            description = state.noticeText,
+            onClickConfirm = viewModel::onCancelDialog
         )
     }
 }

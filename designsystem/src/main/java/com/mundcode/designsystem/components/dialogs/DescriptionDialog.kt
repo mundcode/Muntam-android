@@ -2,8 +2,11 @@ package com.mundcode.designsystem.components.dialogs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +30,7 @@ fun DescriptionDialog(
     buttonsText: String = "확인",
     onClickConfirm: () -> Unit
 ) {
+    val scrollState = rememberScrollState()
     Dialog(
         onDismissRequest = {},
         properties = DialogProperties(
@@ -53,12 +57,18 @@ fun DescriptionDialog(
 
             Margin(dp = 8.dp)
 
-            Text(
-                text = description,
-                style = MTTextStyle.text14,
-                color = Gray700,
-                textAlign = TextAlign.Center
-            )
+            Column(
+                modifier = Modifier
+                    .heightIn(0.dp, 280.dp)
+                    .verticalScroll(scrollState)
+            ) {
+                Text(
+                    text = description,
+                    style = MTTextStyle.text14,
+                    color = Gray700,
+                    textAlign = TextAlign.Center
+                )
+            }
 
             Margin(dp = 20.dp)
 
