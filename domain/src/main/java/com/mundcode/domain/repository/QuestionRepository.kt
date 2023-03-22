@@ -16,7 +16,9 @@ interface QuestionRepository {
 
     fun getQuestionByExamId(examId: Int): List<Question>
 
-    fun getQuestionByQuestionId(examId: Int, questionNumber: Int): Flow<Question>
+    fun getQuestionByQuestionNumberFlow(examId: Int, questionNumber: Int): Flow<Question>
+
+    suspend fun getQuestionByQuestionId(questionId: Int): Question
 
     fun getQuestionById(id: Int): Flow<Question>
 
