@@ -43,7 +43,6 @@ abstract class QuestionDao : BaseDao<QuestionEntity> {
     )
     abstract fun getQuestionByQuestionId(id: Int): QuestionEntity
 
-
     @Query(
         value = """
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId AND question_number = :questionNumber

@@ -17,6 +17,8 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.worker.QuestionNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,8 +29,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @HiltViewModel
 class QuestionsViewModel @Inject constructor(
@@ -110,7 +110,9 @@ class QuestionsViewModel @Inject constructor(
                 unit = TimeUnit.DAYS,
             )
         } else {
-            _alarmCancelEvent.emit(QuestionNotificationWorker.getWorkerIdWithArgs(questionId = questionsModel.id))
+            _alarmCancelEvent.emit(
+                QuestionNotificationWorker.getWorkerIdWithArgs(questionId = questionsModel.id)
+            )
         }
         _toast.emit(if (currentAlarmEnable) "알람을 취소했어요." else "에빙하우스 망각곡선에 따라 알림을 설정했어요!")
     }

@@ -175,7 +175,6 @@ fun QuestionScreen(
                 )
             }
 
-
             AdmobBanner(
                 modifier = Modifier
                     .background(White)
