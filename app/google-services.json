@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "967338202081",
+    "project_id": "muntam-a5a5f",
+    "storage_bucket": "muntam-a5a5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967338202081:android:a18e3f3ec854f6dd69b8a0",
+        "android_client_info": {
+          "package_name": "com.mundcode.muntam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967338202081-ormo8b5lk2h0663g983n4fkv0nmingmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAByuFzObqVqhbDoQomqLE0zS_f0maXXZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967338202081-ormo8b5lk2h0663g983n4fkv0nmingmf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,10 @@ buildscript {
         mavenCentral()
     }
 
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+
     ext {
         compose_ui_version = '1.2.1'
         accmopanist_version = '0.25.1'
