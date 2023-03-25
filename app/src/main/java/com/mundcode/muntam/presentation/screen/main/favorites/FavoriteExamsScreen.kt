@@ -88,9 +88,15 @@ fun FavoriteExamsScreen(
                         .fillMaxWidth()
                 ) {
                     FavoriteEmptyItem(modifier = Modifier.align(Alignment.Center))
+                    MTToast(
+                        toastState = viewModel.toastState,
+                        modifier = Modifier
+                            .padding(horizontal = DefaultHorizontalPadding)
+                            .align(Alignment.BottomCenter)
+                    )
                 }
             } else {
-                Box(modifier = Modifier.weight(1f)) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomCenter) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
