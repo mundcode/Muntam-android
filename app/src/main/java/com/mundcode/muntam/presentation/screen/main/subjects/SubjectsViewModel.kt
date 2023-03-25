@@ -47,10 +47,11 @@ class SubjectsViewModel @Inject constructor(
         // todo data 레이어로 이동
         Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener {
             val notice = Firebase.remoteConfig.getString("notice")
+            val showNotice = Firebase.remoteConfig.getBoolean("show_notice")
             if (notice.isNotEmpty()) {
                 updateState {
                     stateValue.copy(
-                        showNoticeDialog = true,
+                        showNoticeDialog = showNotice,
                         noticeText = notice
                     )
                 }
