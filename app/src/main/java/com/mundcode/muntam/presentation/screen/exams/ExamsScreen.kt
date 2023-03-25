@@ -27,6 +27,7 @@ import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.muntam.presentation.item.AdmobBanner
+import com.mundcode.muntam.presentation.item.ExamEmptyItem
 import com.mundcode.muntam.presentation.item.ExamItem
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -67,43 +68,52 @@ fun ExamsScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
+            if (state.exams.isEmpty()) {
+                Box(modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    ExamEmptyItem()
+                }
+            } else {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.BottomCenter
                 ) {
-                    items(state.exams) { item ->
-                        Column {
-                            ExamItem(
-                                exam = item,
-                                onClick = {
-                                    viewModel.onClickExam(item)
-                                },
-                                onClickMore = {
-                                    viewModel.onClickExamOption(item)
-                                },
-                                onClickSave = {
-                                    viewModel.onClickExamSave(item)
-                                }
-                            )
-                            Divider(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp),
-                                color = Gray200
-                            )
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(state.exams) { item ->
+                            Column {
+                                ExamItem(
+                                    exam = item,
+                                    onClick = {
+                                        viewModel.onClickExam(item)
+                                    },
+                                    onClickMore = {
+                                        viewModel.onClickExamOption(item)
+                                    },
+                                    onClickSave = {
+                                        viewModel.onClickExamSave(item)
+                                    }
+                                )
+                                Divider(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 20.dp),
+                                    color = Gray200
+                                )
+                            }
                         }
                     }
+
+                    MTToast(
+                        toastState = viewModel.toastState,
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                    )
                 }
 
-                MTToast(
-                    toastState = viewModel.toastState,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                )
             }
 
             Box {

@@ -17,7 +17,7 @@ import com.mundcode.muntam.R
 
 @Composable
 fun FavoriteEmptyItem(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
@@ -31,5 +31,18 @@ fun FavoriteEmptyItem(
             contentDescription = null,
             tint = MTOrange
         )
+    }
+}
+
+@Composable
+fun ExamEmptyItem(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "아직 측정한 시험이 없어요 ⏰", style = MTTextStyle.textBold16.spToDp(), color = Gray600)
     }
 }
