@@ -29,13 +29,16 @@ fun MTToast(
     toastState: ToastState,
     modifier: Modifier = Modifier
 ) {
-    CustomToast(toastState = toastState) {
+    CustomToast(
+        modifier = modifier,
+        toastState = toastState
+    ) {
         Text(
             text = toastState.text,
             style = MTTextStyle.text14,
             color = White,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .background(color = MTToastBackground, shape = CornerRadius8)
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)

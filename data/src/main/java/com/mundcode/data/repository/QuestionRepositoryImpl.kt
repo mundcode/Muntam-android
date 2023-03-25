@@ -2,6 +2,7 @@ package com.mundcode.data.repository
 
 import com.mundcode.data.local.database.dao.QuestionDao
 import com.mundcode.data.local.database.model.asEntity
+import com.mundcode.data.local.database.model.asEntityWithModify
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.repository.QuestionRepository
@@ -17,6 +18,9 @@ class QuestionRepositoryImpl @Inject constructor(
 
     override suspend fun insertQuestions(questions: List<Question>) =
         questionDao.insertAll(questions.map { it.asEntity() })
+
+    override fun getQuestionsBySubjectId(subjectId: Int): List<Question> =
+        questionDao.getQuestionsBySubjectId(subjectId).map { it.asExternalModel() }
 
     override fun getQuestionsByExamIdFlow(examId: Int): Flow<List<Question>> =
         questionDao.getQuestionsByExamIdFlow(examId).map { questions ->
@@ -58,5 +62,5 @@ class QuestionRepositoryImpl @Inject constructor(
         }
 
     override suspend fun updateQuestion(question: Question) =
-        questionDao.updateQuestion(question.asEntity())
+        questionDao.updateQuestion(question.asEntityWithModify())
 }

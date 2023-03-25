@@ -16,7 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkManager
 import com.mundcode.designsystem.components.bottomsheets.MTBottomSheets
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.components.buttons.TimeRecordButton
@@ -27,6 +29,7 @@ import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.muntam.presentation.item.AdmobBanner
+import com.mundcode.muntam.presentation.item.ExamEmptyItem
 import com.mundcode.muntam.presentation.item.ExamItem
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +43,8 @@ fun ExamsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.navigationEvent.collectLatest { route ->
@@ -50,6 +55,12 @@ fun ExamsScreen(
         launch {
             viewModel.toast.collectLatest { text ->
                 viewModel.toastState.showToast(text)
+            }
+        }
+
+        launch {
+            viewModel.alarmCancelEvent.collectLatest {
+                WorkManager.getInstance(context).cancelAllWorkByTag(it)
             }
         }
     }
@@ -67,43 +78,54 @@ fun ExamsScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                LazyColumn(
+            if (state.exams.isEmpty()) {
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(state.exams) { item ->
-                        Column {
-                            ExamItem(
-                                exam = item,
-                                onClick = {
-                                    viewModel.onClickExam(item)
-                                },
-                                onClickMore = {
-                                    viewModel.onClickExamOption(item)
-                                },
-                                onClickSave = {
-                                    viewModel.onClickExamSave(item)
-                                }
-                            )
-                            Divider(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp),
-                                color = Gray200
-                            )
+                    ExamEmptyItem()
+                }
+            } else {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(state.exams) { item ->
+                            Column {
+                                ExamItem(
+                                    exam = item,
+                                    onClick = {
+                                        viewModel.onClickExam(item)
+                                    },
+                                    onClickMore = {
+                                        viewModel.onClickExamOption(item)
+                                    },
+                                    onClickSave = {
+                                        viewModel.onClickExamSave(item)
+                                    }
+                                )
+                                Divider(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 20.dp),
+                                    color = Gray200
+                                )
+                            }
                         }
                     }
-                }
 
-                MTToast(
-                    toastState = viewModel.toastState,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                )
+                    MTToast(
+                        toastState = viewModel.toastState,
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                    )
+                }
             }
 
             Box {

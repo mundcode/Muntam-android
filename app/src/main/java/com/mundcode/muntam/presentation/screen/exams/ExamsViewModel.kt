@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exams
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.mundcode.designsystem.state.ToastState
@@ -8,6 +7,7 @@ import com.mundcode.designsystem.state.rememberToastState
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.usecase.DeleteExamUseCase
 import com.mundcode.domain.usecase.GetExamsUseCase
+import com.mundcode.domain.usecase.GetQuestionsBySubjectIdUseCase
 import com.mundcode.domain.usecase.GetSubjectByIdUseCase
 import com.mundcode.domain.usecase.InsertExamUseCase
 import com.mundcode.domain.usecase.InsertQuestionsExamUseCase
@@ -20,9 +20,12 @@ import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.QuestionModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.worker.QuestionNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -35,9 +38,13 @@ class ExamsViewModel @Inject constructor(
     private val insertQuestionsUseCase: InsertQuestionsExamUseCase,
     private val insertExamUseCase: InsertExamUseCase,
     private val deleteExamUseCase: DeleteExamUseCase,
-    private val updateExamUseCase: UpdateExamUseCase
+    private val updateExamUseCase: UpdateExamUseCase,
+    private val getQuestionsBySubjectIdUseCase: GetQuestionsBySubjectIdUseCase
 ) : BaseViewModel<ExamsState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[SubjectModify.subjectIdArg])
+
+    private val _alarmCancelEvent = MutableSharedFlow<String>()
+    val alarmCancelEvent: SharedFlow<String> = _alarmCancelEvent
 
     init {
         loadExams()
@@ -92,6 +99,13 @@ class ExamsViewModel @Inject constructor(
 
     fun onClickConfirmDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
+        getQuestionsBySubjectIdUseCase(subjectId).forEach { question ->
+            if (question.isAlarm) {
+                _alarmCancelEvent.emit(
+                    QuestionNotificationWorker.getWorkerIdWithArgs(questionId = question.id)
+                )
+            }
+        }
         deleteExamUseCase(state.value.currentExam.id)
     }
 
@@ -123,7 +137,6 @@ class ExamsViewModel @Inject constructor(
             createdAt = Clock.System.now()
         )
         val examId = insertExamUseCase(exam.asExternalModel())
-        Log.d("SR-N", "examId $examId")
 
         val questions = (1..subject.totalQuestionNumber).map {
             QuestionModel(

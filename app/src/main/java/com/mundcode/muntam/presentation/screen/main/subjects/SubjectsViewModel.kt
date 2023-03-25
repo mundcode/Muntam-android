@@ -5,21 +5,29 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.mundcode.domain.model.Subject
 import com.mundcode.domain.usecase.DeleteSubjectUseCase
+import com.mundcode.domain.usecase.GetQuestionsBySubjectIdUseCase
 import com.mundcode.domain.usecase.GetSubjectsFlowUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.worker.QuestionNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class SubjectViewModel @Inject constructor(
+class SubjectsViewModel @Inject constructor(
     private val getSubjectsFlowUseCase: GetSubjectsFlowUseCase,
     private val deleteSubjectUseCase: DeleteSubjectUseCase,
+    private val getQuestionIdBySubjectIdUseCase: GetQuestionsBySubjectIdUseCase
 ) : BaseViewModel<SubjectsState>() {
+    private val _alarmCancelEvent = MutableSharedFlow<String>()
+    val alarmCancelEvent: SharedFlow<String> = _alarmCancelEvent
+
     init {
         loadSubjects()
         checkNoticeDialog()
@@ -39,10 +47,11 @@ class SubjectViewModel @Inject constructor(
         // todo data 레이어로 이동
         Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener {
             val notice = Firebase.remoteConfig.getString("notice")
+            val showNotice = Firebase.remoteConfig.getBoolean("show_notice")
             if (notice.isNotEmpty()) {
                 updateState {
                     stateValue.copy(
-                        showNoticeDialog = true,
+                        showNoticeDialog = showNotice,
                         noticeText = notice
                     )
                 }
@@ -64,14 +73,18 @@ class SubjectViewModel @Inject constructor(
         }
     }
 
-    fun onClickDeleteSubjectConfirm() = viewModelScope.launch {
-        state.value.selectedModel?.let {
-            deleteSubject(it)
-            updateState {
-                state.value.copy(
-                    showDeleteConfirmDialog = false
-                )
+    fun onClickDeleteSubjectConfirm() = viewModelScope.launch(Dispatchers.IO) {
+
+        state.value.selectedModel?.let { subject ->
+            getQuestionIdBySubjectIdUseCase(subject.id).forEach { question -> // todo test
+                if (question.isAlarm) {
+                    _alarmCancelEvent.emit(
+                        QuestionNotificationWorker.getWorkerIdWithArgs(questionId = question.id)
+                    )
+                }
             }
+            deleteSubject(subject)
+            onCancelDialog()
         }
     }
 

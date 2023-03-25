@@ -34,7 +34,7 @@ data class QuestionEntity(
     @ColumnInfo(name = "question_number")
     val questionNumber: Int,
     @ColumnInfo(name = "is_correct")
-    val isCorrect: Boolean = false,
+    val isCorrect: Boolean = true,
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean = false,
     @ColumnInfo(name = "is_alarm")
@@ -80,6 +80,22 @@ fun Question.asEntity() = QuestionEntity(
     lapsedExamTime = lapsedExamTime,
     createdAt = createdAt,
     modifiedAt = modifiedAt,
+    deletedAt = deletedAt,
+    state = state
+)
+
+fun Question.asEntityWithModify() = QuestionEntity(
+    id = id,
+    subjectId = subjectId,
+    examId = examId,
+    questionNumber = questionNumber,
+    isCorrect = isCorrect,
+    isFavorite = isFavorite,
+    isAlarm = isAlarm,
+    lapsedTime = lapsedTime,
+    lapsedExamTime = lapsedExamTime,
+    createdAt = createdAt,
+    modifiedAt = Clock.System.now(),
     deletedAt = deletedAt,
     state = state
 )

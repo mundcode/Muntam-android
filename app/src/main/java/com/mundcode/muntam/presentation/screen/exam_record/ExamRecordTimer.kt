@@ -25,9 +25,9 @@ class ExamRecordTimer(
     ) -> Unit,
 ) {
     private var currentTime: Long = initialTime
-    private var remainTime: Long = (timeLimit / 1000) - initialTime
+    private var remainTime: Long = timeLimit - initialTime
     private var currentQuestionTime: Long =
-        getLastQuestion(questions = initQuestion)?.lapsedTime?.div(1000) ?: 0
+        getLastQuestion(questions = initQuestion)?.lapsedTime ?: 0
     private var currentQuestion: QuestionModel? = null
 
     private var state: ExamState = initExamState

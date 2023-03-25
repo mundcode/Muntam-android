@@ -1,8 +1,8 @@
 package com.mundcode.muntam.presentation.screen.subject_modify
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mundcode.domain.usecase.GetSubjectByIdUseCase
 import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
@@ -10,6 +10,7 @@ import com.mundcode.muntam.navigation.SubjectModify
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.util.getRandomEmoji
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -23,20 +24,10 @@ class SubjectModifyViewModel @Inject constructor(
 ) : BaseViewModel<SubjectModifyState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[SubjectModify.subjectIdArg])
 
-    private val emojiList = listOf( // todo 데이터베이스에 대량으로 넣고 가져오기
-        "💎",
-        "⏰",
-        "🥰",
-        "👁",
-        "🦾",
-        "👅",
-        "🧠"
-    )
-
     init {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val subject = getSubjectByIdUseCase(subjectId.toInt())
+                val subject = getSubjectByIdUseCase(subjectId)
                 updateState {
                     state.value.copy(
                         subjectModel = subject.asStateModel(),
@@ -46,13 +37,13 @@ class SubjectModifyViewModel @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Log.d("SR-N", "SubjectModifyViewModel $e")
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 
     fun onClickEmoji() = updateState {
         state.value.copy(
-            changedEmoji = emojiList.random()
+            changedEmoji = getRandomEmoji()
         )
     }
 

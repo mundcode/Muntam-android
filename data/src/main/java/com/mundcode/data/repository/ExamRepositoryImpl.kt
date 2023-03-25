@@ -3,6 +3,7 @@ package com.mundcode.data.repository
 import com.mundcode.data.local.database.dao.ExamDao
 import com.mundcode.data.local.database.model.ExamEntity
 import com.mundcode.data.local.database.model.asEntity
+import com.mundcode.data.local.database.model.asEntityWithModify
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.repository.ExamRepository
@@ -39,7 +40,7 @@ class ExamRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateExam(exam: Exam) {
-        examDao.updateExam(exam.asEntity())
+        examDao.updateExam(exam.asEntityWithModify())
     }
 
     override suspend fun deleteExam(id: Int) {

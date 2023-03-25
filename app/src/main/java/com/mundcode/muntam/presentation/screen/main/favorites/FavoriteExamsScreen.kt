@@ -18,7 +18,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkManager
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.dialogs.textfeild.NameEditorDialog
 import com.mundcode.designsystem.components.toast.MTToast
@@ -47,6 +49,8 @@ fun FavoriteExamsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.navigationEvent.collectLatest { route ->
@@ -57,6 +61,12 @@ fun FavoriteExamsScreen(
         launch {
             viewModel.toast.collectLatest { text ->
                 viewModel.toastState.showToast(text)
+            }
+        }
+
+        launch {
+            viewModel.alarmCancelEvent.collectLatest {
+                WorkManager.getInstance(context).cancelAllWorkByTag(it)
             }
         }
     }
@@ -78,9 +88,15 @@ fun FavoriteExamsScreen(
                         .fillMaxWidth()
                 ) {
                     FavoriteEmptyItem(modifier = Modifier.align(Alignment.Center))
+                    MTToast(
+                        toastState = viewModel.toastState,
+                        modifier = Modifier
+                            .padding(horizontal = DefaultHorizontalPadding)
+                            .align(Alignment.BottomCenter)
+                    )
                 }
             } else {
-                Box(modifier = Modifier.weight(1f)) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomCenter) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()

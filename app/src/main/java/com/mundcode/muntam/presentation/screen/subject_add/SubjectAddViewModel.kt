@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.usecase.InsertSubjectUseCase
 import com.mundcode.muntam.presentation.model.SubjectModel
 import com.mundcode.muntam.presentation.model.asExternalModel
+import com.mundcode.muntam.util.getRandomEmoji
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -19,28 +20,14 @@ import kotlinx.coroutines.sync.withLock
 class SubjectAddViewModel @Inject constructor(
     private val insertSubjectUseCase: InsertSubjectUseCase
 ) : ViewModel() {
-    private val emojiList = listOf( // todo 데이터베이스에 대량으로 넣고 가져오기
-        "💎",
-        "⏰",
-        "🥰",
-        "👁",
-        "🦾",
-        "👅",
-        "🧠"
-    )
-
-    init {
-        Log.d("SR-N", "SubjectAddViewModel init")
-    }
-
-    private val _subjectAddState = MutableStateFlow(SubjectAddState(emoji = emojiList.random()))
+    private val _subjectAddState = MutableStateFlow(SubjectAddState(emoji = getRandomEmoji()))
     val subjectAddState: StateFlow<SubjectAddState> = _subjectAddState
 
     val mutex = Mutex()
 
     fun onClickEmoji() {
         updateState {
-            subjectAddState.value.copy(emoji = emojiList.random())
+            subjectAddState.value.copy(emoji = getRandomEmoji())
         }
     }
 
@@ -152,7 +139,7 @@ data class SubjectAddState(
     val enableButton: Boolean = false
 ) {
     fun getTimeLimitMilliSec(): Long =
-        (timeLimitHour * 60 * 60 * 1000L) + (timeLimitMin * 60 * 1000L) + (timeLimitSec * 1000L)
+        (timeLimitHour * 60 * 60).toLong() + (timeLimitMin * 60) + (timeLimitSec)
 
     fun canEnableButton(): Boolean =
         subjectName.isNotEmpty() && getTimeLimitMilliSec() != 0L && totalQuestionNumber in (1..200)

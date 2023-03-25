@@ -14,6 +14,7 @@ import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
 import com.mundcode.domain.usecase.GetSubjectByIdFlowUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
+import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
 import com.mundcode.muntam.navigation.Questions
@@ -32,6 +33,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
@@ -42,7 +45,8 @@ class ExamRecordViewModel @Inject constructor(
     private val updateExamUseCase: UpdateExamUseCase,
     private val getQuestionsByExamIdFlowUseCase: GetQuestionsByExamIdFlowUseCase,
     private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase,
-    private val updateQuestionUseCase: UpdateQuestionUseCase
+    private val updateQuestionUseCase: UpdateQuestionUseCase,
+    private val updateSubjectUseCase: UpdateSubjectUseCase
 ) : BaseViewModel<ExamRecordState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[ExamRecord.subjectIdArg])
     private val examId: Int = checkNotNull(savedStateHandle[ExamRecord.examIdArg])
@@ -65,10 +69,19 @@ class ExamRecordViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             // 초기 정보 가져오기
-            val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit
-                ?: throw Exception()
+            val subject = getSubjectByIdFlowUseCase(subjectId).firstOrNull()
+
+            val timeLimit = subject?.timeLimit ?: throw Exception("과목이 null 일 수 없음.")
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
+
+            // 과목의 마지막 시험정보 업데이트
+            updateSubjectUseCase(
+                subject.copy(
+                    lastExamName = initExam.name,
+                    lastExamDate = Clock.System.now()
+                )
+            )
 
             // 초기 정보로 상태 업데이트
             updateState {
@@ -91,8 +104,8 @@ class ExamRecordViewModel @Inject constructor(
                         currentExamTimeText = current,
                         remainExamTimeText = remain,
                         currentQuestionTimeText = question,
-                        expired = timer.getCurrentTime() > timeLimit / 1000,
-                        percent = (timer.getCurrentTime() / (timeLimit / 1000).toFloat())
+                        expired = timer.getCurrentTime() > timeLimit,
+                        percent = (timer.getCurrentTime() / timeLimit.toFloat())
                     )
                 }
             }
@@ -111,8 +124,6 @@ class ExamRecordViewModel @Inject constructor(
                 val newQuestion = questions.find { q ->
                     q.questionNumber == lastQuestionNumber
                 }
-
-                Log.e("SR-N", "state ${examEntity.state} / curQ ${examEntity.lastQuestionNumber}")
 
                 newQuestion?.let { new ->
                     timer.setCurrentQuestion(new)
@@ -270,6 +281,13 @@ class ExamRecordViewModel @Inject constructor(
         updateExamUseCase(stateValue.examModel.copy(completeAd = true).asExternalModel())
     }
 
+    fun onAdLoadComplete() = viewModelScope.launch {
+        _toast.emit("지금 한 번 더 눌러주세요!")
+    }
+    fun onAdLoadFailed() = viewModelScope.launch {
+        _toast.emit("인터넷 연결을 확인해주세요. 다시불러오는 중..")
+    }
+
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {
         updateExamState(
             newExamState = ExamState.PAUSE,
@@ -280,7 +298,10 @@ class ExamRecordViewModel @Inject constructor(
 
     // 문제번호랑 경과시간은 그대로, 상태랑 타이머만 바꾸기
     private fun resume() = viewModelScope.launch(Dispatchers.IO) {
-        updateExamState(newExamState = ExamState.RUNNING)
+        updateExamState(
+            newExamState = ExamState.RUNNING,
+            lastQuestionNumber = lastQuestionNumber ?: 1
+        )
         updateQuestionState(lastQuestionNumber, QuestionState.RUNNING)
     }
 
@@ -294,7 +315,8 @@ class ExamRecordViewModel @Inject constructor(
 
         updateExamState(
             newExamState = ExamState.END,
-            lastAt = timer.getCurrentTime()
+            lastAt = timer.getCurrentTime(),
+            endAt = Clock.System.now()
         )
     }
 
@@ -312,13 +334,15 @@ class ExamRecordViewModel @Inject constructor(
     private suspend fun updateExamState(
         newExamState: ExamState,
         lastQuestionNumber: Int? = null,
-        lastAt: Long? = null
+        lastAt: Long? = null,
+        endAt: Instant? = null
     ) {
         updateExamUseCase(
             stateValue.examModel.copy(
                 state = newExamState,
                 lastQuestionNumber = lastQuestionNumber ?: stateValue.examModel.lastQuestionNumber,
-                lastAt = lastAt ?: stateValue.examModel.lastAt
+                lastAt = lastAt ?: stateValue.examModel.lastAt,
+                endAt = endAt ?: stateValue.examModel.endAt
             ).asExternalModel()
         )
     }

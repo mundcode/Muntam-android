@@ -5,11 +5,11 @@ import com.mundcode.designsystem.theme.Gray500
 import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.domain.model.Exam
 import com.mundcode.domain.model.enums.ExamState
+import com.mundcode.muntam.util.asCurrentTimerText
 import com.mundcode.muntam.util.asMTDateText
+import kotlin.math.absoluteValue
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-
-const val FIRST_QUESTION_NUMBER = 1
 
 data class ExamModel( // todo 수정
     var id: Int = 0,
@@ -29,28 +29,29 @@ data class ExamModel( // todo 수정
 
     val expiredTimeText: String? = obtainExpiredTime()
     val expiredTimeTextColor: Color = obtainExpiredTimeTextColor()
+    val lastLapsTimeText: String = lastAt?.asCurrentTimerText() ?: "00:00:00"
 
     private fun obtainExpiredTime(): String? {
         lastAt ?: return null
-
         val diff = timeLimit - lastAt
         if (diff >= 0) return null
+        val absDiff = diff.absoluteValue
+        val sec = (absDiff) % 60
+        val min = (absDiff / 60) % 60
+        val hour = (absDiff / 60 / 60) % 24
 
-        val sec = (diff / 1000) % 60
-        val min = (diff / 1000 / 60) % 60
-        val hour = (diff / 1000 / 60 / 60) % 24
-
-        return "%02d.%02d.%02d".format(hour, min, sec)
+        return "%02d:%02d:%02d".format(hour, min, sec)
     }
 
     private fun obtainExpiredTimeTextColor(): Color {
         return when {
             lastAt == null -> Gray500
-            timeLimit - lastAt >= 0 -> Gray500
-            else -> MTRed
+            timeLimit - lastAt < 0 -> MTRed
+            else -> Gray500
         }
     }
 
+    // todo sqlite 쿼리로 대체
     override fun compareTo(other: ExamModel): Int {
         return if (this.isFavorite != other.isFavorite) {
             if (this.isFavorite && other.isFavorite.not()) {

@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.questions
 
+import android.os.Build
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
@@ -20,14 +21,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -48,18 +48,25 @@ class QuestionsViewModel @Inject constructor(
     private val _alarmCancelEvent = MutableSharedFlow<String>()
     val alarmCancelEvent: SharedFlow<String> = _alarmCancelEvent
 
+    private val _notificationPermissionEvent = MutableSharedFlow<Unit>()
+    val notificationPermissionEvent: SharedFlow<Unit> =
+        _notificationPermissionEvent.asSharedFlow()
+
     init {
         getExam()
         getQuestions()
     }
 
-    @OptIn(FlowPreview::class)
     private fun getQuestions() = viewModelScope.launch(Dispatchers.IO) {
-        currentSort.flatMapMerge { sort ->
-            getQuestionsByExamIdWithSortFlowUseCase(examId, sort)
-        }.collectLatest { questions ->
-            updateState {
-                stateValue.copy(questions = questions.map { it.asStateModel() })
+        // 여기서 flatMapMerge 를 쓰면안됨.
+        currentSort.collectLatest {
+            getQuestionsByExamIdWithSortFlowUseCase(
+                examId,
+                currentSort.value
+            ).collectLatest { questions ->
+                updateState {
+                    stateValue.copy(questions = questions.map { it.asStateModel() })
+                }
             }
         }
     }
@@ -74,46 +81,105 @@ class QuestionsViewModel @Inject constructor(
         }
     }
 
-    fun onClickAlarm(questionsModel: QuestionModel) = viewModelScope.launch(Dispatchers.IO) {
-        val currentAlarmEnable = questionsModel.isAlarm
+    fun onClickAlarm(
+        questionModel: QuestionModel,
+        isGranted: Boolean,
+        shouldShowRationale: Boolean
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        if (isGranted.not()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                showRationale(questionModel = questionModel)
+            } else {
+                updateState {
+                    stateValue.copy(
+                        pendingQuestion = questionModel
+                    )
+                }
+                _notificationPermissionEvent.emit(Unit)
+            }
+            return@launch
+        }
 
-        updateQuestionUseCase(
-            questionsModel.copy(isAlarm = currentAlarmEnable.not()).asExternalModel()
-        )
+        if (shouldShowRationale) {
+            showRationale(questionModel = questionModel)
+            return@launch
+        }
+
+        enqueueQuestionNotification(questionModel = questionModel)
+    }
+
+    fun onPermissionGranted() = viewModelScope.launch(Dispatchers.IO) {
+        val questionModel = stateValue.pendingQuestion ?: return@launch
+        enqueueQuestionNotification(questionModel)
+    }
+
+    fun checkOnResume(isGranted: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        val questionModel = stateValue.pendingQuestion ?: return@launch
+        if (!isGranted) return@launch
+
+        enqueueQuestionNotification(questionModel)
+    }
+
+    fun showRationale(questionModel: QuestionModel? = null) {
+        updateState {
+            stateValue.copy(
+                pendingQuestion = questionModel,
+                shouldShowRationale = true
+            )
+        }
+    }
+
+    private suspend fun enqueueQuestionNotification(
+        questionModel: QuestionModel,
+    ) {
+        val currentAlarmEnable = questionModel.isAlarm
 
         if (!currentAlarmEnable) {
             queueQuestionRemindNotification(
-                id = questionsModel.id,
+                id = questionModel.id,
                 howLong = "10분",
                 duration = 10,
                 unit = TimeUnit.MINUTES,
             )
 
             queueQuestionRemindNotification(
-                id = questionsModel.id,
+                id = questionModel.id,
                 howLong = "24시간",
                 duration = 24,
                 unit = TimeUnit.HOURS,
             )
 
             queueQuestionRemindNotification(
-                id = questionsModel.id,
+                id = questionModel.id,
                 howLong = "1주일",
                 duration = 7,
                 unit = TimeUnit.DAYS,
             )
 
             queueQuestionRemindNotification(
-                id = questionsModel.id,
+                id = questionModel.id,
                 howLong = "약 1달",
                 duration = 30,
                 unit = TimeUnit.DAYS,
             )
         } else {
             _alarmCancelEvent.emit(
-                QuestionNotificationWorker.getWorkerIdWithArgs(questionId = questionsModel.id)
+                QuestionNotificationWorker.getWorkerIdWithArgs(questionId = questionModel.id)
             )
         }
+
+        updateQuestionUseCase(
+            questionModel.copy(
+                isAlarm = currentAlarmEnable.not()
+            ).asExternalModel()
+        )
+
+        updateState {
+            stateValue.copy(
+                pendingQuestion = null
+            )
+        }
+
         _toast.emit(if (currentAlarmEnable) "알람을 취소했어요." else "에빙하우스 망각곡선에 따라 알림을 설정했어요!")
     }
 
@@ -124,24 +190,23 @@ class QuestionsViewModel @Inject constructor(
     }
 
     fun onClickSortLapsDesc() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.LAPS_DESC)
-        }
         _currentSort.value = QuestionSort.LAPS_DESC
     }
 
     fun onClickSortWrongFirst() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.WRONG_FIRST)
-        }
         _currentSort.value = QuestionSort.WRONG_FIRST
     }
 
     fun onClickSortNumberAsc() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.DEFAULT)
-        }
         _currentSort.value = QuestionSort.DEFAULT
+    }
+
+    fun onCancelDialog() {
+        updateState {
+            stateValue.copy(
+                shouldShowRationale = false
+            )
+        }
     }
 
     override fun createInitialState(): QuestionsState {
@@ -175,6 +240,7 @@ class QuestionsViewModel @Inject constructor(
 
 data class QuestionsState(
     val exam: ExamModel = ExamModel(),
-    val selectedSort: QuestionSort = QuestionSort.DEFAULT,
-    val questions: List<QuestionModel> = listOf()
+    val questions: List<QuestionModel> = listOf(),
+    val pendingQuestion: QuestionModel? = null,
+    val shouldShowRationale: Boolean = false
 )

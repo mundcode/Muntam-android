@@ -43,10 +43,17 @@ abstract class ExamDao : BaseDao<ExamEntity> {
 
     @Query(
         value = """
-            UPDATE exams SET deleted_at=:deletedAt WHERE id = :id
+            UPDATE exams SET deleted_at = :deletedAt WHERE id = :id
         """
     )
     abstract suspend fun deleteExam(id: Int, deletedAt: Instant)
+
+    @Query(
+        value = """
+            UPDATE questions SET deleted_at = :deletedAt WHERE exam_id = :id
+        """
+    )
+    abstract suspend fun deletedQuestionsByExamId(id: Int, deletedAt: Instant) // todo test
 
     @Update
     abstract suspend fun updateExam(exam: ExamEntity)
@@ -54,6 +61,6 @@ abstract class ExamDao : BaseDao<ExamEntity> {
     @Transaction
     open suspend fun deleteExamWithCasacade(id: Int, deletedAt: Instant) {
         deleteExam(id, deletedAt)
-        // todo 시험삭제하면서 딸린 문제까지 지우는 @Transaction 작성하고 deleteExam 대체
+        deletedQuestionsByExamId(id, deletedAt)
     }
 }

@@ -11,7 +11,7 @@ data class QuestionModel(
     val subjectId: Int,
     val examId: Int,
     val questionNumber: Int,
-    val isCorrect: Boolean = false,
+    val isCorrect: Boolean = true,
     val isAlarm: Boolean = false,
     val isFavorite: Boolean = false,
     val lapsedTime: Long = 0,

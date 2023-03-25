@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.domain.usecase.DeleteExamUseCase
 import com.mundcode.domain.usecase.GetFavoriteExamsUseCase
+import com.mundcode.domain.usecase.GetQuestionsBySubjectIdUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
@@ -11,9 +12,12 @@ import com.mundcode.muntam.navigation.Questions
 import com.mundcode.muntam.presentation.model.ExamModel
 import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
+import com.mundcode.muntam.worker.QuestionNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -21,8 +25,12 @@ import kotlinx.coroutines.launch
 class FavoriteExamViewModel @Inject constructor(
     private val getFavoriteExamsUseCase: GetFavoriteExamsUseCase,
     private val updateExamUseCase: UpdateExamUseCase,
-    private val deleteExamUseCase: DeleteExamUseCase
+    private val deleteExamUseCase: DeleteExamUseCase,
+    private val getQuestionsBySubjectIdUseCase: GetQuestionsBySubjectIdUseCase
 ) : BaseViewModel<FavoriteExamState>() {
+
+    private val _alarmCancelEvent = MutableSharedFlow<String>()
+    val alarmCancelEvent: SharedFlow<String> = _alarmCancelEvent
 
     init {
         loadExams()
@@ -81,7 +89,15 @@ class FavoriteExamViewModel @Inject constructor(
 
     fun onSelectDeleteExam() = viewModelScope.launch(Dispatchers.IO) {
         onCancelDialog()
+
         stateValue.focusedExam?.let {
+            getQuestionsBySubjectIdUseCase(it.subjectId).forEach { question ->
+                if (question.isAlarm) {
+                    _alarmCancelEvent.emit(
+                        QuestionNotificationWorker.getWorkerIdWithArgs(questionId = question.id)
+                    )
+                }
+            }
             deleteExamUseCase(it.id)
         }
     }

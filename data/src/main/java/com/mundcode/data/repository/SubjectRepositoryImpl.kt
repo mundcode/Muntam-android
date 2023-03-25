@@ -3,6 +3,7 @@ package com.mundcode.data.repository
 import com.mundcode.data.local.database.dao.SubjectDao
 import com.mundcode.data.local.database.model.SubjectEntity
 import com.mundcode.data.local.database.model.asEntity
+import com.mundcode.data.local.database.model.asEntityWithModify
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Subject
 import com.mundcode.domain.repository.SubjectRepository
@@ -33,7 +34,7 @@ class SubjectRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateSubject(subject: Subject) {
-        subjectDao.updateSubject(subject.asEntity())
+        subjectDao.updateSubject(subject.asEntityWithModify())
     }
 
     override suspend fun deleteSubjectRepository(id: Int) {

@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.main
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,12 +24,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mundcode.designsystem.components.bottomsheets.MTBottomSheets
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray900
-import com.mundcode.designsystem.theme.MTBottomSheetBackground
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.muntam.navigation.Main
 import com.mundcode.muntam.navigation.MainBottomNavHost
@@ -118,17 +115,17 @@ fun MuntamBottomNavigation(
 
 @Composable
 fun BottomSheetScreen(bottomSheetState: BottomSheetModel, onCloseEvent: () -> Unit) {
-    val systemUiController = rememberSystemUiController()
+//    val systemUiController = rememberSystemUiController()
     val show = bottomSheetState !is BottomSheetModel.None
-    val backgroundColor by animateColorAsState(
-        targetValue = if (show) {
-            MTBottomSheetBackground
-        } else {
-            MaterialTheme.colors.background
-        }
-    )
+//    val backgroundColor by animateColorAsState(
+//        targetValue = if (show) {
+//            MTBottomSheetBackground
+//        } else {
+//            White
+//        }
+//    )
 
-    systemUiController.setStatusBarColor(color = backgroundColor)
+//    systemUiController.setStatusBarColor(color = backgroundColor)
 
     MTBottomSheets(
         show = show,

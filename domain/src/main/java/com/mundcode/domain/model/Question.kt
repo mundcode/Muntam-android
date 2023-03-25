@@ -8,7 +8,7 @@ data class Question(
     val subjectId: Int,
     val examId: Int,
     val questionNumber: Int,
-    val isCorrect: Boolean = false,
+    val isCorrect: Boolean = true,
     val isFavorite: Boolean = false,
     val isAlarm: Boolean = false,
     val lapsedTime: Long = 0,
