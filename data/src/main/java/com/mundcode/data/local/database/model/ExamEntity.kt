@@ -89,7 +89,6 @@ fun Exam.asEntityWithModify(): ExamEntity = ExamEntity(
     state = state
 )
 
-
 fun createExamEntities(
     size: Int,
     subjectId: Int = 0

@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exams
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.mundcode.designsystem.state.ToastState

@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -369,7 +368,8 @@ fun ExamRecordScreen(
     if (viewModel.toastState.show) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
             MTToast(
-                toastState = viewModel.toastState, modifier = Modifier
+                toastState = viewModel.toastState,
+                modifier = Modifier
                     .padding(20.dp)
             )
         }

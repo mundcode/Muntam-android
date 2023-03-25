@@ -79,9 +79,12 @@ fun ExamsScreen(
                 .fillMaxSize()
         ) {
             if (state.exams.isEmpty()) {
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
                     ExamEmptyItem()
                 }
             } else {
@@ -123,7 +126,6 @@ fun ExamsScreen(
                             .padding(horizontal = 20.dp)
                     )
                 }
-
             }
 
             Box {

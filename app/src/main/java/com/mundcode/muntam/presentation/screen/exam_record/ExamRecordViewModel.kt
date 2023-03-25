@@ -24,6 +24,7 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,7 +35,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import javax.inject.Inject
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
@@ -75,7 +75,6 @@ class ExamRecordViewModel @Inject constructor(
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
 
-
             // 과목의 마지막 시험정보 업데이트
             updateSubjectUseCase(
                 subject.copy(
@@ -83,7 +82,6 @@ class ExamRecordViewModel @Inject constructor(
                     lastExamDate = Clock.System.now()
                 )
             )
-
 
             // 초기 정보로 상태 업데이트
             updateState {
@@ -300,7 +298,10 @@ class ExamRecordViewModel @Inject constructor(
 
     // 문제번호랑 경과시간은 그대로, 상태랑 타이머만 바꾸기
     private fun resume() = viewModelScope.launch(Dispatchers.IO) {
-        updateExamState(newExamState = ExamState.RUNNING, lastQuestionNumber = lastQuestionNumber ?: 1)
+        updateExamState(
+            newExamState = ExamState.RUNNING,
+            lastQuestionNumber = lastQuestionNumber ?: 1
+        )
         updateQuestionState(lastQuestionNumber, QuestionState.RUNNING)
     }
 

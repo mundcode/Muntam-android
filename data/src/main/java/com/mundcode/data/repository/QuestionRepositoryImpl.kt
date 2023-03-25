@@ -6,9 +6,9 @@ import com.mundcode.data.local.database.model.asEntityWithModify
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.repository.QuestionRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class QuestionRepositoryImpl @Inject constructor(
     private val questionDao: QuestionDao

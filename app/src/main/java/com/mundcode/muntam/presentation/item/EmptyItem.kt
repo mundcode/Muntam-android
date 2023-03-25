@@ -44,6 +44,11 @@ fun ExamEmptyItem(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "아직 기록한 시험이 없어요\n아래 기록하기 버튼을 눌러 시작해보세요! ⏰", style = MTTextStyle.textBold16.spToDp(), color = Gray600, textAlign = TextAlign.Center)
+        Text(
+            text = "아직 기록한 시험이 없어요\n아래 기록하기 버튼을 눌러 시작해보세요! ⏰",
+            style = MTTextStyle.textBold16.spToDp(),
+            color = Gray600,
+            textAlign = TextAlign.Center
+        )
     }
 }

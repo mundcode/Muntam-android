@@ -189,7 +189,8 @@ fun QuestionScreen(
                                 viewModel.onClickAlarm(
                                     questionModel = item,
                                     isGranted = notificationPermissionState.status.isGranted,
-                                    shouldShowRationale = notificationPermissionState.status.shouldShowRationale
+                                    shouldShowRationale =
+                                    notificationPermissionState.status.shouldShowRationale
                                 )
                             },
                             onClickCorrect = {

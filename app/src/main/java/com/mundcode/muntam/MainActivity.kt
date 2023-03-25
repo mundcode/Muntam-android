@@ -17,7 +17,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.mundcode.designsystem.theme.DarkColorPalette
-import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.LightColorPalette
 import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.navigation.MuntamNavHost

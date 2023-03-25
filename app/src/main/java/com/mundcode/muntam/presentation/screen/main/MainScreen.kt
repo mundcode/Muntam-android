@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.main
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,14 +24,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mundcode.designsystem.components.bottomsheets.MTBottomSheets
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray900
-import com.mundcode.designsystem.theme.MTBottomSheetBackground
 import com.mundcode.designsystem.theme.MTTextStyle
-import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.navigation.Main
 import com.mundcode.muntam.navigation.MainBottomNavHost
 import com.mundcode.muntam.presentation.model.BottomSheetModel
