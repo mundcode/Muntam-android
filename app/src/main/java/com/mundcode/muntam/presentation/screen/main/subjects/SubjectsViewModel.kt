@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class SubjectViewModel @Inject constructor(
+class SubjectsViewModel @Inject constructor(
     private val getSubjectsFlowUseCase: GetSubjectsFlowUseCase,
     private val deleteSubjectUseCase: DeleteSubjectUseCase,
 ) : BaseViewModel<SubjectsState>() {

@@ -36,7 +36,7 @@ import com.mundcode.muntam.util.hiltViewModel
 fun SubjectsScreen(
     onNavOutEvent: (route: String) -> Unit,
     onBottomSheetEvent: (BottomSheetModel) -> Unit,
-    viewModel: SubjectViewModel = hiltViewModel()
+    viewModel: SubjectsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val subjects = state.subjects
