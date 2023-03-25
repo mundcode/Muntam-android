@@ -14,6 +14,7 @@ import com.mundcode.domain.usecase.GetQuestionsByExamIdUseCase
 import com.mundcode.domain.usecase.GetSubjectByIdFlowUseCase
 import com.mundcode.domain.usecase.UpdateExamUseCase
 import com.mundcode.domain.usecase.UpdateQuestionUseCase
+import com.mundcode.domain.usecase.UpdateSubjectUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.navigation.ExamRecord
 import com.mundcode.muntam.navigation.Questions
@@ -23,7 +24,6 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordTimer.Companion.DEFAULT_INITIAL_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,6 +32,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import javax.inject.Inject
 
 @HiltViewModel
 class ExamRecordViewModel @Inject constructor(
@@ -42,7 +44,8 @@ class ExamRecordViewModel @Inject constructor(
     private val updateExamUseCase: UpdateExamUseCase,
     private val getQuestionsByExamIdFlowUseCase: GetQuestionsByExamIdFlowUseCase,
     private val getQuestionsByExamIdUseCase: GetQuestionsByExamIdUseCase,
-    private val updateQuestionUseCase: UpdateQuestionUseCase
+    private val updateQuestionUseCase: UpdateQuestionUseCase,
+    private val updateSubjectUseCase: UpdateSubjectUseCase
 ) : BaseViewModel<ExamRecordState>() {
     private val subjectId: Int = checkNotNull(savedStateHandle[ExamRecord.subjectIdArg])
     private val examId: Int = checkNotNull(savedStateHandle[ExamRecord.examIdArg])
@@ -65,10 +68,21 @@ class ExamRecordViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             // 초기 정보 가져오기
-            val timeLimit = getSubjectByIdFlowUseCase(subjectId).firstOrNull()?.timeLimit
-                ?: throw Exception()
+            val subject = getSubjectByIdFlowUseCase(subjectId).firstOrNull()
+
+            val timeLimit = subject?.timeLimit ?: throw Exception("과목이 null 일 수 없음.")
             val initExam = getExamByIdUseCase(examId).asStateModel()
             val initQuestions = getQuestionsByExamIdUseCase(examId).map { it.asStateModel() }
+
+
+            // 과목의 마지막 시험정보 업데이트
+            updateSubjectUseCase(
+                subject.copy(
+                    lastExamName = initExam.name,
+                    lastExamDate = Clock.System.now()
+                )
+            )
+
 
             // 초기 정보로 상태 업데이트
             updateState {
