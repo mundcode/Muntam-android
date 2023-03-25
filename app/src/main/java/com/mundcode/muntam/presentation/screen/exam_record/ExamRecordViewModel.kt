@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -125,8 +126,6 @@ class ExamRecordViewModel @Inject constructor(
                 val newQuestion = questions.find { q ->
                     q.questionNumber == lastQuestionNumber
                 }
-
-                Log.e("SR-N", "state ${examEntity.state} / curQ ${examEntity.lastQuestionNumber}")
 
                 newQuestion?.let { new ->
                     timer.setCurrentQuestion(new)
@@ -308,7 +307,8 @@ class ExamRecordViewModel @Inject constructor(
 
         updateExamState(
             newExamState = ExamState.END,
-            lastAt = timer.getCurrentTime()
+            lastAt = timer.getCurrentTime(),
+            endAt = Clock.System.now()
         )
     }
 
@@ -326,13 +326,15 @@ class ExamRecordViewModel @Inject constructor(
     private suspend fun updateExamState(
         newExamState: ExamState,
         lastQuestionNumber: Int? = null,
-        lastAt: Long? = null
+        lastAt: Long? = null,
+        endAt: Instant? = null
     ) {
         updateExamUseCase(
             stateValue.examModel.copy(
                 state = newExamState,
                 lastQuestionNumber = lastQuestionNumber ?: stateValue.examModel.lastQuestionNumber,
-                lastAt = lastAt ?: stateValue.examModel.lastAt
+                lastAt = lastAt ?: stateValue.examModel.lastAt,
+                endAt = endAt ?: stateValue.examModel.endAt
             ).asExternalModel()
         )
     }
