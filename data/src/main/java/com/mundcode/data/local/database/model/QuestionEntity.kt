@@ -84,6 +84,22 @@ fun Question.asEntity() = QuestionEntity(
     state = state
 )
 
+fun Question.asEntityWithModify() = QuestionEntity(
+    id = id,
+    subjectId = subjectId,
+    examId = examId,
+    questionNumber = questionNumber,
+    isCorrect = isCorrect,
+    isFavorite = isFavorite,
+    isAlarm = isAlarm,
+    lapsedTime = lapsedTime,
+    lapsedExamTime = lapsedExamTime,
+    createdAt = createdAt,
+    modifiedAt = Clock.System.now(),
+    deletedAt = deletedAt,
+    state = state
+)
+
 fun createQuestionEntities(size: Int, subjectId: Int, examId: Int) =
     (1..size).map {
         createQuestionEntity(

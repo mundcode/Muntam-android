@@ -59,6 +59,20 @@ fun Subject.asEntity(): SubjectEntity = SubjectEntity(
     deletedAt = deletedAt
 )
 
+fun Subject.asEntityWithModify(): SubjectEntity = SubjectEntity(
+    id = id, // 업데이트 시 필요
+    name = name,
+    imoji = emoji,
+    lastExamName = lastExamName,
+    lastExamDate = lastExamDate,
+    totalQuestionNumber = totalQuestionNumber,
+    timeLimit = timeLimit,
+    isPinned = isPinnded,
+    createdAt = createdAt,
+    modifiedAt = Clock.System.now(),
+    deletedAt = deletedAt
+)
+
 fun createSubjectEntities(size: Int) = (1..size).map {
     createSubjectEntity(id = it)
 }

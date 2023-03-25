@@ -74,6 +74,22 @@ fun Exam.asEntity(): ExamEntity = ExamEntity(
     state = state
 )
 
+fun Exam.asEntityWithModify(): ExamEntity = ExamEntity(
+    id = id,
+    subjectId = subjectId,
+    name = name,
+    isFavorite = isFavorite,
+    timeLimit = timeLimit,
+    completeAd = completeAd,
+    createdAt = createdAt,
+    endAt = endAt,
+    lastAt = lastAt,
+    lastQuestionNumber = lastQuestionNumber,
+    deletedAt = deletedAt,
+    state = state
+)
+
+
 fun createExamEntities(
     size: Int,
     subjectId: Int = 0
