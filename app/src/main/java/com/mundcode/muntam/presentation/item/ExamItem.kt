@@ -111,7 +111,9 @@ fun ExamItem(
         Text(text = exam.createdAtText, style = MTTextStyle.text13, color = Gray600)
 
         Text(
-            text = "초과시간 · ${exam.expiredTimeText ?: "없움"}",
+            text = exam.expiredTimeText?.let {
+                "초과시간 · $it"
+            } ?: "측정시간 · ${exam.lastLapsTimeText}",
             style = MTTextStyle.text13,
             color = exam.expiredTimeTextColor
         )
