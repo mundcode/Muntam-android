@@ -13,10 +13,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkManager
 import com.mundcode.designsystem.components.dialogs.DescriptionDialog
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.toolbars.MTLogoToolbar
@@ -31,6 +34,8 @@ import com.mundcode.muntam.presentation.item.SubjectAddItem
 import com.mundcode.muntam.presentation.model.BottomSheetModel
 import com.mundcode.muntam.presentation.screen.subject_add.SubjectItem
 import com.mundcode.muntam.util.hiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun SubjectsScreen(
@@ -40,6 +45,16 @@ fun SubjectsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val subjects = state.subjects
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        launch {
+            viewModel.alarmCancelEvent.collectLatest {
+                WorkManager.getInstance(context).cancelAllWorkByTag(it)
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
