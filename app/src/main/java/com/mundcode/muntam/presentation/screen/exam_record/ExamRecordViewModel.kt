@@ -293,7 +293,7 @@ class ExamRecordViewModel @Inject constructor(
 
     // 문제번호랑 경과시간은 그대로, 상태랑 타이머만 바꾸기
     private fun resume() = viewModelScope.launch(Dispatchers.IO) {
-        updateExamState(newExamState = ExamState.RUNNING)
+        updateExamState(newExamState = ExamState.RUNNING, lastQuestionNumber = lastQuestionNumber ?: 1)
         updateQuestionState(lastQuestionNumber, QuestionState.RUNNING)
     }
 
