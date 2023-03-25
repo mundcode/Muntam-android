@@ -17,7 +17,9 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.mundcode.designsystem.theme.DarkColorPalette
+import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.LightColorPalette
+import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.navigation.MuntamNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,14 +68,16 @@ fun MuntamApp() {
 fun MuntamTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val systemUiController = rememberSystemUiController()
 
+    systemUiController.setSystemBarsColor(White)
+
     val colors = if (darkTheme) {
-        systemUiController.setSystemBarsColor(
-            color = DarkColorPalette.background
+        systemUiController.setStatusBarColor(
+            color = White // todo 다크테마 적용시 수정
         )
         DarkColorPalette
     } else {
-        systemUiController.setSystemBarsColor(
-            color = LightColorPalette.background
+        systemUiController.setStatusBarColor(
+            color = White
         )
         LightColorPalette
     }

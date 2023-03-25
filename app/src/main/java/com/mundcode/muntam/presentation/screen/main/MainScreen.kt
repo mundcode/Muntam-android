@@ -32,6 +32,7 @@ import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTBottomSheetBackground
 import com.mundcode.designsystem.theme.MTTextStyle
+import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.navigation.Main
 import com.mundcode.muntam.navigation.MainBottomNavHost
 import com.mundcode.muntam.presentation.model.BottomSheetModel
@@ -118,17 +119,17 @@ fun MuntamBottomNavigation(
 
 @Composable
 fun BottomSheetScreen(bottomSheetState: BottomSheetModel, onCloseEvent: () -> Unit) {
-    val systemUiController = rememberSystemUiController()
+//    val systemUiController = rememberSystemUiController()
     val show = bottomSheetState !is BottomSheetModel.None
-    val backgroundColor by animateColorAsState(
-        targetValue = if (show) {
-            MTBottomSheetBackground
-        } else {
-            MaterialTheme.colors.background
-        }
-    )
+//    val backgroundColor by animateColorAsState(
+//        targetValue = if (show) {
+//            MTBottomSheetBackground
+//        } else {
+//            White
+//        }
+//    )
 
-    systemUiController.setStatusBarColor(color = backgroundColor)
+//    systemUiController.setStatusBarColor(color = backgroundColor)
 
     MTBottomSheets(
         show = show,

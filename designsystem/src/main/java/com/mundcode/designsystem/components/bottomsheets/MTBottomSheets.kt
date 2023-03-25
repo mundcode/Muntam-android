@@ -1,5 +1,6 @@
 package com.mundcode.designsystem.components.bottomsheets
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.slideInVertically
@@ -27,6 +28,7 @@ import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBot
 import com.mundcode.designsystem.components.buttons.PrimaryMTButton
 import com.mundcode.designsystem.theme.MTBottomSheetBackground
 import com.mundcode.designsystem.theme.Transparent
+import com.mundcode.designsystem.theme.White
 
 @Composable
 fun MTBottomSheets(
@@ -47,13 +49,25 @@ fun MTBottomSheets(
         }
     )
 
+    val statusBarColor by animateColorAsState(
+        targetValue = if (show) {
+            MTBottomSheetBackground
+        } else {
+            White
+        }
+    )
+
+    BackHandler(enabled = show) {
+        // do nothing
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = backgroundColor)
     )
 
-    systemUiController.setStatusBarColor(color = backgroundColor)
+    systemUiController.setStatusBarColor(color = statusBarColor)
 
     AnimatedVisibility(
         visible = show,
