@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -45,6 +47,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.mundcode.designsystem.components.dialogs.JumpNumberPickerDialog
 import com.mundcode.designsystem.components.dialogs.alert.AlertDialog
 import com.mundcode.designsystem.components.etc.Margin
+import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray300
@@ -79,6 +82,10 @@ fun ExamRecordScreen(
     val examState = state.examModel.state
     val isNotEnd = state.examModel.state != ExamState.END
 
+    var showAdLoading by remember {
+        mutableStateOf(false)
+    }
+
     val activity = getActivity()
 
     var rewardedAd by remember {
@@ -99,9 +106,13 @@ fun ExamRecordScreen(
 
     LaunchedEffect(key1 = true) {
         launch(Dispatchers.Main) {
-            loadAdRequest(activity) {
-                rewardedAd = it
-            }
+            loadAdRequest(
+                activity,
+                onRewardedCallback = {
+                    rewardedAd = it
+                },
+                onLoadFailedEvent = {}
+            )
         }
 
         launch(Dispatchers.Main) {
@@ -109,12 +120,36 @@ fun ExamRecordScreen(
                 rewardedAd?.show(activity) {
                     viewModel.onCompleteAdmob()
                 }
+                if (rewardedAd == null) {
+                    viewModel.onAdLoadFailed()
+
+                    showAdLoading = true
+                    loadAdRequest(
+                        activity,
+                        onRewardedCallback = {
+                            showAdLoading = false
+                            viewModel.onAdLoadComplete()
+
+                            rewardedAd = it
+                        },
+                        onLoadFailedEvent = {
+                            showAdLoading = false
+                            viewModel.onAdLoadFailed()
+                        }
+                    )
+                }
             }
         }
 
         launch {
             viewModel.navigationEvent.collectLatest { route ->
                 onNavEvent(route)
+            }
+        }
+
+        launch {
+            viewModel.toast.collectLatest {
+                viewModel.toastState.showToast(it)
             }
         }
     }
@@ -323,6 +358,21 @@ fun ExamRecordScreen(
             expired = state.expired,
             onClickScreen = viewModel::onClickScreen
         )
+
+        if (showAdLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = MTOrange, strokeWidth = 4.dp)
+            }
+        }
+    }
+
+    if (viewModel.toastState.show) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            MTToast(
+                toastState = viewModel.toastState, modifier = Modifier
+                    .padding(20.dp)
+            )
+        }
     }
 
     if (state.showCompleteDialog) {
@@ -363,7 +413,8 @@ fun ExamRecordScreen(
 
 private fun loadAdRequest(
     activity: ComponentActivity,
-    onRewardedCallback: (RewardedAd) -> Unit
+    onRewardedCallback: (RewardedAd) -> Unit,
+    onLoadFailedEvent: () -> Unit
 ) {
     var adRequest = AdRequest.Builder().build()
     RewardedAd.load(
@@ -371,10 +422,12 @@ private fun loadAdRequest(
         "ca-app-pub-3940256099942544/5224354917",
         adRequest,
         object : RewardedAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {}
-
             override fun onAdLoaded(ad: RewardedAd) {
                 onRewardedCallback(ad)
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                onLoadFailedEvent()
             }
         }
     )

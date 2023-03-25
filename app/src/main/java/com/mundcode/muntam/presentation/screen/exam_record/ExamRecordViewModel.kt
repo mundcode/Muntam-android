@@ -283,6 +283,13 @@ class ExamRecordViewModel @Inject constructor(
         updateExamUseCase(stateValue.examModel.copy(completeAd = true).asExternalModel())
     }
 
+    fun onAdLoadComplete() = viewModelScope.launch {
+        _toast.emit("지금 한 번 더 눌러주세요!")
+    }
+    fun onAdLoadFailed() = viewModelScope.launch {
+        _toast.emit("인터넷 연결을 확인해주세요. 다시불러오는 중..")
+    }
+
     private fun pause() = viewModelScope.launch(Dispatchers.IO) {
         updateExamState(
             newExamState = ExamState.PAUSE,
