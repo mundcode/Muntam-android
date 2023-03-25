@@ -17,7 +17,7 @@ fun Instant.asMTDateText(): String {
 }
 
 fun Long.asTimeLimitText(): String {
-    val totalSec = this / 1000
+    val totalSec = this
     val sec = totalSec % 60
     val totalMin = totalSec / 60
     val min = totalMin % 60

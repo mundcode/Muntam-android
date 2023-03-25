@@ -152,7 +152,7 @@ data class SubjectAddState(
     val enableButton: Boolean = false
 ) {
     fun getTimeLimitMilliSec(): Long =
-        (timeLimitHour * 60 * 60 * 1000L) + (timeLimitMin * 60 * 1000L) + (timeLimitSec * 1000L)
+        (timeLimitHour * 60 * 60).toLong() + (timeLimitMin * 60) + (timeLimitSec)
 
     fun canEnableButton(): Boolean =
         subjectName.isNotEmpty() && getTimeLimitMilliSec() != 0L && totalQuestionNumber in (1..200)

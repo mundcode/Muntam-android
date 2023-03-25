@@ -33,12 +33,12 @@ data class ExamModel( // todo 수정
 
     private fun obtainExpiredTime(): String? {
         lastAt ?: return null
-        val diff = timeLimit - (lastAt * 1000)
+        val diff = timeLimit - lastAt
         if (diff >= 0) return null
         val absDiff = diff.absoluteValue
-        val sec = (absDiff / 1000) % 60
-        val min = (absDiff / 1000 / 60) % 60
-        val hour = (absDiff / 1000 / 60 / 60) % 24
+        val sec = (absDiff) % 60
+        val min = (absDiff / 60) % 60
+        val hour = (absDiff / 60 / 60) % 24
 
         return "%02d:%02d:%02d".format(hour, min, sec)
     }
@@ -46,7 +46,7 @@ data class ExamModel( // todo 수정
     private fun obtainExpiredTimeTextColor(): Color {
         return when {
             lastAt == null -> Gray500
-            timeLimit - (lastAt * 1000) < 0 -> MTRed
+            timeLimit - lastAt < 0 -> MTRed
             else -> Gray500
         }
     }
