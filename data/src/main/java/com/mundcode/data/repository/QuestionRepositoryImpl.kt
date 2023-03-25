@@ -2,6 +2,7 @@ package com.mundcode.data.repository
 
 import com.mundcode.data.local.database.dao.QuestionDao
 import com.mundcode.data.local.database.model.asEntity
+import com.mundcode.data.local.database.model.asEntityWithModify
 import com.mundcode.data.local.database.model.asExternalModel
 import com.mundcode.domain.model.Question
 import com.mundcode.domain.repository.QuestionRepository
@@ -61,5 +62,5 @@ class QuestionRepositoryImpl @Inject constructor(
         }
 
     override suspend fun updateQuestion(question: Question) =
-        questionDao.updateQuestion(question.asEntity())
+        questionDao.updateQuestion(question.asEntityWithModify())
 }
