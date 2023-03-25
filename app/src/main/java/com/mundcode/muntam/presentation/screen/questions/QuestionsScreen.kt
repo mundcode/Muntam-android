@@ -1,5 +1,6 @@
 package com.mundcode.muntam.presentation.screen.questions
 
+import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -25,7 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.work.WorkManager
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
+import com.mundcode.designsystem.components.dialogs.DescriptionDialog
 import com.mundcode.designsystem.components.toast.MTToast
 import com.mundcode.designsystem.components.toolbars.MTTitleToolbar
 import com.mundcode.designsystem.theme.DefaultHorizontalPadding
@@ -38,10 +45,12 @@ import com.mundcode.designsystem.theme.White
 import com.mundcode.domain.model.enums.QuestionSort
 import com.mundcode.muntam.presentation.item.AdmobBanner
 import com.mundcode.muntam.presentation.item.QuestionItem
+import com.mundcode.muntam.util.ActivityLifecycle
 import com.mundcode.muntam.util.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun QuestionScreen(
     viewModel: QuestionsViewModel = hiltViewModel(),
@@ -52,6 +61,23 @@ fun QuestionScreen(
     val sortState by viewModel.currentSort.collectAsState()
 
     val context = LocalContext.current
+
+    val notificationPermissionState =
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS) { result ->
+            if (result) {
+                viewModel.onPermissionGranted()
+            } else {
+                viewModel.showRationale()
+            }
+        }
+
+    ActivityLifecycle { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> {
+                viewModel.checkOnResume(notificationPermissionState.status.isGranted)
+            }
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         launch {
@@ -69,6 +95,12 @@ fun QuestionScreen(
         launch {
             viewModel.toast.collectLatest {
                 viewModel.toastState.showToast(it)
+            }
+        }
+
+        launch {
+            viewModel.notificationPermissionEvent.collectLatest {
+                notificationPermissionState.launchPermissionRequest()
             }
         }
     }
@@ -154,7 +186,11 @@ fun QuestionScreen(
                         QuestionItem(
                             questionModel = item,
                             onClickAlarm = {
-                                viewModel.onClickAlarm(item)
+                                viewModel.onClickAlarm(
+                                    questionModel = item,
+                                    isGranted = notificationPermissionState.status.isGranted,
+                                    shouldShowRationale = notificationPermissionState.status.shouldShowRationale
+                                )
                             },
                             onClickCorrect = {
                                 viewModel.onClickCorrect(item)
@@ -183,6 +219,14 @@ fun QuestionScreen(
                     .padding(horizontal = DefaultHorizontalPadding, vertical = 16.dp)
             )
         }
+    }
+
+    if (state.shouldShowRationale) {
+        DescriptionDialog(
+            title = "알림 권한을 활성화 해주세요",
+            description = "알림 권한이 켜져있어야\n문제알림을 받을 수 있어요!",
+            onClickConfirm = viewModel::onCancelDialog
+        )
     }
 }
 

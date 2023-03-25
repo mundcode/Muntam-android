@@ -29,6 +29,10 @@ class MtNotification @Inject constructor() {
         val title = "${questionModel.questionNumber}번 문제를 푼지 $howLong 지났어요."
         val content = "지금 복습하지 않으면 잊어버릴 가능성이 높아요\n얼른 복습하고 성적올리기!"
 
+        // Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE
+        // be specified when creating a PendingIntent.
+        // Strongly consider using FLAG_IMMUTABLE, only use FLAG_MUTABLE
+        // if some functionality depends on the PendingIntent being mutable, e.g. if it needs to be used with inline replies or bubbles.
         val deepLinkPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
             val deepLinkIntent = Intent(
                 Intent.ACTION_VIEW,
@@ -37,7 +41,7 @@ class MtNotification @Inject constructor() {
                 MainActivity::class.java
             )
             addNextIntentWithParentStack(deepLinkIntent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
         } ?: run {
             getDefaultPendingIntent(context)
         }
