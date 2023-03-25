@@ -49,6 +49,8 @@ fun QuestionScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val sortState by viewModel.currentSort.collectAsState()
+
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
@@ -88,13 +90,13 @@ fun QuestionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SortText(
-                    text = "푼 문제순",
-                    select = state.selectedSort == QuestionSort.DEFAULT,
+                    text = "문제 번호 순",
+                    select = sortState == QuestionSort.DEFAULT,
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(start = 20.dp, end = 8.dp)
                         .clickable(
-                            enabled = state.selectedSort != QuestionSort.DEFAULT,
+                            enabled = sortState != QuestionSort.DEFAULT,
                             onClick = viewModel::onClickSortNumberAsc,
                             indication = null,
                             interactionSource = MutableInteractionSource()
@@ -110,12 +112,12 @@ fun QuestionScreen(
 
                 SortText(
                     text = "오래 걸린 문제순",
-                    select = state.selectedSort == QuestionSort.LAPS_DESC,
+                    select = sortState == QuestionSort.LAPS_DESC,
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(horizontal = 8.dp)
                         .clickable(
-                            enabled = state.selectedSort != QuestionSort.LAPS_DESC,
+                            enabled = sortState != QuestionSort.LAPS_DESC,
                             onClick = viewModel::onClickSortLapsDesc,
                             indication = null,
                             interactionSource = MutableInteractionSource()
@@ -131,12 +133,12 @@ fun QuestionScreen(
 
                 SortText(
                     text = "틀린 문제 먼저",
-                    select = state.selectedSort == QuestionSort.WRONG_FIRST,
+                    select = sortState == QuestionSort.WRONG_FIRST,
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(horizontal = 8.dp)
                         .clickable(
-                            enabled = state.selectedSort != QuestionSort.WRONG_FIRST,
+                            enabled = sortState != QuestionSort.WRONG_FIRST,
                             onClick = viewModel::onClickSortWrongFirst,
                             indication = null,
                             interactionSource = MutableInteractionSource()

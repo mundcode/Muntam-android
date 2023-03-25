@@ -17,18 +17,16 @@ import com.mundcode.muntam.presentation.model.asExternalModel
 import com.mundcode.muntam.presentation.model.asStateModel
 import com.mundcode.muntam.worker.QuestionNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltViewModel
 class QuestionsViewModel @Inject constructor(
@@ -53,13 +51,16 @@ class QuestionsViewModel @Inject constructor(
         getQuestions()
     }
 
-    @OptIn(FlowPreview::class)
     private fun getQuestions() = viewModelScope.launch(Dispatchers.IO) {
-        currentSort.flatMapMerge { sort ->
-            getQuestionsByExamIdWithSortFlowUseCase(examId, sort)
-        }.collectLatest { questions ->
-            updateState {
-                stateValue.copy(questions = questions.map { it.asStateModel() })
+        // 여기서 flatMapMerge 를 쓰면안됨.
+        currentSort.collectLatest {
+            getQuestionsByExamIdWithSortFlowUseCase(
+                examId,
+                currentSort.value
+            ).collectLatest { questions ->
+                updateState {
+                    stateValue.copy(questions = questions.map { it.asStateModel() })
+                }
             }
         }
     }
@@ -76,10 +77,6 @@ class QuestionsViewModel @Inject constructor(
 
     fun onClickAlarm(questionsModel: QuestionModel) = viewModelScope.launch(Dispatchers.IO) {
         val currentAlarmEnable = questionsModel.isAlarm
-
-        updateQuestionUseCase(
-            questionsModel.copy(isAlarm = currentAlarmEnable.not()).asExternalModel()
-        )
 
         if (!currentAlarmEnable) {
             queueQuestionRemindNotification(
@@ -114,6 +111,13 @@ class QuestionsViewModel @Inject constructor(
                 QuestionNotificationWorker.getWorkerIdWithArgs(questionId = questionsModel.id)
             )
         }
+
+        updateQuestionUseCase(
+            questionsModel.copy(
+                isAlarm = currentAlarmEnable.not()
+            ).asExternalModel()
+        )
+
         _toast.emit(if (currentAlarmEnable) "알람을 취소했어요." else "에빙하우스 망각곡선에 따라 알림을 설정했어요!")
     }
 
@@ -124,23 +128,14 @@ class QuestionsViewModel @Inject constructor(
     }
 
     fun onClickSortLapsDesc() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.LAPS_DESC)
-        }
         _currentSort.value = QuestionSort.LAPS_DESC
     }
 
     fun onClickSortWrongFirst() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.WRONG_FIRST)
-        }
         _currentSort.value = QuestionSort.WRONG_FIRST
     }
 
     fun onClickSortNumberAsc() {
-        updateState {
-            stateValue.copy(selectedSort = QuestionSort.DEFAULT)
-        }
         _currentSort.value = QuestionSort.DEFAULT
     }
 
@@ -175,6 +170,5 @@ class QuestionsViewModel @Inject constructor(
 
 data class QuestionsState(
     val exam: ExamModel = ExamModel(),
-    val selectedSort: QuestionSort = QuestionSort.DEFAULT,
     val questions: List<QuestionModel> = listOf()
 )
