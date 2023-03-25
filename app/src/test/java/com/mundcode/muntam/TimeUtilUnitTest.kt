@@ -4,7 +4,7 @@ import com.mundcode.muntam.util.asCurrentTimerText
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class TimerTextTest {
+class TimeUtilUnitTest {
 
     @Test
     fun testPositiveTime() {
