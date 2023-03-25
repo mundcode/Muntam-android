@@ -8,6 +8,8 @@ interface QuestionRepository {
 
     suspend fun insertQuestions(questions: List<Question>)
 
+    fun getQuestionsBySubjectId(subjectId: Int): List<Question>
+
     fun getQuestionsByExamIdFlow(examId: Int): Flow<List<Question>>
 
     fun getQuestionsByExamIdDescFlow(examId: Int): Flow<List<Question>>

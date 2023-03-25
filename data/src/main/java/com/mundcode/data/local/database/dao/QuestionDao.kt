@@ -10,6 +10,13 @@ import kotlinx.coroutines.flow.Flow
 abstract class QuestionDao : BaseDao<QuestionEntity> {
     @Query(
         value = """
+            SELECT * FROM questions WHERE deleted_at IS NULL AND subject_id = :subjectId
+        """
+    )
+    abstract fun getQuestionsBySubjectId(subjectId: Int): List<QuestionEntity>
+
+    @Query(
+        value = """
             SELECT * FROM questions WHERE deleted_at IS NULL AND exam_id = :examId
         """
     )
