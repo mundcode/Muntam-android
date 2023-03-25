@@ -34,7 +34,7 @@ data class QuestionEntity(
     @ColumnInfo(name = "question_number")
     val questionNumber: Int,
     @ColumnInfo(name = "is_correct")
-    val isCorrect: Boolean = false,
+    val isCorrect: Boolean = true,
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean = false,
     @ColumnInfo(name = "is_alarm")
