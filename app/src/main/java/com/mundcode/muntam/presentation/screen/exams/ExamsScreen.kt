@@ -16,7 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.WorkManager
 import com.mundcode.designsystem.components.bottomsheets.MTBottomSheets
 import com.mundcode.designsystem.components.bottomsheets.option.SubjectOptionBottomSheetContent
 import com.mundcode.designsystem.components.buttons.TimeRecordButton
@@ -41,6 +43,8 @@ fun ExamsScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = Unit) {
         launch {
             viewModel.navigationEvent.collectLatest { route ->
@@ -51,6 +55,12 @@ fun ExamsScreen(
         launch {
             viewModel.toast.collectLatest { text ->
                 viewModel.toastState.showToast(text)
+            }
+        }
+
+        launch {
+            viewModel.alarmCancelEvent.collectLatest {
+                WorkManager.getInstance(context).cancelAllWorkByTag(it)
             }
         }
     }

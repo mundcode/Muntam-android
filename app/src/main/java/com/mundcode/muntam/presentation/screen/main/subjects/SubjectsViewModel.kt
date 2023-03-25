@@ -5,7 +5,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.mundcode.domain.model.Subject
 import com.mundcode.domain.usecase.DeleteSubjectUseCase
-import com.mundcode.domain.usecase.GetQuestionBySubjectIdUseCase
+import com.mundcode.domain.usecase.GetQuestionsBySubjectIdUseCase
 import com.mundcode.domain.usecase.GetSubjectsFlowUseCase
 import com.mundcode.muntam.base.BaseViewModel
 import com.mundcode.muntam.presentation.model.SubjectModel
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class SubjectsViewModel @Inject constructor(
     private val getSubjectsFlowUseCase: GetSubjectsFlowUseCase,
     private val deleteSubjectUseCase: DeleteSubjectUseCase,
-    private val getQuestionIdBySubjectIdUseCase: GetQuestionBySubjectIdUseCase
+    private val getQuestionIdBySubjectIdUseCase: GetQuestionsBySubjectIdUseCase
 ) : BaseViewModel<SubjectsState>() {
     private val _alarmCancelEvent = MutableSharedFlow<String>()
     val alarmCancelEvent: SharedFlow<String> = _alarmCancelEvent
