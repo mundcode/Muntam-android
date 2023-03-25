@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import com.mundcode.muntam.constants.URI
 import com.mundcode.muntam.presentation.screen.exam_record.ExamRecordScreen
 import com.mundcode.muntam.presentation.screen.exams.ExamsScreen
 import com.mundcode.muntam.presentation.screen.main.MainScreen
@@ -109,7 +111,8 @@ fun MuntamNavHost(
 
         composable(
             route = Questions.routeWithArgs,
-            arguments = Questions.arguments
+            arguments = Questions.arguments,
+            deepLinks = listOf(navDeepLink { uriPattern = "$URI${Questions.routeWithArgs}" })
         ) {
             QuestionScreen(
                 onBackEvent = {
