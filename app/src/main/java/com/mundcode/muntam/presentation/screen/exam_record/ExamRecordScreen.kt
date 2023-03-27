@@ -1,5 +1,7 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
+import android.os.Build
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -59,7 +61,10 @@ import com.mundcode.designsystem.theme.MTRed
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.util.spToDp
 import com.mundcode.domain.model.enums.ExamState
+import com.mundcode.muntam.BuildConfig
 import com.mundcode.muntam.R
+import com.mundcode.muntam.constants.ADMOB_AFTER_EXAM_REWARD_ID
+import com.mundcode.muntam.constants.ADMOB_AFTER_EXAM_REWARD_ID_TEST
 import com.mundcode.muntam.presentation.screen.exam_record.component.BottomButton
 import com.mundcode.muntam.presentation.screen.exam_record.component.TimerCircularProgressBar
 import com.mundcode.muntam.presentation.screen.exam_record.component.TopExamState
@@ -419,7 +424,7 @@ private fun loadAdRequest(
     var adRequest = AdRequest.Builder().build()
     RewardedAd.load(
         activity,
-        "ca-app-pub-3940256099942544/5224354917",
+        if (BuildConfig.DEBUG) ADMOB_AFTER_EXAM_REWARD_ID_TEST else ADMOB_AFTER_EXAM_REWARD_ID,
         adRequest,
         object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) {
@@ -427,6 +432,7 @@ private fun loadAdRequest(
             }
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("SR-N", "adError $adError")
                 onLoadFailedEvent()
             }
         }
