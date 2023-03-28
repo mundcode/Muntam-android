@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5894626103174068~5125978175"/>
+            android:value="@string/ADMOB_APP_ID"/>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -8,6 +8,9 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.mundcode.muntam'
     compileSdk 33
@@ -23,6 +26,11 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+//        buildConfigField "String", "ADMOB_APP_ID", properties["ADBMO_APP_ID"]
+        resValue 'string', 'ADMOB_APP_ID', properties["ADBMO_APP_ID"]
+        buildConfigField "String", "ADMOB_DFAULT_BANNER_ID", properties["ADMOB_DFAULT_BANNER_ID"]
+        buildConfigField "String", "ADMOB_EXAM_REWARD_ID", properties["ADMOB_EXAM_REWARD_ID"]
     }
 
     buildTypes {
