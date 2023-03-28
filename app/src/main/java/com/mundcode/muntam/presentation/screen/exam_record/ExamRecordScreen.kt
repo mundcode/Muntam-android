@@ -1,6 +1,5 @@
 package com.mundcode.muntam.presentation.screen.exam_record
 
-import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -63,7 +62,6 @@ import com.mundcode.designsystem.util.spToDp
 import com.mundcode.domain.model.enums.ExamState
 import com.mundcode.muntam.BuildConfig
 import com.mundcode.muntam.R
-import com.mundcode.muntam.constants.ADMOB_AFTER_EXAM_REWARD_ID
 import com.mundcode.muntam.constants.ADMOB_AFTER_EXAM_REWARD_ID_TEST
 import com.mundcode.muntam.presentation.screen.exam_record.component.BottomButton
 import com.mundcode.muntam.presentation.screen.exam_record.component.TimerCircularProgressBar
@@ -424,7 +422,7 @@ private fun loadAdRequest(
     var adRequest = AdRequest.Builder().build()
     RewardedAd.load(
         activity,
-        if (BuildConfig.DEBUG) ADMOB_AFTER_EXAM_REWARD_ID_TEST else ADMOB_AFTER_EXAM_REWARD_ID,
+        if (BuildConfig.DEBUG) ADMOB_AFTER_EXAM_REWARD_ID_TEST else BuildConfig.ADMOB_EXAM_REWARD_ID,
         adRequest,
         object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) {

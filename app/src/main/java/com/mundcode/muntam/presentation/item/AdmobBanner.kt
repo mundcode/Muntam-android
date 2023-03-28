@@ -12,7 +12,6 @@ import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.mundcode.muntam.BuildConfig
-import com.mundcode.muntam.constants.ADMOB_BANNER_DEFAULT_ID
 import com.mundcode.muntam.constants.ADMOB_BANNER_DEFAULT_ID_TEST
 import com.mundcode.muntam.databinding.AdmobBannerViewBinding
 import com.mundcode.muntam.util.ComposableLifecycle
@@ -42,7 +41,7 @@ fun AdmobBanner(
 
         val adLoader = AdLoader.Builder(
             adView.context,
-            if (BuildConfig.DEBUG.not()) ADMOB_BANNER_DEFAULT_ID_TEST else BuildConfig.ADMOB_DFAULT_BANNER_ID
+            if (BuildConfig.DEBUG) ADMOB_BANNER_DEFAULT_ID_TEST else BuildConfig.ADMOB_DFAULT_BANNER_ID
         )
             .forNativeAd { nativeAd ->
                 if (isDestroyed) {
