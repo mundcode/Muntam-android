@@ -41,7 +41,11 @@ fun AdmobBanner(
 
         val adLoader = AdLoader.Builder(
             adView.context,
-            if (BuildConfig.DEBUG) ADMOB_BANNER_DEFAULT_ID_TEST else BuildConfig.ADMOB_DFAULT_BANNER_ID
+            if (BuildConfig.DEBUG) {
+                ADMOB_BANNER_DEFAULT_ID_TEST
+            } else {
+                BuildConfig.ADMOB_DFAULT_BANNER_ID
+            }
         )
             .forNativeAd { nativeAd ->
                 if (isDestroyed) {
