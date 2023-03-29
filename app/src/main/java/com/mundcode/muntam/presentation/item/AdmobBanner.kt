@@ -11,6 +11,8 @@ import androidx.lifecycle.Lifecycle
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.mundcode.muntam.BuildConfig
+import com.mundcode.muntam.constants.ADMOB_BANNER_DEFAULT_ID_TEST
 import com.mundcode.muntam.databinding.AdmobBannerViewBinding
 import com.mundcode.muntam.util.ComposableLifecycle
 
@@ -37,8 +39,14 @@ fun AdmobBanner(
             adView.iconView = imgLogo
         }
 
-        // todo id 교체
-        val adLoader = AdLoader.Builder(adView.context, "ca-app-pub-3940256099942544/2247696110")
+        val adLoader = AdLoader.Builder(
+            adView.context,
+            if (BuildConfig.DEBUG) {
+                ADMOB_BANNER_DEFAULT_ID_TEST
+            } else {
+                BuildConfig.ADMOB_DFAULT_BANNER_ID
+            }
+        )
             .forNativeAd { nativeAd ->
                 if (isDestroyed) {
                     nativeAd.destroy()
