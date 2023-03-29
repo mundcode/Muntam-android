@@ -123,4 +123,7 @@ kapt {
 ktlint {
     android.set(true)
     outputColorName.set("RED")
+    filter {
+        exclude("**/app/build.gradle")
+    }
 }
