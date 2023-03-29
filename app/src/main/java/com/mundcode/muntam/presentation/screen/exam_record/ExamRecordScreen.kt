@@ -422,11 +422,7 @@ private fun loadAdRequest(
     var adRequest = AdRequest.Builder().build()
     RewardedAd.load(
         activity,
-        if (BuildConfig.DEBUG) {
-            ADMOB_AFTER_EXAM_REWARD_ID_TEST
-        } else {
-            BuildConfig.ADMOB_EXAM_REWARD_ID
-        },
+        if (BuildConfig.DEBUG) ADMOB_AFTER_EXAM_REWARD_ID_TEST else BuildConfig.ADMOB_EXAM_REWARD_ID,
         adRequest,
         object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) {
