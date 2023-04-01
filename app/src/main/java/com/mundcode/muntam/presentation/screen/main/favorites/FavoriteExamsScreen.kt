@@ -183,7 +183,7 @@ fun FavoriteExamsScreen(
 
             AdmobBanner(
                 modifier = Modifier
-                    .background(White)
+                    .background(Gray100)
                     .padding(horizontal = DefaultHorizontalPadding, vertical = 16.dp)
             )
         }
