@@ -30,6 +30,7 @@ import com.mundcode.designsystem.theme.Gray100
 import com.mundcode.designsystem.theme.Gray200
 import com.mundcode.designsystem.theme.Gray900
 import com.mundcode.designsystem.theme.MTLightOrange
+import com.mundcode.designsystem.theme.MTStickyHeaderBackground
 import com.mundcode.designsystem.theme.MTTextStyle
 import com.mundcode.designsystem.theme.White
 import com.mundcode.muntam.presentation.item.AdmobBanner
@@ -107,7 +108,7 @@ fun FavoriteExamsScreen(
                                     Text(
                                         text = name,
                                         style = MTTextStyle.textBold16,
-                                        color = Gray900,
+                                        color = MTStickyHeaderBackground,
                                         modifier = Modifier
                                             .background(MTLightOrange)
                                             .fillMaxWidth()
